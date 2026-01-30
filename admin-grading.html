@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Himaayah — Admin Dashboard</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- html2pdf for PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <style>
+    :root { --h-blue:#094570; --accent:#85CCFF; }
+    body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background: #f8fafc; color: #0f172a; }
+    .card { background: #fff; border-radius: 12px; box-shadow: 0 6px 20px rgba(15,23,42,0.06); }
+    .stat { border-left: 4px solid var(--h-blue); padding-left: 1rem; }
+    .small-muted { color:#64748b; font-size:0.95rem; }
+    .btn-blue { background: var(--h-blue); color: white; }
+  </style>
+</head>
+<body>
+
+  <div class="max-w-7xl mx-auto px-6 py-10">
+    <!-- Header -->
+    <header class="flex items-center justify-between mb-8">
+      <div class="flex items-center gap-4">
+        <img src="logo.png" alt="Himaayah" class="h-12 w-auto"/>
+        <div>
+          <h1 class="text-2xl font-bold" style="color:var(--h-blue)">Himaayah Admin Dashboard</h1>
+          <p class="small-muted">Overview · Exams · Students · Reports · Announcements</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <div class="text-sm small-muted mr-4">Role</div>
+        <select id="roleSelect" class="border rounded px-3 py-2">
+          <option value="admin">Admin</option>
+          <option value="teacher">Teacher</option>
+        </select>
+
+        <button id="exportAllPdf" class="ml-4 btn-blue px-4 py-2 rounded">Export Dashboard PDF</button>
+      </div>
+    </header>
+
+    <!-- Main grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+
+      <!-- Left column: overview & quick actions -->
+      <aside class="lg:col-span-1 space-y-6">
+        <div class="card p-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="font-semibold text-lg" style="color:var(--h-blue)">Overview</h3>
+              <p class="small-muted mt-1">Quick stats at a glance</p>
+            </div>
+            <div class="text-right small-muted">Updated: <span id="overviewUpdated">--</span></div>
+          </div>
+
+          <div class="mt-4 space-y-3">
+            <div class="stat p-3 rounded">
+              <div class="text-xs small-muted">Total Students</div>
+              <div id="statTotalStudents" class="text-xl font-bold">0</div>
+            </div>
+
+            <div class="stat p-3 rounded">
+              <div class="text-xs small-muted">Submissions</div>
+              <div id="statSubmissions" class="text-xl font-bold">0</div>
+            </div>
+
+            <div class="stat p-3 rounded">
+              <div class="text-xs small-muted">Pending Grading</div>
+              <div id="statPending" class="text-xl font-bold">0</div>
+            </div>
+
+            <div class="stat p-3 rounded">
+              <div class="text-xs small-muted">Average Score (%)</div>
+              <div id="statAvg" class="text-xl font-bold">0</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card p-4">
+          <h4 class="font-semibold" style="color:var(--h-blue)">Quick Actions</h4>
+          <div class="mt-3 flex flex-col gap-3">
+            <button onclick="showTab('exams')" class="w-full border rounded px-3 py-2 text-left">View & Grade Exams</button>
+            <button onclick="showTab('students')" class="w-full border rounded px-3 py-2 text-left">Manage Students</button>
+            <button onclick="showTab('teachers')" class="w-full border rounded px-3 py-2 text-left">Manage Teachers</button>
+            <button onclick="generateCSV()" class="w-full border rounded px-3 py-2 text-left">Export CSV (All Results)</button>
+            <button onclick="resetSampleData()" class="w-full border rounded px-3 py-2 text-left text-red-600">Reset Sample Data</button>
+          </div>
+        </div>
+
+        <div class="card p-4">
+          <h4 class="font-semibold" style="color:var(--h-blue)">Announcements</h4>
+          <div id="annList" class="mt-3 space-y-2 small-muted max-h-48 overflow-y-auto"></div>
+          <div class="mt-3">
+            <textarea id="annText" rows="3" placeholder="Write announcement..." class="w-full border rounded p-2"></textarea>
+            <div class="flex gap-2 mt-2">
+              <button onclick="postAnnouncement()" class="btn-blue px-4 py-2 rounded">Post</button>
+              <button onclick="clearAnnouncements()" class="border px-4 py-2 rounded">Clear</button>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right column: main tabs -->
+      <div class="lg:col-span-3 card p-6">
+        <!-- Tabs -->
+        <div class="flex gap-4 border-b pb-4">
+          <button class="tab-btn text-sm font-semibold" data-tab="exams" onclick="showTab('exams')">Exams & Grading</button>
+          <button class="tab-btn text-sm font-semibold" data-tab="students" onclick="showTab('students')">Students</button>
+          <button class="tab-btn text-sm font-semibold" data-tab="teachers" onclick="showTab('teachers')">Teachers</button>
+          <button class="tab-btn text-sm font-semibold" data-tab="reports" onclick="showTab('reports')">Reports</button>
+          <button class="tab-btn text-sm font-semibold" data-tab="settings" onclick="showTab('settings')">Settings</button>
+        </div>
+
+        <div id="tabContent" class="mt-6">
+          <!-- TAB: Exams & Grading -->
+          <section id="tab-exams" class="tab-panel">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-semibold" style="color:var(--h-blue)">Exams & Pending Submissions</h3>
+              <div class="small-muted">Filter by class: 
+                <select id="filterClass" onchange="renderExamList()" class="border rounded px-2 py-1 ml-2">
+                  <option value="">All</option>
+                  <option>Awwal Ibtidaaiyyah</option>
+                  <option>Thaaniy Ibtidaaiyyah</option>
+                  <option>Thaalith Ibtidaaiyyah</option>
+                  <option>Awwal Idaadiyyah</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div class="p-4 border rounded">
+                <h4 class="font-semibold">Pending Submissions</h4>
+                <div id="pendingList" class="mt-3 space-y-3 max-h-96 overflow-y-auto"></div>
+              </div>
+
+              <div class="p-4 border rounded">
+                <h4 class="font-semibold">Selected Submission</h4>
+                <div id="selectedSubmission" class="mt-3 small-muted">Select a submission to view details and grade.</div>
+                <div class="mt-3" id="gradingArea" style="display:none">
+                  <div id="submissionMeta" class="small-muted mb-3"></div>
+                  <div id="submissionAnswers" class="space-y-3 max-h-60 overflow-y-auto p-2 border rounded"></div>
+
+                  <div class="mt-3 grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <input id="gradeCA1" type="number" placeholder="CA1" class="border rounded p-2"/>
+                    <input id="gradeCA2" type="number" placeholder="CA2" class="border rounded p-2"/>
+                    <input id="gradeExam" type="number" placeholder="Exam" class="border rounded p-2"/>
+                  </div>
+
+                  <div class="flex gap-3 mt-4">
+                    <button class="btn-blue px-4 py-2 rounded" onclick="saveGrade()">Save Grade</button>
+                    <button class="border px-4 py-2 rounded" onclick="markReviewed()">Mark Reviewed</button>
+                    <button class="border px-4 py-2 rounded" onclick="exportSubmissionPDF()">Export PDF</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6">
+              <h4 class="font-semibold">Performance Chart (Scores per Subject)</h4>
+              <canvas id="scoresChart" height="120"></canvas>
+            </div>
+          </section>
+
+          <!-- TAB: Students -->
+          <section id="tab-students" class="tab-panel hidden">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-semibold" style="color:var(--h-blue)">Manage Students</h3>
+              <div>
+                <button class="border px-3 py-2 rounded mr-2" onclick="openStudentModal()">Add Student</button>
+                <input id="studentSearchInput" oninput="renderStudentTable()" placeholder="Search students..." class="border rounded px-2 py-1"/>
+              </div>
+            </div>
+
+            <div class="mt-4 overflow-x-auto">
+              <table class="min-w-full text-sm">
+                <thead class="bg-gray-100">
+                  <tr>
+                    <th class="p-2 text-left">Name</th>
+                    <th class="p-2 text-left">Class</th>
+                    <th class="p-2 text-left">Email</th>
+                    <th class="p-2 text-left">Phone</th>
+                    <th class="p-2 text-left">Assigned Teacher</th>
+                    <th class="p-2 text-left">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="studentsBody"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- TAB: Teachers -->
+          <section id="tab-teachers" class="tab-panel hidden">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-semibold" style="color:var(--h-blue)">Manage Teachers</h3>
+              <div>
+                <button class="border px-3 py-2 rounded" onclick="openTeacherModal()">Add Teacher</button>
+              </div>
+            </div>
+
+            <div class="mt-4 overflow-x-auto">
+              <table class="min-w-full text-sm">
+                <thead class="bg-gray-100">
+                  <tr>
+                    <th class="p-2 text-left">Name</th>
+                    <th class="p-2 text-left">Email</th>
+                    <th class="p-2 text-left">Phone</th>
+                    <th class="p-2 text-left">Subjects</th>
+                    <th class="p-2 text-left">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="teachersBody"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- TAB: Reports -->
+          <section id="tab-reports" class="tab-panel hidden">
+            <h3 class="text-lg font-semibold" style="color:var(--h-blue)">Reports & Exports</h3>
+            <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="p-4 border rounded">
+                <h4 class="font-semibold">Export CSV</h4>
+                <p class="small-muted mt-1">Download all results as CSV.</p>
+                <button onclick="generateCSV()" class="btn-blue px-4 py-2 rounded mt-3">Download CSV</button>
+              </div>
+              <div class="p-4 border rounded">
+                <h4 class="font-semibold">Export All PDF</h4>
+                <p class="small-muted mt-1">Export the dashboard view as PDF.</p>
+                <button onclick="exportDashboardPDF()" class="btn-blue px-4 py-2 rounded mt-3">Export PDF</button>
+              </div>
+              <div class="p-4 border rounded">
+                <h4 class="font-semibold">Download Student Report Card</h4>
+                <p class="small-muted mt-1">Generate one student's report card (PDF)</p>
+                <select id="reportStudentSelect" class="border rounded px-2 py-1 w-full"></select>
+                <button onclick="exportStudentReport()" class="btn-blue px-4 py-2 rounded mt-3">Generate Report</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- TAB: Settings -->
+          <section id="tab-settings" class="tab-panel hidden">
+            <h3 class="text-lg font-semibold" style="color:var(--h-blue)">Settings</h3>
+            <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-4 border rounded">
+                <h4 class="font-semibold">Role & Permissions</h4>
+                <p class="small-muted mt-1">Switch between Admin and Teacher to preview permissions.</p>
+                <div class="mt-3">
+                  <select id="rolePreview" class="border rounded px-2 py-1" onchange="document.getElementById('roleSelect').value = this.value; handleRoleChange();">
+                    <option value="admin">Admin</option>
+                    <option value="teacher">Teacher</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="p-4 border rounded">
+                <h4 class="font-semibold">Data</h4>
+                <p class="small-muted mt-1">Load sample data (for demo) or clear everything.</p>
+                <div class="mt-3 flex gap-2">
+                  <button class="btn-blue px-3 py-2 rounded" onclick="loadSampleData()">Load Sample Data</button>
+                  <button class="border px-3 py-2 rounded text-red-600" onclick="clearAllData()">Clear All Data</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Student Modal -->
+  <div id="studentModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-40">
+    <div class="bg-white rounded-lg p-6 w-96">
+      <h3 class="font-semibold text-lg">Add / Edit Student</h3>
+      <div class="mt-3 space-y-3">
+        <input id="stuId" type="hidden"/>
+        <input id="stuName" placeholder="Full name" class="w-full border rounded p-2"/>
+        <input id="stuEmail" placeholder="Email" class="w-full border rounded p-2"/>
+        <input id="stuPhone" placeholder="Phone" class="w-full border rounded p-2"/>
+        <select id="stuClass" class="w-full border rounded p-2">
+          <option>Awwal Ibtidaaiyyah</option>
+          <option>Thaaniy Ibtidaaiyyah</option>
+          <option>Thaalith Ibtidaaiyyah</option>
+          <option>Awwal Idaadiyyah</option>
+        </select>
+        <select id="stuTeacherAssign" class="w-full border rounded p-2"></select>
+      </div>
+      <div class="mt-4 flex justify-end gap-2">
+        <button onclick="closeStudentModal()" class="border px-3 py-2 rounded">Cancel</button>
+        <button onclick="saveStudent()" class="btn-blue px-3 py-2 rounded">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Teacher Modal -->
+  <div id="teacherModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-40">
+    <div class="bg-white rounded-lg p-6 w-96">
+      <h3 class="font-semibold text-lg">Add / Edit Teacher</h3>
+      <div class="mt-3 space-y-3">
+        <input id="tchId" type="hidden"/>
+        <input id="tchName" placeholder="Full name" class="w-full border rounded p-2"/>
+        <input id="tchEmail" placeholder="Email" class="w-full border rounded p-2"/>
+        <input id="tchPhone" placeholder="Phone" class="w-full border rounded p-2"/>
+        <input id="tchSubjects" placeholder="Subjects (comma separated)" class="w-full border rounded p-2"/>
+      </div>
+      <div class="mt-4 flex justify-end gap-2">
+        <button onclick="closeTeacherModal()" class="border px-3 py-2 rounded">Cancel</button>
+        <button onclick="saveTeacher()" class="btn-blue px-3 py-2 rounded">Save</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* Dashboard JS
+   - Data stored in localStorage under keys:
+     HIM_students, HIM_teachers, HIM_submissions, HIM_announcements
+*/
+
+// Utilities
+const STORE_KEYS = {
+  students: 'HIM_students',
+  teachers: 'HIM_teachers',
+  submissions: 'HIM_submissions',
+  announcements: 'HIM_announcements'
+};
+function uid(prefix='id'){ return prefix + '_' + Math.random().toString(36).slice(2,9); }
+function now() { return new Date().toLocaleString(); }
+
+// Role handling
+const roleSelect = document.getElementById('roleSelect');
+roleSelect.addEventListener('change', handleRoleChange);
+function handleRoleChange(){
+  const role = roleSelect.value;
+  // if teacher, restrict some UI that require admin privileges (hide management buttons)
+  const isTeacher = role === 'teacher';
+  // teacher can't clear data or manage teachers
+  document.querySelectorAll('[onclick="openTeacherModal()"]').forEach(b=>b.style.display = isTeacher ? 'none' : '');
+  // update overview
+  renderAll();
+}
+handleRoleChange();
+
+// Init storage if empty
+function ensureData() {
+  if(!localStorage.getItem(STORE_KEYS.students)) localStorage.setItem(STORE_KEYS.students, JSON.stringify([]));
+  if(!localStorage.getItem(STORE_KEYS.teachers)) localStorage.setItem(STORE_KEYS.teachers, JSON.stringify([]));
+  if(!localStorage.getItem(STORE_KEYS.submissions)) localStorage.setItem(STORE_KEYS.submissions, JSON.stringify([]));
+  if(!localStorage.getItem(STORE_KEYS.announcements)) localStorage.setItem(STORE_KEYS.announcements, JSON.stringify([]));
+}
+ensureData();
+
+// Sample Data loader
+function loadSampleData(){
+  const students = [
+    { id: uid('stu'), name:'Ahmad Musa', email:'ahmad@example.com', phone:'+2348010001111', class:'Awwal Ibtidaaiyyah', teacherId:null },
+    { id: uid('stu'), name:'Aisha Bello', email:'aisha@example.com', phone:'+2348010002222', class:'Thaaniy Ibtidaaiyyah', teacherId:null },
+    { id: uid('stu'), name:'Khalid Ibrahim', email:'khalid@example.com', phone:'+2348010003333', class:'Awwal Idaadiyyah', teacherId:null },
+  ];
+  const teachers = [
+    { id: uid('tch'), name:'Ustadh Umar', email:'umar@example.com', phone:'+2348001112222', subjects:'Tawheed,Fiqh' },
+    { id: uid('tch'), name:'Ustadhah Fatima', email:'fatima@example.com', phone:'+2348003334444', subjects:'Tajweed,Arabiyyah' }
+  ];
+  // assign teachers to students
+  students[0].teacherId = teachers[0].id;
+  students[1].teacherId = teachers[1].id;
+  students[2].teacherId = teachers[0].id;
+
+  const submissions = [
+    // a sample pending submission
+    { id: uid('sub'), studentId: students[0].id, class: students[0].class, subject:'Tawheed', answers: {0:'Answer sample...'}, submittedAt: now(), graded:false, CA1:null,CA2:null,Exam:null },
+    { id: uid('sub'), studentId: students[1].id, class: students[1].class, subject:'Nahw', answers: {0:'Answer...'}, submittedAt: now(), graded:false, CA1:null,CA2:null,Exam:null }
+  ];
+  const announcements = [{ id: uid('ann'), text:'Welcome to the new grading dashboard.', createdAt: now() }];
+
+  localStorage.setItem(STORE_KEYS.students, JSON.stringify(students));
+  localStorage.setItem(STORE_KEYS.teachers, JSON.stringify(teachers));
+  localStorage.setItem(STORE_KEYS.submissions, JSON.stringify(submissions));
+  localStorage.setItem(STORE_KEYS.announcements, JSON.stringify(announcements));
+  renderAll();
+}
+
+// Clear everything
+function clearAllData(){
+  if(!confirm('Clear all local data? This cannot be undone in the browser.')) return;
+  localStorage.removeItem(STORE_KEYS.students);
+  localStorage.removeItem(STORE_KEYS.teachers);
+  localStorage.removeItem(STORE_KEYS.submissions);
+  localStorage.removeItem(STORE_KEYS.announcements);
+  ensureData();
+  renderAll();
+}
+
+// Reset sample
+function resetSampleData(){
+  if(confirm('Reset sample data (overwrites current test data)?')) loadSampleData();
+}
+
+// CRUD: Students
+function getStudents(){ return JSON.parse(localStorage.getItem(STORE_KEYS.students) || '[]'); }
+function getTeachers(){ return JSON.parse(localStorage.getItem(STORE_KEYS.teachers) || '[]'); }
+function getSubmissions(){ return JSON.parse(localStorage.getItem(STORE_KEYS.submissions) || '[]'); }
+function getAnnouncements(){ return JSON.parse(localStorage.getItem(STORE_KEYS.announcements) || '[]'); }
+
+function saveStudents(students){ localStorage.setItem(STORE_KEYS.students, JSON.stringify(students)); renderAll(); }
+function saveTeachers(teachers){ localStorage.setItem(STORE_KEYS.teachers, JSON.stringify(teachers)); renderAll(); }
+function saveSubmissions(subs){ localStorage.setItem(STORE_KEYS.submissions, JSON.stringify(subs)); renderAll(); }
+function saveAnnouncements(list){ localStorage.setItem(STORE_KEYS.announcements, JSON.stringify(list)); renderAnnouncements(); }
+
+// Render functions
+function renderAll(){
+  renderOverview();
+  renderStudentTable();
+  renderTeacherTable();
+  renderExamList();
+  renderAnnouncements();
+  populateReportStudentSelect();
+  renderChart();
+  document.getElementById('overviewUpdated').textContent = now();
+}
+
+// Overview
+function renderOverview(){
+  const students = getStudents();
+  const subs = getSubmissions();
+  const totalStudents = students.length;
+  const submissions = subs.length;
+  const pending = subs.filter(s=>!s.graded).length;
+  // average score compute from graded submissions (sum / count)
+  const graded = subs.filter(s=>s.graded && s.CA1!=null && s.CA2!=null && s.Exam!=null);
+  let avg = 0;
+  if(graded.length){
+    const totals = graded.map(g => Number(g.CA1)+Number(g.CA2)+Number(g.Exam));
+    avg = Math.round((totals.reduce((a,b)=>a+b,0)/ (graded.length*100)) * 100); // percent
+  }
+  document.getElementById('statTotalStudents').textContent = totalStudents;
+  document.getElementById('statSubmissions').textContent = submissions;
+  document.getElementById('statPending').textContent = pending;
+  document.getElementById('statAvg').textContent = avg ? avg + '%' : '—';
+}
+
+// Announcements
+function renderAnnouncements(){
+  const ann = getAnnouncements();
+  const list = document.getElementById('annList');
+  list.innerHTML = '';
+  ann.slice().reverse().forEach(a=>{
+    const el = document.createElement('div');
+    el.className = 'p-2 border rounded';
+    el.innerHTML = `<div class="text-sm">${a.text}</div><div class="small-muted text-xs mt-1">${a.createdAt}</div>`;
+    list.appendChild(el);
+  });
+}
+function postAnnouncement(){
+  const txt = document.getElementById('annText').value.trim();
+  if(!txt) return alert('Enter announcement text');
+  const anns = getAnnouncements();
+  anns.push({ id: uid('ann'), text: txt, createdAt: now() });
+  saveAnnouncements(anns);
+  document.getElementById('annText').value = '';
+}
+function clearAnnouncements(){
+  if(!confirm('Clear all announcements?')) return;
+  saveAnnouncements([]);
+}
+
+// Students table
+function renderStudentTable(){
+  const students = getStudents();
+  const teachers = getTeachers();
+  const tbody = document.getElementById('studentsBody');
+  const q = (document.getElementById('studentSearchInput')?.value || '').toLowerCase();
+  tbody.innerHTML = '';
+  students.filter(s => s.name.toLowerCase().includes(q) || s.email.toLowerCase().includes(q)).forEach(s=>{
+    const tch = teachers.find(t=>t.id===s.teacherId);
+    tbody.innerHTML += `
+      <tr class="border-b">
+        <td class="p-2">${s.name}</td>
+        <td class="p-2">${s.class}</td>
+        <td class="p-2">${s.email || '-'}</td>
+        <td class="p-2">${s.phone || '-'}</td>
+        <td class="p-2">${tch? tch.name : '-'}</td>
+        <td class="p-2">
+          <button class="border px-2 py-1 rounded mr-2" onclick="editStudent('${s.id}')">Edit</button>
+          <button class="border px-2 py-1 rounded text-red-600" onclick="deleteStudent('${s.id}')">Delete</button>
+        </td>
+      </tr>`;
+  });
+}
+
+// Teachers table
+function renderTeacherTable(){
+  const teachers = getTeachers();
+  const tbody = document.getElementById('teachersBody');
+  tbody.innerHTML = '';
+  teachers.forEach(t=>{
+    tbody.innerHTML += `
+      <tr class="border-b">
+        <td class="p-2">${t.name}</td>
+        <td class="p-2">${t.email}</td>
+        <td class="p-2">${t.phone}</td>
+        <td class="p-2">${t.subjects}</td>
+        <td class="p-2">
+          <button class="border px-2 py-1 rounded mr-2" onclick="editTeacher('${t.id}')">Edit</button>
+          <button class="border px-2 py-1 rounded text-red-600" onclick="deleteTeacher('${t.id}')">Delete</button>
+        </td>
+      </tr>`;
+  });
+  // populate teacher assign selects
+  const sel = document.getElementById('stuTeacherAssign');
+  if(sel){
+    sel.innerHTML = '<option value="">Unassigned</option>';
+    teachers.forEach(t=>{
+      sel.innerHTML += `<option value="${t.id}">${t.name}</option>`;
+    });
+  }
+  // reports student select
+  populateReportStudentSelect();
+}
+
+// Submissions & grading list
+function renderExamList(){
+  const subs = getSubmissions();
+  const students = getStudents();
+  const filterClass = document.getElementById('filterClass')?.value || '';
+  const role = roleSelect.value;
+  const teachers = getTeachers();
+  let visibleSubs = subs.slice().reverse(); // newest first
+  // if teacher, show only submissions for students assigned to that teacher
+  if(role === 'teacher'){
+    const currentTeacher = teachers[0]; // for demo use first teacher; ideally teacher auth maps to one teacher id
+    // Attempt to find teacher by email? For now map to first teacher in list
+    if(currentTeacher){
+      const allowedStudentIds = getStudents().filter(s=>s.teacherId === currentTeacher.id).map(s=>s.id);
+      visibleSubs = visibleSubs.filter(s => allowedStudentIds.includes(s.studentId));
+    }
+  }
+  if(filterClass) visibleSubs = visibleSubs.filter(s=>s.class === filterClass);
+  const pendingList = document.getElementById('pendingList');
+  pendingList.innerHTML = '';
+  if(visibleSubs.length === 0) pendingList.innerHTML = '<div class="small-muted">No submissions yet.</div>';
+  visibleSubs.forEach(s=>{
+    const st = students.find(x=>x.id===s.studentId) || { name:'Unknown' };
+    const el = document.createElement('div');
+    el.className = 'p-3 border rounded flex justify-between items-center';
+    el.innerHTML = `<div>
+        <div class="font-semibold">${st.name}</div>
+        <div class="small-muted text-xs">${s.subject} • ${s.class}</div>
+        <div class="small-muted text-xs">Submitted: ${s.submittedAt}</div>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="viewSubmission('${s.id}')" class="border px-3 py-1 rounded">View</button>
+      </div>`;
+    pendingList.appendChild(el);
+  });
+}
+
+// View a submission
+function viewSubmission(id){
+  const subs = getSubmissions();
+  const s = subs.find(x=>x.id===id);
+  if(!s) return alert('Submission not found');
+  const student = getStudents().find(st=>st.id===s.studentId) || { name:'Unknown' };
+  document.getElementById('selectedSubmission').innerHTML = `<div class="font-semibold">${student.name}</div><div class="small-muted">${s.subject} • ${s.class}</div><div class="small-muted">Submitted: ${s.submittedAt}</div>`;
+  const answersDiv = document.getElementById('submissionAnswers');
+  answersDiv.innerHTML = '';
+  // show answers (object of question index -> text)
+  Object.keys(s.answers || {}).forEach(k=>{
+    const qEl = document.createElement('div');
+    qEl.className = 'p-2 border rounded';
+    qEl.innerHTML = `<div class="font-semibold">Question ${Number(k)+1}</div><div class="mt-1">${escapeHtml(s.answers[k])}</div>`;
+    answersDiv.appendChild(qEl);
+  });
+  // fill grade inputs
+  document.getElementById('gradeCA1').value = s.CA1 ?? '';
+  document.getElementById('gradeCA2').value = s.CA2 ?? '';
+  document.getElementById('gradeExam').value = s.Exam ?? '';
+  // link grading area
+  document.getElementById('gradingArea').style.display = 'block';
+  // store current selected
+  window.currentSelectedSubmission = s.id;
+}
+
+// Save grade
+function saveGrade(){
+  const id = window.currentSelectedSubmission;
+  if(!id) return alert('No submission selected');
+  const subs = getSubmissions();
+  const idx = subs.findIndex(s=>s.id===id);
+  if(idx === -1) return;
+  const CA1 = Number(document.getElementById('gradeCA1').value || 0);
+  const CA2 = Number(document.getElementById('gradeCA2').value || 0);
+  const Exam = Number(document.getElementById('gradeExam').value || 0);
+  subs[idx].CA1 = CA1;
+  subs[idx].CA2 = CA2;
+  subs[idx].Exam = Exam;
+  subs[idx].graded = true;
+  subs[idx].gradedAt = now();
+  saveSubmissions(subs);
+  alert('Grade saved');
+  renderExamList();
+}
+
+// Mark reviewed without grades
+function markReviewed(){
+  const id = window.currentSelectedSubmission;
+  if(!id) return alert('No submission selected');
+  const subs = getSubmissions();
+  const idx = subs.findIndex(s=>s.id===id);
+  if(idx === -1) return;
+  subs[idx].graded = true;
+  subs[idx].gradedAt = now();
+  saveSubmissions(subs);
+  alert('Marked as reviewed');
+  renderExamList();
+}
+
+// Export single submission PDF (simple)
+function exportSubmissionPDF(){
+  const id = window.currentSelectedSubmission;
+  if(!id) return alert('Select a submission first');
+  const subs = getSubmissions();
+  const s = subs.find(x=>x.id===id);
+  const student = getStudents().find(st=>st.id===s.studentId) || { name:'Unknown' };
+  const doc = document.createElement('div');
+  doc.style.padding = '20px';
+  doc.innerHTML = `
+    <h2 style="color:${'#094570'}">Himaayah Madrasah — Submission</h2>
+    <h3>${student.name} — ${s.subject} (${s.class})</h3>
+    <div>Submitted: ${s.submittedAt}</div>
+    <hr/>
+    ${Object.keys(s.answers||{}).map(k=>`<h4>Q${Number(k)+1}</h4><p>${escapeHtml(s.answers[k])}</p>`).join('')}
+    <hr/>
+    <div>Graded: ${s.graded ? 'Yes' : 'No'}</div>
+    <div>CA1: ${s.CA1 ?? '-'} CA2: ${s.CA2 ?? '-'} Exam: ${s.Exam ?? '-'}</div>
+  `;
+  html2pdf().from(doc).set({ filename:`submission_${student.name}_${s.subject}.pdf` }).save();
+}
+
+// Export dashboard PDF (content)
+function exportDashboardPDF(){
+  const dashboard = document.querySelector('body');
+  html2pdf().from(dashboard).set({ filename:'Himaayah_Dashboard.pdf', html2canvas:{scale:1.6} }).save();
+}
+
+// CSV export: all results
+function generateCSV(){
+  const subs = getSubmissions();
+  const students = getStudents();
+  let csv = 'student_name,student_email,class,subject,submittedAt,graded,CA1,CA2,Exam,total,grade\n';
+  subs.forEach(s=>{
+    const st = students.find(x=>x.id===s.studentId) || {};
+    const total = (s.CA1||0)+(s.CA2||0)+(s.Exam||0);
+    const grade = gradeFromTotal(total);
+    csv += `"${st.name || ''}","${st.email || ''}","${s.class}","${s.subject}","${s.submittedAt}",${s.graded ? 'Yes':'No'},${s.CA1||''},${s.CA2||''},${s.Exam||''},${total},${grade}\n`;
+  });
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'himaayah_results.csv'; a.click(); URL.revokeObjectURL(url);
+}
+
+// Student CRUD actions
+function openStudentModal(){
+  document.getElementById('stuId').value = '';
+  document.getElementById('stuName').value = '';
+  document.getElementById('stuEmail').value = '';
+  document.getElementById('stuPhone').value = '';
+  document.getElementById('stuClass').value = 'Awwal Ibtidaaiyyah';
+  document.getElementById('studentModal').classList.remove('hidden');
+}
+function closeStudentModal(){ document.getElementById('studentModal').classList.add('hidden'); }
+function saveStudent(){
+  const id = document.getElementById('stuId').value || uid('stu');
+  const name = document.getElementById('stuName').value.trim();
+  const email = document.getElementById('stuEmail').value.trim();
+  const phone = document.getElementById('stuPhone').value.trim();
+  const cls = document.getElementById('stuClass').value;
+  const teacherId = document.getElementById('stuTeacherAssign').value || null;
+  if(!name) return alert('Name required');
+  const students = getStudents();
+  const idx = students.findIndex(s=>s.id===id);
+  const obj = { id, name, email, phone, class: cls, teacherId };
+  if(idx === -1) students.push(obj); else students[idx] = obj;
+  saveStudents(students);
+  closeStudentModal();
+}
+function editStudent(id){
+  const students = getStudents();
+  const s = students.find(x=>x.id===id);
+  if(!s) return;
+  document.getElementById('stuId').value = s.id;
+  document.getElementById('stuName').value = s.name;
+  document.getElementById('stuEmail').value = s.email;
+  document.getElementById('stuPhone').value = s.phone;
+  document.getElementById('stuClass').value = s.class;
+  document.getElementById('stuTeacherAssign').value = s.teacherId || '';
+  document.getElementById('studentModal').classList.remove('hidden');
+}
+function deleteStudent(id){
+  if(!confirm('Delete student?')) return;
+  const students = getStudents().filter(s=>s.id!==id);
+  saveStudents(students);
+}
+
+// Teacher CRUD actions
+function openTeacherModal(){
+  document.getElementById('tchId').value = '';
+  document.getElementById('tchName').value = '';
+  document.getElementById('tchEmail').value = '';
+  document.getElementById('tchPhone').value = '';
+  document.getElementById('tchSubjects').value = '';
+  document.getElementById('teacherModal').classList.remove('hidden');
+}
+function closeTeacherModal(){ document.getElementById('teacherModal').classList.add('hidden'); }
+function saveTeacher(){
+  const id = document.getElementById('tchId').value || uid('tch');
+  const name = document.getElementById('tchName').value.trim();
+  const email = document.getElementById('tchEmail').value.trim();
+  const phone = document.getElementById('tchPhone').value.trim();
+  const subjects = document.getElementById('tchSubjects').value.trim();
+  if(!name) return alert('Name required');
+  const teachers = getTeachers();
+  const idx = teachers.findIndex(t=>t.id===id);
+  const obj = { id, name, email, phone, subjects };
+  if(idx === -1) teachers.push(obj); else teachers[idx] = obj;
+  saveTeachers(teachers);
+  closeTeacherModal();
+}
+function editTeacher(id){
+  const teachers = getTeachers();
+  const t = teachers.find(x=>x.id===id);
+  if(!t) return;
+  document.getElementById('tchId').value = t.id;
+  document.getElementById('tchName').value = t.name;
+  document.getElementById('tchEmail').value = t.email;
+  document.getElementById('tchPhone').value = t.phone;
+  document.getElementById('tchSubjects').value = t.subjects;
+  document.getElementById('teacherModal').classList.remove('hidden');
+}
+function deleteTeacher(id){
+  if(!confirm('Delete teacher?')) return;
+  const teachers = getTeachers().filter(t=>t.id!==id);
+  saveTeachers(teachers);
+}
+
+// Helpers
+function escapeHtml(s){ return (s||'').toString().replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+function gradeFromTotal(total){
+  if(total>=90) return 'A'; if(total>=80) return 'B'; if(total>=70) return 'C'; if(total>=60) return 'D'; if(total>=50) return 'E'; return 'F';
+}
+
+// Reports
+function populateReportStudentSelect(){
+  const sel = document.getElementById('reportStudentSelect');
+  if(!sel) return;
+  sel.innerHTML = '<option value="">Select Student</option>';
+  getStudents().forEach(s => sel.innerHTML += `<option value="${s.id}">${s.name} — ${s.class}</option>`);
+}
+function exportStudentReport(){
+  const id = document.getElementById('reportStudentSelect').value;
+  if(!id) return alert('Pick a student');
+  const stu = getStudents().find(s=>s.id===id);
+  const subs = getSubmissions().filter(x=>x.studentId===id);
+  // build report HTML
+  const el = document.createElement('div');
+  el.style.padding='20px'; el.style.fontFamily='Arial,Helvetica,sans-serif';
+  el.innerHTML = `<h2 style="color:#094570">Himaayah Madrasah — Report Card</h2>
+    <p><strong>${stu.name}</strong> — ${stu.class}</p>
+    <p>Contact: ${stu.email || '-'} | ${stu.phone || '-'}</p>
+    <hr/>`;
+  if(subs.length===0) el.innerHTML += '<p>No submissions</p>';
+  subs.forEach(s=>{
+    const total = (s.CA1||0)+(s.CA2||0)+(s.Exam||0);
+    const grade = gradeFromTotal(total);
+    el.innerHTML += `<h4>${s.subject} — ${s.class}</h4>
+      <p>Submitted: ${s.submittedAt}</p>
+      <p>CA1: ${s.CA1 || '-'} CA2: ${s.CA2 || '-'} Exam: ${s.Exam || '-'} ⇒ Total: ${total} (Grade: ${grade})</p>
+      <hr/>`;
+  });
+  html2pdf().from(el).set({ filename: `${stu.name.replaceAll(' ','_')}_report.pdf` }).save();
+}
+
+// Chart (bar chart for scores per subject)
+let chartInstance = null;
+function renderChart(){
+  const ctx = document.getElementById('scoresChart').getContext('2d');
+  const subs = getSubmissions().filter(s => s.graded && s.CA1!=null && s.CA2!=null && s.Exam!=null);
+  const bySubject = {};
+  subs.forEach(s=>{
+    const total = Number(s.CA1)+Number(s.CA2)+Number(s.Exam);
+    if(!bySubject[s.subject]) bySubject[s.subject] = [];
+    bySubject[s.subject].push(total);
+  });
+  const labels = Object.keys(bySubject);
+  const data = labels.map(l => Math.round(bySubject[l].reduce((a,b)=>a+b,0)/ Math.max(1,bySubject[l].length)));
+  if(chartInstance) chartInstance.destroy();
+  chartInstance = new Chart(ctx, {
+    type:'bar',
+    data:{ labels, datasets:[{ label:'Average Total (out of 100)', data, backgroundColor:'#1e3a8a' }]},
+    options:{ responsive:true, plugins:{ legend:{display:false} }, scales:{ y:{ beginAtZero:true, max:100 }} }
+  });
+}
+
+// selected submission global
+window.currentSelectedSubmission = null;
+
+// export All Results (as PDF of table)
+document.getElementById('exportAllPdf').addEventListener('click', exportDashboardPDF);
+
+// Tab management
+function showTab(tab){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.add('hidden'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('text-[#094570]','border-b','border-[#094570]'));
+  document.getElementById('tab-' + tab).classList.remove('hidden');
+  document.querySelector(`.tab-btn[data-tab="${tab}"]`).classList.add('text-[#094570]','border-b','border-[#094570]');
+}
+showTab('exams');
+
+// initial data
+renderAll();
+
+</script>
+</body>
+</html>

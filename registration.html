@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Himaayah Madrasah | Home</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    /* Floating animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .float {
+      animation: float 4s ease-in-out infinite;
+    }
+    /* Fade-in effect */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 1s ease-out;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+
+<body class="bg-white text-[#094570]">
+
+  <!-- Navbar -->
+  <header class="bg-[#094570] text-white shadow-md fixed w-full z-50">
+    <div class="container mx-auto flex justify-between items-center py-4 px-6">
+      <!-- Logo -->
+      <div class="flex items-center space-x-3">
+        <img src="logo.png" alt="Himaayah Logo" class="h-12 w-auto">
+        <span class="text-xl font-bold tracking-wide">Himaayah Madrasah</span>
+      </div>
+      <!-- Links -->
+      <nav class="hidden md:flex space-x-6 font-medium">
+        <a href="home.html" class="hover:text-[#85CCFF]">Home</a>
+        <a href="madrasahabout.html" class="hover:text-[#85CCFF]">About</a>
+        <a href="curriculum.html" class="hover:text-[#85CCFF]">Curriculum</a>
+        <a href="registeration.html" class="hover:text-[#85CCFF]">Register</a>
+        <a href="blog.html" class="hover:text-[#85CCFF]">Blog</a>
+        <a href="#contact" class="hover:text-[#85CCFF]">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="bg-[#094570] text-white pt-32 pb-20 text-center relative overflow-hidden">
+    <!-- Floating shapes -->
+    <div class="absolute top-10 left-10 w-12 h-12 bg-[#85CCFF] rounded-full opacity-20 float"></div>
+    <div class="absolute bottom-10 right-10 w-16 h-16 bg-white rounded-full opacity-10 float"></div>
+    <div class="max-w-4xl mx-auto px-6 fade-in">
+      <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-4">Welcome to 
+        <span class="text-[#85CCFF]">Himaayah Institute</span></h1>
+      <p class="text-lg text-gray-200 mb-8">A place where knowledge refines the soul, Arabic becomes your language of light, and faith guides your every step.</p>
+      <div class="space-x-4">
+        <a href="registeration.html" class="bg-[#85CCFF] text-[#094570] font-semibold px-6 py-3 rounded-full hover:bg-white transition">Join the Madrasah</a>
+        <a href="curriculum.html" class="border border-[#85CCFF] text-[#85CCFF] px-6 py-3 rounded-full hover:bg-[#85CCFF] hover:text-[#094570] transition">View Curriculum</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Preview -->
+  <section class="py-16 bg-gray-50 fade-in">
+    <div class="container mx-auto px-6 text-center max-w-4xl">
+      <h2 class="text-3xl font-bold mb-4 text-[#094570]">About Himaayah</h2>
+      <p class="text-gray-700 leading-relaxed mb-8">
+        Himaayah Institute of Arabic & Islamic Studies is dedicated to nurturing students of knowledge through a balanced, authentic, and accessible Islamic curriculum.  
+        We provide structured online programs in Qur’an, Fiqh, Arabic, Seerah, and Islamic Sciences — all grounded in the Qur’an and Sunnah.
+      </p>
+      <a href="madrasahabout.html" class="bg-[#094570] text-white px-6 py-3 rounded-full hover:bg-[#85CCFF] hover:text-[#094570] transition">Learn More</a>
+    </div>
+  </section>
+
+  <!-- Programs Section -->
+  <section class="py-20 bg-white fade-in">
+    <div class="container mx-auto px-6 text-center">
+      <h2 class="text-3xl font-bold text-[#094570] mb-12">Our Core Programs</h2>
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="bg-gray-50 rounded-2xl shadow-md p-8 hover:shadow-lg transition">
+          <h3 class="text-2xl font-semibold mb-3 text-[#094570]">Madrasah Program</h3>
+          <p class="text-gray-600 mb-4">Structured online Arabic & Islamic studies — from foundational to advanced levels. Courses include Qur’an, Fiqh, Arabic, Seerah, and more.</p>
+          <a href="registeration.html" class="text-[#094570] font-medium hover:text-[#85CCFF]">Join Now →</a>
+        </div>
+        <div class="bg-gray-50 rounded-2xl shadow-md p-8 hover:shadow-lg transition">
+          <h3 class="text-2xl font-semibold mb-3 text-[#094570]">Digital Library</h3>
+          <p class="text-gray-600 mb-4">Access lecture notes, e-books, Tajweed audios, and other resources to strengthen your learning experience.</p>
+          <a href="library.html" class="text-[#094570] font-medium hover:text-[#85CCFF]">Explore →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog Section -->
+  <section class="bg-[#F9FAFB] py-16 fade-in">
+    <div class="container mx-auto px-6 text-center">
+      <h2 class="text-3xl font-bold mb-8 text-[#094570]">From Our Blog</h2>
+      <p class="text-gray-600 mb-10">Read insightful reflections and articles from our teachers and students — exploring Qur’an, language, and life lessons.</p>
+      <a href="blog.html" class="bg-[#094570] text-white px-8 py-3 rounded-full hover:bg-[#85CCFF] hover:text-[#094570] transition">Visit Blog</a>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="py-16 bg-white fade-in">
+    <div class="container mx-auto px-6 text-center">
+      <h2 class="text-3xl font-bold mb-8 text-[#094570]">What Our Students Say</h2>
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="bg-gray-50 rounded-xl shadow-md p-8">
+          <p class="italic text-gray-600 mb-4">"Studying at Himaayah transformed my connection with Arabic and my understanding of Deen. The classes are deep and spiritual."</p>
+          <h4 class="font-semibold text-[#094570]">— Fatimah, Lagos</h4>
+        </div>
+        <div class="bg-gray-50 rounded-xl shadow-md p-8">
+          <p class="italic text-gray-600 mb-4">"I love how organized and authentic the lessons are. The teachers are humble, knowledgeable, and truly care for students’ growth."</p>
+          <h4 class="font-semibold text-[#094570]">— Ahmad, Abuja</h4>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <footer id="contact" class="bg-[#094570] text-white py-12 fade-in">
+    <div class="container mx-auto px-6 grid md:grid-cols-3 gap-8">
+      <div>
+        <h3 class="text-xl font-semibold mb-4">Himaayah Institute</h3>
+        <p class="text-gray-300">A global digital madrasah dedicated to spreading authentic Islamic knowledge and nurturing balanced scholars of tomorrow.</p>
+      </div>
+      <div>
+        <h3 class="text-xl font-semibold mb-4">Quick Links</h3>
+        <ul class="space-y-2 text-gray-300">
+          <li><a href="madrasahabout.html" class="hover:text-[#85CCFF]">About</a></li>
+          <li><a href="curriculum.html" class="hover:text-[#85CCFF]">Curriculum</a></li>
+          <li><a href="registeration.html" class="hover:text-[#85CCFF]">Register</a></li>
+          <li><a href="blog.html" class="hover:text-[#85CCFF]">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-xl font-semibold mb-4">Contact</h3>
+        <p class="text-gray-300">Call / SMS: +234 813 611 5948</p>
+        <p class="text-gray-300">WhatsApp Channel: <a href="https://www.whatsapp.com/channel/0029Vb5yFdJ2f3ENd4V1r42n" class="text-[#85CCFF] hover:underline">Join here</a></p>
+        <p class="text-gray-300">Telegram: <a href="https://t.me/mahadulhimaayah" class="text-[#85CCFF] hover:underline">Join here</a></p>
+      </div>
+    </div>
+    <div class="text-center text-gray-400 mt-10 border-t border-gray-700 pt-6">
+      © 2025 Himaayah Institute of Arabic & Islamic Studies. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    // Fade-in animation when scrolling
+    const fadeEls = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.2 });
+    fadeEls.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>

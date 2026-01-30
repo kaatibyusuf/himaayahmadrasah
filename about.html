@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Himaayah Institute of Arabic & Islamic Studies</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 1s ease forwards;
+    }
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-800 font-serif">
+
+  <!-- Header -->
+  <header class="bg-[#094570] text-white shadow-md">
+    <div class="container mx-auto flex justify-between items-center py-4 px-6">
+      <div class="flex items-center space-x-3">
+        <img src="logo.png" alt="Himaayah Logo" class="h-12 w-auto">
+        <span class="text-xl font-bold">Himaayah Madrasah</span>
+      </div>
+      <nav class="hidden md:flex space-x-6 font-medium">
+        <a href="home.html" class="hover:text-[#85CCFF]">Home</a>
+        <a href="madrasahabout.html" class="hover:text-[#85CCFF]">About</a>
+        <a href="registeration.html" class="hover:text-[#85CCFF]">Registration</a>
+        <a href="curriculum.html" class="hover:text-[#85CCFF]">Curriculum</a>
+        <a href="#contact" class="hover:text-[#85CCFF]">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="bg-[#094570] text-white py-20 px-6 text-center">
+    <div class="max-w-4xl mx-auto fade-in">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">Himaayah Institute of Arabic & Islamic Studies</h1>
+      <p class="text-lg leading-relaxed opacity-90">
+        Established to revive authentic, balanced Islamic learning — combining faith, intellect, and excellence, we nurture students rooted in the Qur’an, Sunnah, and the Arabic language.
+      </p>
+
+      <a href="https://drive.google.com/uc?export=download&id=1xAFj6rffNpNnxnbW1UARdpdRJQrix2j3"
+         class="mt-8 inline-block bg-white text-[#094570] font-semibold py-3 px-6 rounded-lg shadow hover:bg-gray-100 transition">
+        Download Prospectus
+      </a>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <section class="py-16 px-6 max-w-5xl mx-auto space-y-12 fade-in">
+
+    <!-- The Himaayah Program -->
+    <div>
+      <h2 class="text-3xl font-bold text-[#094570] mb-4">The HIAIS Program</h2>
+      <p class="leading-relaxed text-gray-700 mb-6">
+        Balanced Islamic knowledge is among the most essential necessities for every Muslim. It is the light by which hearts are guided and societies are elevated. Through authentic knowledge derived from the Qur’an and Sunnah, nations rise from ignorance to glory, from confusion to clarity, and from darkness to light.
+      </p>
+      <p class="leading-relaxed text-gray-700 mb-6">
+        The Qur’an emphasizes the status of people of knowledge:
+      </p>
+      <blockquote class="italic border-l-4 border-[#094570] pl-4 text-gray-700 mb-4">
+        {Allah bears witness that Laa ilaaha illa Huwa (none has the right to be worshipped but He), and the angels, and those having knowledge (also give this witness); (He is always) maintaining His creation in Justice.}  
+        <br><span class="text-sm text-gray-600">– Surat Aal-Imran: 18</span>
+      </blockquote>
+      <p class="text-gray-700 mb-6">
+        Ash-Shawkani (رحمه الله) explained that “those having knowledge” here refers to the scholars of the Qur’an and Sunnah.
+      </p>
+      <blockquote class="italic border-l-4 border-[#094570] pl-4 text-gray-700 mb-4">
+        {And say, ‘My Lord, increase me in knowledge.’}  
+        <br><span class="text-sm text-gray-600">– Surat Ta-Ha: 114</span>
+      </blockquote>
+      <p class="text-gray-700 mb-6">
+        And in the hadith: <em>“Whoever takes a path upon which to obtain knowledge, Allah makes the path to Paradise easy for him.”</em>  
+        <br><span class="text-sm text-gray-600">– Narrated by Muslim</span>
+      </p>
+      <p class="text-gray-700">
+        Al-Hafiz Ibn Hajar (رحمه الله) explained that “knowledge” here refers to knowledge of the Shari‘ah — that which guides one to fulfill what is obligatory upon them in belief, worship, and action.
+      </p>
+    </div>
+
+    <!-- Message from Himaayah -->
+    <div>
+      <h2 class="text-3xl font-bold text-[#094570] mb-4">Message from Us</h2>
+      <p class="text-gray-700 leading-relaxed mb-6">
+        Our aim is to present authentic, balanced Islamic knowledge based on the understanding of the best generations, and to make this knowledge accessible through effective, student-centered teaching.
+      </p>
+      <p class="text-gray-700 leading-relaxed mb-6">
+        We strive to excel in enhancing the learning experience for every student by combining sincerity, technology, and sound methodology. Our materials are crafted in contemporary language while maintaining high linguistic and Shari‘ah precision.
+      </p>
+    </div>
+
+    <!-- Objectives -->
+    <div>
+      <h2 class="text-3xl font-bold text-[#094570] mb-6">Objectives of Himaayah Institute</h2>
+      <ul class="list-disc list-inside space-y-3 text-gray-700 leading-relaxed">
+        <li>To disseminate balanced Islamic knowledge to the widest possible audience.</li>
+        <li>To meet the needs of beginner and advanced students through a structured, progressive curriculum.</li>
+        <li>To teach and clarify the methodology of the best generations and convey it with clarity and evidence.</li>
+        <li>To ensure authentic Islamic knowledge in Aqeedah, Tafseer, Hadith, Fiqh, and Manners is accessible to all.</li>
+        <li>To promote distance learning with professionalism and innovation in both Arabic and Islamic Studies.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-[#094570] text-white py-10 text-center" id="contact">
+    <p class="text-sm opacity-90">© 2025 Himaayah Institute of Arabic & Islamic Studies. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

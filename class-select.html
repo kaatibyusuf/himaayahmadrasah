@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Select Class - Himaayah Institute</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1e40af', // Deep Blue
+            secondary: '#eff6ff', // Light Blue
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="bg-secondary min-h-screen flex flex-col items-center justify-center px-4">
+
+  <!-- Header -->
+  <header class="w-full text-center mb-10">
+    <h1 class="text-3xl font-bold text-primary">Select Your Class</h1>
+    <p class="text-gray-600 mt-2 text-sm">Welcome to Himaayah Student Portal. Choose your class to continue.</p>
+  </header>
+
+  <!-- Class Selection -->
+  <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-2xl border border-gray-100 animate-fadeIn">
+    <form id="classForm" class="space-y-6">
+
+      <div>
+        <label for="studentName" class="block text-sm font-medium text-gray-700 mb-1">Student Name</label>
+        <input type="text" id="studentName" name="studentName" placeholder="Enter your full name"
+          class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary focus:border-primary" required>
+      </div>
+
+      <div>
+        <label for="classSelect" class="block text-sm font-medium text-gray-700 mb-1">Select Class</label>
+        <select id="classSelect" name="class" required
+          class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary focus:border-primary">
+          <option value="">-- Choose your class --</option>
+          <option value="awwal">Awwal Ibtidaaiyyah</option>
+          <option value="thaaniy">Thaaniy Ibtidaaiyyah</option>
+          <option value="thaalith">Thaalith Ibtidaaiyyah</option>
+          <option value="awwal-idaadi">Awwal Idaadiyyah</option>
+        </select>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-between mt-6">
+        <button type="button" onclick="goToExam()"
+          class="w-full sm:w-1/2 bg-primary text-white py-2 rounded-lg hover:bg-blue-900 transition font-medium">
+          Take Exam
+        </button>
+        <button type="button" onclick="goToResults()"
+          class="w-full sm:w-1/2 border border-primary text-primary py-2 rounded-lg hover:bg-primary hover:text-white transition font-medium">
+          View Results
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <footer class="mt-12 text-sm text-gray-600 text-center">
+    © 2025 Himaayah Institute of Arabic & Islamic Studies. All rights reserved.
+  </footer>
+
+  <!-- Animation -->
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeIn {
+      animation: fadeIn 0.8s ease-out;
+    }
+  </style>
+
+  <!-- JavaScript -->
+  <script>
+    function goToExam() {
+      const classSelected = document.getElementById("classSelect").value;
+      if (!classSelected) {
+        alert("Please select your class first.");
+        return;
+      }
+      window.location.href = "exam-portal.html?class=" + classSelected;
+    }
+
+    function goToResults() {
+      const classSelected = document.getElementById("classSelect").value;
+      if (!classSelected) {
+        alert("Please select your class first.");
+        return;
+      }
+      window.location.href = "result-portal.html?class=" + classSelected;
+    }
+  </script>
+
+</body>
+</html>

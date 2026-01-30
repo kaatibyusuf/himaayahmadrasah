@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Himaayah Student Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f9fafb;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-[#094570] text-white py-4 shadow-md">
+    <div class="max-w-6xl mx-auto flex justify-between items-center px-4">
+      <h1 class="text-xl font-bold">Himaayah Institute Dashboard</h1>
+      <button id="openPayment" class="bg-[#85CCFF] text-[#094570] px-4 py-2 rounded-lg font-medium hover:bg-white transition">
+        💳 Make Payment
+      </button>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="flex-1 max-w-6xl mx-auto p-6">
+    <h2 class="text-2xl font-bold text-[#094570] mb-4">
+      Welcome, <span id="studentName"></span>!
+    </h2>
+    
+    <!-- Student Info -->
+    <div class="bg-white shadow rounded-xl p-5 mb-6">
+      <h3 class="text-lg font-semibold mb-2 text-[#094570]">Student Information</h3>
+      <p><strong>ID:</strong> <span id="studentID"></span></p>
+      <p><strong>Email:</strong> <span id="studentEmail"></span></p>
+    </div>
+
+    <!-- Payment Record -->
+    <div class="bg-white shadow rounded-xl p-5 mb-6">
+      <h3 class="text-lg font-semibold mb-2 text-[#094570]">Latest Payment Record</h3>
+      <div id="paymentInfo" class="text-gray-700">
+        <p>No recent payment found.</p>
+      </div>
+    </div>
+
+    <!-- Exam Section -->
+    <div class="bg-white shadow rounded-xl p-5 mb-6">
+      <h3 class="text-lg font-semibold mb-2 text-[#094570]">Exam Portal</h3>
+      <p class="mb-4">You must complete your payment to unlock exams.</p>
+      <button id="examButton" disabled class="bg-gray-400 cursor-not-allowed text-white px-6 py-2 rounded-lg transition">
+        🔒 Access Locked (Pending Payment)
+      </button>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-[#094570] text-white py-4 mt-auto text-center text-sm">
+    © 2025 Himaayah Institute of Arabic & Islamic Studies
+  </footer>
+
+  <!-- Payment Modal -->
+  <div id="paymentModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-2xl shadow-lg w-full max-w-lg p-6 relative">
+      <button id="closePayment" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800">✖</button>
+      <h2 class="text-xl font-bold text-[#094570] mb-4">Make a Payment</h2>
+
+      <div id="paymentStep1" class="payment-step">
+        <label class="block mb-2 font-semibold">Purpose of Payment</label>
+        <select id="paymentPurpose" class="w-full border rounded-lg px-3 py-2 mb-4">
+          <option value="">-- Select Purpose --</option>
+          <option>Admission / Registration Fee</option>
+          <option>Term Fees</option>
+          <option>Exam Fees</option>
+        </select>
+        <button id="toStep2" class="bg-[#094570] text-white px-5 py-2 rounded-lg hover:bg-[#072E4A]">Next</button>
+      </div>
+
+      <div id="paymentStep2" class="payment-step hidden">
+        <label class="block mb-2 font-semibold">Payment Method</label>
+        <select id="paymentMethod" class="w-full border rounded-lg px-3 py-2 mb-4">
+          <option value="">-- Select Method --</option>
+          <option>Paystack</option>
+          <option>Flutterwave</option>
+          <option>Bank Transfer</option>
+          <option>USSD</option>
+        </select>
+        <button id="toStep3" class="bg-[#094570] text-white px-5 py-2 rounded-lg hover:bg-[#072E4A]">Next</button>
+      </div>
+
+      <div id="paymentStep3" class="payment-step hidden text-center">
+        <h3 class="font-semibold text-[#094570] mb-2">Confirm Your Payment</h3>
+        <p id="confirmText" class="mb-4"></p>
+        <button id="confirmPayment" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700">Confirm & Pay</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Simulated logged-in student
+    const student = {
+      name: "Ahmad Musa",
+      id: "HIM2025-001",
+      email: "ahmad.musa@example.com"
+    };
+
+    document.getElementById("studentName").textContent = student.name;
+    document.getElementById("studentID").textContent = student.id;
+    document.getElementById("studentEmail").textContent = student.email;
+
+    const paymentKey = "himaayah_payment_" + student.id;
+    const examButton = document.getElementById("examButton");
+    const paymentInfoDiv = document.getElementById("paymentInfo");
+
+    function loadPayment() {
+      const paymentData = JSON.parse(localStorage.getItem(paymentKey));
+      if (paymentData) {
+        paymentInfoDiv.innerHTML = `
+          <div class="border-l-4 border-green-600 pl-3">
+            <p><strong>Purpose:</strong> ${paymentData.purpose}</p>
+            <p><strong>Method:</strong> ${paymentData.method}</p>
+            <p><strong>Date:</strong> ${paymentData.date}</p>
+            <p><strong>Status:</strong> <span class="text-green-600 font-semibold">PAID ✅</span></p>
+          </div>
+        `;
+        examButton.disabled = false;
+        examButton.textContent = "📝 Enter Exam Portal";
+        examButton.classList.remove("bg-gray-400", "cursor-not-allowed");
+        examButton.classList.add("bg-[#094570]", "hover:bg-[#072E4A]");
+        examButton.onclick = () => window.location.href = "exam-portal.html";
+      }
+    }
+
+    loadPayment();
+
+    // Modal logic
+    const modal = document.getElementById("paymentModal");
+    document.getElementById("openPayment").onclick = () => modal.classList.remove("hidden");
+    document.getElementById("closePayment").onclick = () => modal.classList.add("hidden");
+
+    // Step navigation
+    document.getElementById("toStep2").onclick = () => {
+      document.getElementById("paymentStep1").classList.add("hidden");
+      document.getElementById("paymentStep2").classList.remove("hidden");
+    };
+    document.getElementById("toStep3").onclick = () => {
+      const purpose = document.getElementById("paymentPurpose").value;
+      const method = document.getElementById("paymentMethod").value;
+      if (!purpose || !method) return alert("Please select all fields.");
+      document.getElementById("paymentStep2").classList.add("hidden");
+      document.getElementById("paymentStep3").classList.remove("hidden");
+      document.getElementById("confirmText").innerText = `Purpose: ${purpose}\nMethod: ${method}\nAmount: ₦20,000\nClick confirm to proceed.`;
+    };
+
+    document.getElementById("confirmPayment").onclick = () => {
+      const purpose = document.getElementById("paymentPurpose").value;
+      const method = document.getElementById("paymentMethod").value;
+      const paymentData = {
+        purpose,
+        method,
+        date: new Date().toLocaleString(),
+        status: "paid"
+      };
+      localStorage.setItem(paymentKey, JSON.stringify(paymentData));
+      alert("Payment Successful ✅");
+      modal.classList.add("hidden");
+      loadPayment();
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Himaayah Exam Portal — Student</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root { --h-blue:#094570; --h-yellow:#FFD60A; }
+  body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:#f8fafc; color:#0f172a; }
+  .fade-in { animation: fadeIn .45s ease both; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px) } to { opacity:1; transform: translateY(0) } }
+  .card { background: #fff; border-radius: 12px; box-shadow: 0 6px 18px rgba(15,23,42,0.06); }
+  .subject-tile { transition: transform .18s ease, box-shadow .18s ease; }
+  .subject-tile:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(9,69,112,.08); }
+  .btn-primary { background: var(--h-blue); color: white; }
+  .btn-outline { border:1px solid var(--h-blue); color:var(--h-blue); background:white; }
+  textarea { min-height: 160px; }
+  .timer { font-weight:700; font-size:1.05rem; color:#dc2626; }
+  .small-muted { color:#64748b; font-size:0.95rem; }
+  .arabic { font-family: "Scheherazade New", "Amiri", serif; direction: rtl; text-align: right; }
+</style>
+</head>
+<body class="antialiased">
+
+<!-- Container -->
+<div class="max-w-6xl mx-auto px-6 py-10">
+
+  <!-- Header -->
+  <header class="flex items-center justify-between mb-8">
+    <div class="flex items-center gap-4">
+      <img src="logo.png" alt="Himaayah logo" class="h-12 w-auto"/>
+      <div>
+        <h1 class="text-2xl font-bold" style="color:var(--h-blue)">Himaayah Exam Portal</h1>
+        <p class="small-muted">Secure student exam interface — blue & white theme</p>
+      </div>
+    </div>
+    <div class="text-right small-muted">
+      <div>Support: <a href="mailto:himaayahmadrasah@gmail.com" class="underline">himaayahmadrasah@gmail.com</a></div>
+      <div>Call: +234 813 611 5948</div>
+    </div>
+  </header>
+
+  <!-- App panel -->
+  <main id="app" class="space-y-8">
+
+    <!-- STEP A: Class selection -->
+    <section id="step-class" class="card p-6 fade-in">
+      <h2 class="text-xl font-semibold mb-2" style="color:var(--h-blue)">1. Select Your Class</h2>
+      <p class="small-muted mb-4">Choose the class you belong to — this determines available subjects and question sets.</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <button class="subject-tile card p-4 text-left" data-class="awwal" onclick="selectClass('awwal')">
+          <div class="text-lg font-semibold">Awwal Ibtidaaiyyah</div>
+          <div class="small-muted mt-1">أول ابتدائي</div>
+        </button>
+
+        <button class="subject-tile card p-4 text-left" data-class="thaaniy" onclick="selectClass('thaaniy')">
+          <div class="text-lg font-semibold">Thaaniy Ibtidaaiyyah</div>
+          <div class="small-muted mt-1">ثاني ابتدائي</div>
+        </button>
+
+        <button class="subject-tile card p-4 text-left" data-class="thaalith" onclick="selectClass('thaalith')">
+          <div class="text-lg font-semibold">Thaalith Ibtidaaiyyah</div>
+          <div class="small-muted mt-1">ثالث ابتدائي</div>
+        </button>
+
+        <button class="subject-tile card p-4 text-left" data-class="idaadi" onclick="selectClass('idaadi')">
+          <div class="text-lg font-semibold">Awwal Idaadiyyah</div>
+          <div class="small-muted mt-1">أول إعدادي</div>
+        </button>
+      </div>
+    </section>
+
+    <!-- STEP B: Subject selection -->
+    <section id="step-subject" class="card p-6 fade-in hidden">
+      <div class="flex items-start justify-between">
+        <div>
+          <h2 class="text-xl font-semibold" id="subjects-title" style="color:var(--h-blue)"></h2>
+          <p id="subjects-sub" class="small-muted mt-1">Click a subject to begin — each subject contains 20 theory questions (1 hour).</p>
+        </div>
+        <div class="text-right">
+          <div class="small-muted">Selected class:</div>
+          <div id="selected-class" class="font-semibold"></div>
+        </div>
+      </div>
+
+      <hr class="my-4">
+
+      <div id="subjects-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
+      <div class="mt-6 flex items-center gap-3">
+        <button class="btn-outline px-4 py-2 rounded" onclick="backToClass()">← Change class</button>
+        <div class="small-muted ml-auto">Tip: Answers autosave locally every few seconds.</div>
+      </div>
+    </section>
+
+    <!-- STEP C: Basmala & exam intro -->
+    <section id="step-intro" class="card p-6 fade-in hidden">
+      <div class="text-center">
+        <p class="arabic text-2xl mb-4">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</p>
+        <h2 class="text-xl font-semibold" style="color:var(--h-blue)">Welcome to the Exam</h2>
+        <p class="small-muted mt-2 mb-4" id="intro-subject-line"></p>
+        <p class="text-gray-700 mb-6 max-w-2xl mx-auto">You will have <strong>1 hour</strong> to complete <strong>20 theory questions</strong>.
+          Your answers are saved locally. When you submit, your responses are marked as completed and you'll be advanced to the next subject automatically.</p>
+        <div class="flex justify-center gap-3">
+          <button class="btn-outline px-5 py-2 rounded" onclick="cancelIntro()">Cancel</button>
+          <button class="btn-primary px-5 py-2 rounded" onclick="startExam()">Start Exam</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP D: Exam UI -->
+    <section id="step-exam" class="card p-6 fade-in hidden">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h2 id="exam-subject-title" class="text-xl font-semibold" style="color:var(--h-blue)"></h2>
+          <div id="exam-subject-ar" class="arabic small-muted"></div>
+        </div>
+        <div class="text-right">
+          <div class="small-muted">Time Remaining</div>
+          <div id="countdown" class="timer">60:00</div>
+        </div>
+      </div>
+
+      <div id="questions-list" class="space-y-6"></div>
+
+      <div class="mt-6 flex gap-3">
+        <button class="btn-outline px-4 py-2 rounded" onclick="saveAnswersNow()">Save draft</button>
+        <button class="btn-outline px-4 py-2 rounded" onclick="abandonExam()">Abandon</button>
+        <button id="submit-btn" class="btn-primary px-6 py-2 rounded ml-auto" onclick="submitCurrentExam()">Submit and Continue</button>
+      </div>
+    </section>
+
+    <!-- STEP E: Completed notice -->
+    <section id="step-done" class="card p-6 fade-in hidden text-center">
+      <h2 class="text-xl font-semibold" style="color:var(--h-blue)">All Done</h2>
+      <p class="small-muted mt-2">You have completed the selected sequence of subjects (or there are no more queued subjects).</p>
+      <div class="mt-4">
+        <button class="btn-primary px-5 py-2 rounded" onclick="goToHome()">Back to Dashboard</button>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- JS: questions, flow, storage -->
+<script>
+/*
+  Himaayah Exam Portal (front-end only)
+  - Questions per class & subject (20 each)
+  - Timer 60 mins per subject
+  - localStorage autosave of answers
+  - Auto-advance to next subject
+*/
+
+// --- Configuration: classes & subject lists (English + Arabic) ---
+// Each subject has an array of 20 authentic theory questions (English with Arabic where relevant).
+// For brevity the text is realistic and educational.
+
+const SUBJECTS = {
+  awwal: [
+    { key: 'tawheed', title: "Tawheed", ar: "التوحيد", questions: [
+      "Explain the concept of Tawheed in your own words and outline its three classical categories (Tawheed al-Ruboobiyyah, Tawheed al-Uloohiyyah, Tawheed al-Asma wa’l-Sifaat).",
+      "Discuss the implications of Tawheed al-Uloohiyyah on the acts of worship (ibadah). Provide examples.",
+      "Define Shirk and explain the difference between major and minor shirk. Use examples from contemporary practice.",
+      "Explain how the Qur'an emphasizes Tawheed — cite and explain one ayah that centralizes the concept (mention Surah and verse).",
+      "Describe how a student's daily habits should reflect true Tawheed in speech and action.",
+      "Analyze the scholarly approach to safeguarding the Names and Attributes of Allah (Tawheed al-Asma wa’l-Sifaat).",
+      "How does Tawheed relate to the concept of accountability (hisab) on the Day of Judgement?",
+      "Discuss the role of scholars in teaching Tawheed, quoting one classical statement supporting seeking knowledge (include reference to hadith if possible).",
+      "Compare and contrast the methods used by early generations (Salaf) to teach Tawheed.",
+      "Explain why sincerity (ikhlas) is essential when performing acts of worship under Tawheed.",
+      "Outline the steps a teacher should take when correcting a student who displays a practice that resembles shirk.",
+      "Discuss the role of dawah (invitation) in clarifying Tawheed to communities unfamiliar with its nuances.",
+      "Explain the connection between Tawheed and moral reform — how belief shapes character.",
+      "Describe one major historical challenge faced by early Muslims regarding Tawheed and how it was resolved.",
+      "Explain the theological importance of 'La ilaha illa Allah' and how it differentiates Islam from other beliefs.",
+      "Discuss the statement: 'Tawheed is not only belief, it is practice.' Provide evidence from Quran or Sunnah.",
+      "Explain how the concept of Tawheed addresses questions of destiny and divine decree (qadr).",
+      "List five Quranic verses that emphasize Allah’s Oneness and briefly explain each.",
+      "How would you counsel a student who is confused by apparent anthropomorphic descriptions in the Quran regarding Allah’s attributes?",
+      "Summarize the entire subject of Tawheed as you would teach it in a concise classroom lesson (outline with topics and references)."
+    ]},
+    { key: 'fiqh', title: "Fiqh", ar: "الفقه", questions: [
+      "Explain the conditions that validate the prayer (as-salah), citing evidence where appropriate.",
+      "Discuss the rulings on purification (wudu and ghusl), and explain when each is required.",
+      "Examine the legal classification of actions (wajib, sunnah, mubah, makruh, haram) with examples.",
+      "Explain the principles of intention (niyyah) in worship and its legal ramifications in Fiqh.",
+      "Describe the rulings and wisdom behind fasting in Ramadan, including invalidators and concessions (e.g., travelers, sick people).",
+      "Analyze Zakat: its pillars, nisab, calculation principles and recipients. Provide a worked example for one case.",
+      "Discuss the jurisprudential approaches to new financial contracts that involve interest (riba) and how scholars derive rulings.",
+      "Outline the process and criteria of establishing proof (dala'il) in Fiqh rulings (Quran, Sunnah, Ijma’, Qiyas).",
+      "Describe the legal process of marriage (nikah) including guardian, witnesses, and mahr; note possible differences between schools.",
+      "Explain the concept of 'maslahah' (public interest) and how it may affect juristic decisions.",
+      "Discuss emergency concessions (rukhsah) and their limits using examples from the Hanafi or Shafi'i perspectives.",
+      "Examine the legal rules regarding food and drink (halal/haram), including doubtful matters (shubuhat).",
+      "Explain the rulings on seeking medical treatment and the permissibility of certain procedures.",
+      "Compare the legal approaches to business contracts (sale, partnership) across two madhahib briefly.",
+      "Discuss the importance of local custom ('urf) in determining practical legal rulings.",
+      "Describe rules for testimony and witnesses in financial cases and the role of evidence.",
+      "Explain how modern digital transactions are considered in light of classical contract theory.",
+      "Write a short fatwa-style answer: Someone asks whether online classes fulfill the obligation of attending a prescribed lesson — how would you respond?",
+      "Discuss the ethical limits set by Fiqh in interpersonal conduct (honesty, fulfilment of trusts).",
+      "Draft an outline for a lesson teaching the fiqh of worship to new students (key points and practice tasks)."
+    ]},
+    { key: 'seerah', title: "Seerah", ar: "السيرة", questions: [
+      "Describe the social, political, and spiritual context of Makkah before the birth of the Prophet ﷺ.",
+      "Explain the significance of the Prophet’s ﷺ first revelation and the early reaction of the community, with references.",
+      "Outline the major events of the Makkan period and how believers coped with persecution.",
+      "Describe the reasons and wisdom behind the Hijrah to Madinah and its consequences for the Muslim community.",
+      "Discuss the Constitution of Madinah: its elements and its significance for governance.",
+      "Analyze the causes and lessons of one major battle (e.g., Badr) and its effect on the nascent Muslim polity.",
+      "Discuss the methodology of studying Seerah: primary sources, verification and scholarly tools.",
+      "Explain the role of the Prophet’s ﷺ character (akhlaq) in attracting people to Islam.",
+      "Summarize key treaties and agreements made by the Prophet ﷺ with neighboring tribes.",
+      "Discuss the Prophet’s ﷺ interactions with non-Muslim communities in Madinah and the legal principles derived.",
+      "Describe the narrative of the Treaty of Hudaybiyyah and its long-term strategic value.",
+      "Explain the Prophet’s ﷺ final sermon (Khutbah al-Wada') and its core messages.",
+      "Discuss the role of family and companions in supporting the Prophet’s mission (pick one companion and analyze).",
+      "Explain the method of conveying the Prophet’s ﷺ sayings and actions (reliability of reports, sanad).",
+      "Describe the Prophet’s ﷺ approach to dissent and conflict resolution within the community.",
+      "Discuss three lessons from the Prophet’s ﷺ leadership that can be applied to community organization today.",
+      "Explain the educational aspects of the Prophet’s ﷺ interactions with children and families.",
+      "Analyze the Prophet’s ﷺ treatment of prisoners of war and the jurisprudential implications.",
+      "Describe the stages of conquest and consolidation after the Prophet’s ﷺ return to Makkah (post-Hudaybiyyah).",
+      "Draft a short classroom plan to teach the story of the Hijrah focusing on causes, events and lessons."
+    ]},
+    { key: 'arabiyyah', title: "Arabiyyah (Arabic Language)", ar: "العربية", questions: [
+      "Explain the importance of Arabic grammar (Nahw) for understanding the Qur’anic text.",
+      "Define the concepts of 'ism', 'fi‘l', and 'harf' with examples from Quranic phrases.",
+      "Perform a short i‘raab (parse) on a given Quranic verse (write the steps you would take and why).",
+      "Explain the major verbal forms (المصدر الثلاثي الرباعي) and give examples that change meaning.",
+      "Discuss the role of morphology (sarf) in understanding derived verb forms and nouns.",
+      "Translate and analyze a short classical Arabic paragraph, identifying grammar features.",
+      "Explain how Arabic rhetoric (balaghah) affects exegesis and meaning in tafsir.",
+      "Discuss common pitfalls learners face when moving from reading to composition in Arabic.",
+      "Provide five examples where word order affects nuance in Arabic meaning (with explanations).",
+      "Explain how Arabic root systems (ajwaf, qalqalah) alter meaning across forms.",
+      "Describe methods for teaching Arabic reading to beginners focusing on phonics principles.",
+      "Analyze an Arabic poetic line and explain metaphorical devices used.",
+      "Discuss the relation between classical and modern standard Arabic in educational settings.",
+      "Explain how to form the passive voice in Arabic and give examples.",
+      "Give five examples of derivative nouns (masdar) and explain their morphological pattern.",
+      "Explain rules for case endings (i‘raab) in nominal sentences vs. verbal sentences.",
+      "Discuss the importance of tajweed for proper Arabic recitation even in language lessons.",
+      "Explain how Arabic diacritics (harakat) guide meaning and provide examples of ambiguity without them.",
+      "Create a short syllabus outline for an eight-week Arabic grammar course for beginners.",
+      "Explain the linguistic significance of triliteral roots compared to quadriliteral ones."
+    ]},
+    { key: 'hadeeth', title: "Hadeeth", ar: "الحديث", questions: [
+      "Define the terms 'sanad' and 'matn' and explain why both matter in assessing a hadith's authenticity.",
+      "Explain the difference between sahih, hasan, and da‘if hadith with examples.",
+      "Discuss the role of 'ilm al-rijal' (the study of narrators) and give an example of how it affects grading.",
+      "Describe the principles used by scholars to reconcile hadiths that appear to contradict one another.",
+      "Explain the concept of marfoo‘, mawqoof and maqtu‘ hadith types and their legal relevance.",
+      "Analyze the criteria Imam Bukhari used to classify hadith as sahih in his Sahih collection.",
+      "Discuss the jurisprudential use of hadith: when is a solitary (ahad) hadith a binding proof?",
+      "Provide a brief outline on how to teach the methodology of hadith authentication to new students.",
+      "Explain how weak hadith may be used in virtues of actions (fadail) versus legal rulings (ahkam).",
+      "Discuss a famous case where a chain of narrators required in-depth scrutiny and explain the outcome.",
+      "Explain the role of memorization and cross-checking in the preservation of hadith literature.",
+      "Compare the approach of two major hadith critics and their evaluation criteria.",
+      "Describe how the topical arrangement of hadith collections aids students and researchers.",
+      "Explain the difference between hadith qudsi and prophetic hadith in wording and authority.",
+      "Discuss the concept of corroboration (mutaba‘ah) among multiple chains and its strength.",
+      "Explain the steps a student should take when encountering a hadith with unknown narrators.",
+      "Discuss the role of context (sabab al-wurud) in interpreting the application of a hadith.",
+      "Explain how modern critical editions of hadith texts help contemporary students and researchers.",
+      "Draft a classroom exercise to practice authenticating short hadith segments (outline steps).",
+      "Summarize in your own words why hadith sciences remain essential for applied Islamic knowledge."
+    ]},
+  ],
+  thaaniy: [
+    // Thaaniy similar subjects but slightly different questions (20 each)
+    { key: 'tawheed', title: "Tawheed", ar: "التوحيد", questions: [
+      "Discuss the historical development of Tawheed scholarship in the early generations (Salaf).",
+      "Explain the differences in emphasis between Ash‘ari, Maturidi and Salafi approaches to attributes (brief overview).",
+      "Discuss the concept of divine attributes without likening them to creation (tanzih) — provide examples.",
+      "Explain how the doctrine of Tawheed shapes Muslim civic responsibility.",
+      "Discuss the relationship between science and Tawheed in classical and modern thought.",
+      "Analyze the role of creed (aqeedah) in shaping Muslim identity across diverse cultures.",
+      "Explain the theological implications of asserting 'Allah is with us' vs 'Allah is in the heavens' (appropriate posture).",
+      "Discuss the role of kalam in defending Tawheed historically and its limitations.",
+      "Explain methods used to teach children about Allah’s Names and Attributes effectively.",
+      "Discuss how Tawheed informs the Islamic approach to interfaith dialogue.",
+      "Explain the difference between belief and action in the context of Tawheed.",
+      "Describe strategies for correcting common misunderstandings about Tawheed in public discourse.",
+      "Discuss the interplay between eschatology and Tawheed in motivating ethical behavior.",
+      "Explain how Tawheed connects to the principle of justice in governance.",
+      "Choose a modern text that explains Tawheed for lay audiences and critique its approach.",
+      "Explain the importance of chain of transmission for works of creed (tasawwuf vs aqeedah).",
+      "Discuss the application of Tawheed principles to economic ethics (e.g., avoiding interest).",
+      "Explain how scholars historically balanced textual evidence and rational demonstration in creed.",
+      "Design a 45-minute lecture outline on Tawheed for community learners.",
+      "Summarize the role of repentance (tawbah) in restoring proper Tawheed practice."
+    ]},
+    { key: 'fiqh', title: "Fiqh", ar: "الفقه", questions: [
+      "Compare the methodology of deriving rulings in two madhahib of your choice.",
+      "Discuss the role of analogy (qiyas) and public welfare (istislah) in modern rulings.",
+      "Explain how emergency fiqh can be applied during pandemics — provide practical rulings and evidence.",
+      "Discuss the fiqh of contracts in the digital age; how is sale validated online?",
+      "Explain the juristic rules for fasting when traveling and the permissibility of breaking fast.",
+      "Describe how jurists treat doubtful matters in prayer validity and provide guidance.",
+      "Outline the legal rulings on zakat for small business owners with mixed income sources.",
+      "Explain the jurisprudential basis for conditional contracts and how courts might treat them.",
+      "Discuss the role of ijma‘ (consensus) — how is it established and its authority.",
+      "Explain the ethical limits of punishment in Islamic law and the principles of evidence required.",
+      "Draft a classroom guidance note for students about how to approach new fiqh dilemmas.",
+      "Discuss the process of takhayyur (choosing one ruling among many) and its legitimate use.",
+      "Explain the legal stance on modern banking instruments that simulate interest avoidance.",
+      "Discuss marriage contract clauses and permissible stipulations (examples and limits).",
+      "Explain jurisprudential principles behind inheritance shares and calculation examples.",
+      "Describe the fiqh approach to organ donation and medical ethics in brief.",
+      "Compare legal approaches to environmental stewardship from the fiqh perspective.",
+      "Explain the role of local scholars in contextualizing fiqh rulings for their communities.",
+      "Provide guidance on establishing waqf (endowment) and its legal structure.",
+      "Create a short problem set for students to calculate zakat on mixed asset portfolios."
+    ]},
+    { key: 'seerah', title: "Seerah", ar: "السيرة", questions: [
+      "Discuss the social reforms introduced by the Prophet ﷺ in Madinah and their long-term effects.",
+      "Explain the Prophet’s ﷺ approach to leadership and consultation (shura) with examples.",
+      "Analyze the treaties the Prophet ﷺ made and their legal and social consequences.",
+      "Discuss the migration (Hijrah) in terms of social transformation and institution building.",
+      "Explain the role of tribal allegiances in early Islamic expansion and how they were restructured.",
+      "Discuss the educational model of the Prophet ﷺ and its application to modern madrasah systems.",
+      "Explain the process of compiling the Qur’an and the role of companions after the Prophet ﷺ.",
+      "Analyze one key incident of the Prophet’s ﷺ conflict resolution between tribes.",
+      "Discuss the character of the Prophet ﷺ in the context of mercy and justice balance.",
+      "Explain how the Prophet’s ﷺ seerah informs Islamic governance and lawmaking.",
+      "Describe the evolution of the Muslim community in the first ten years in Madinah.",
+      "Critically analyze a historical source used in Seerah studies and its reliability.",
+      "Explain the role of women in the Prophet’s ﷺ life and early Muslim community.",
+      "Discuss the Prophet’s ﷺ approach to education and mentorship of companions.",
+      "Explain the significance of the Prophet’s ﷺ conduct during treaties and oaths.",
+      "Describe the Prophet’s ﷺ strategies for social cohesion in a pluralistic environment.",
+      "Create a lesson plan focusing on the Treaty of Hudaybiyyah and its outcomes.",
+      "Explain the relationship between prophetic practice (sunnah) and community law.",
+      "Discuss the effect of the Prophet’s ﷺ charitable dispositions on community welfare structures.",
+      "Explain how studying the Seerah can impact contemporary Muslim leadership training."
+    ]},
+    { key: 'arabiyyah', title: "Arabiyyah (Arabic Language)", ar: "العربية", questions: [
+      "Translate and analyze a classical Arabic paragraph: identify constructions and rhetorical devices (write how you approach it).",
+      "Explain the major differences between Fusha (MSA) and dialects when teaching reading skills.",
+      "Provide an analysis of nominal (jumla ismiyya) and verbal sentences in a sample passage.",
+      "Explain common errors non-native speakers make in verb conjugation and how to correct them.",
+      "Discuss the role of morphology (sarf) for deriving noun patterns and verb forms.",
+      "Design a 30-minute classroom exercise for practicing i‘raab with short texts.",
+      "Explain how to teach Arabic reading fluency to intermediate students.",
+      "Analyze an Arabic poetic couplet and explain imagery and metaphor usage.",
+      "Describe strategies for improving listening comprehension using Quranic passages.",
+      "Provide examples where syntax affects emphasis and meaning in Arabic.",
+      "Explain the function of particles (harf) in complex sentences with examples.",
+      "Discuss the teaching progression from reading to composition for high school students.",
+      "Explain methods to memorize core vocabulary effectively for Quranic comprehension.",
+      "Provide five exercises for practicing irregular verb forms in Arabic.",
+      "Describe how to teach morphology (sarf) rules for derived forms to beginners.",
+      "Explain the role of rhetoric (balaghah) in classical Arabic literature appreciation.",
+      "Propose a weekly plan for practicing Tajweed integrated with language lessons.",
+      "Explain how root derivation contributes to semantic fields across Arabic lexicon.",
+      "Analyze a hadith in Arabic and show morphological parsing for key words.",
+      "Design a graded reading passage with comprehension questions for intermediate learners."
+    ]},
+    { key: 'balaagah', title: "Balaagah (Rhetoric)", ar: "البلاغة", questions: [
+      "Define the three branches of Balaghah: Ma‘ani, Bayan, Badi‘, and give examples of each.",
+      "Explain how metaphor (isti‘ara) is used in classical Arabic and analyze a short verse.",
+      "Discuss the rhetorical function of parallelism (tashbih) in the Quranic style.",
+      "Analyze a short passage for eloquence and stylistic devices (choose an ayah or poetic line).",
+      "Explain how balaghah assists exegetes (mufassirun) in extracting layered meanings.",
+      "Discuss the concept of linguistic miracle (i‘jaz) and its relation to rhetorical excellence.",
+      "Provide examples of metonymy and synecdoche in Arabic literature.",
+      "Explain how phonetic devices (assonance, alliteration) contribute to eloquence.",
+      "Design a classroom activity to teach students how to spot rhetorical devices in prose.",
+      "Discuss the differences between literal and figurative speech in Arabic rhetoric.",
+      "Explain how rhetoric informs persuasive speech in a sermon (khutbah).",
+      "Analyze an example where syntax is used for emphasis (inversion, fronting).",
+      "Discuss the role of balaghah in classical Arabic poetry and its educational value.",
+      "Explain the rhetorical impact of brevity vs. elaboration in Arabic expression.",
+      "Provide five examples of rhetorical devices with short explanations.",
+      "Design a short assessment (5 items) for students on identifying devices in text.",
+      "Explain the role of context in interpreting rhetorical meaning.",
+      "Discuss how balaghah complements grammar and morphology in textual analysis.",
+      "Explain how modern Arabic writers adapt classical rhetorical devices.",
+      "Provide a short lesson plan to introduce students to Ma‘ani with examples."
+    ]},
+  ],
+  thaalith: [
+    // Thaalith includes some Sarf and Nahw added:
+    { key: 'tawheed', title: "Tawheed", ar: "التوحيد", questions: [
+      /* 20 nuanced Tawheed questions for Thaalith — similar scope but deeper */
+      "Explain the development of creed (aqeedah) in the classical period and name key figures who contributed to Tawheed sciences.",
+      "Discuss the relation between creed (aqeedah) and jurisprudence (fiqh): how do they influence each other?",
+      "Explain how scholars guarded against anthropomorphism (tashbih) while affirming Allah’s attributes.",
+      "Discuss the role of rational proofs vs textual proofs in early creed debates.",
+      "Explain the meaning and legal/ethical consequences of disbelief (kufr) when applied to speech or action.",
+      "Discuss how Tawheed teaching differs for beginners vs advanced students (methodology).",
+      "Explain key refutations used historically against heterodox sects denying attributes.",
+      "Analyze one classical creed text and summarize its structure and aim.",
+      "Discuss the role of prophetic hadith in clarifying aspects of Tawheed.",
+      "Explain how modern challenges (philosophy, secularism) require renewed public dawah on Tawheed.",
+      "Prepare a short outline to teach Tawheed to young adults in a weekend retreat.",
+      "Discuss the principle of admitting ambiguity in divine attributes (tafwid) and its proponents.",
+      "Explain the importance of purification of rites alongside creed.",
+      "Discuss the ethical implications of belief in Allah’s Oneness for social justice.",
+      "Provide examples where misapplication of Tawheed has led to doctrinal errors.",
+      "Discuss the difference between internal conviction and outward profession of Tawheed.",
+      "Explain how historical disputes were resolved through councils or treaties among scholars.",
+      "Discuss the pedagogical tools to preserve correct Tawheed among students.",
+      "Explain the role of remembrance (dhikr) in reinforcing Tawheed in daily life.",
+      "Draft a curriculum map for Tawheed covering beginner to intermediate levels."
+    ]},
+    { key: 'sarf', title: "Sarf (Morphology)", ar: "الصرف", questions: [
+      "Define morphological root (الجذر) and explain how patterns derive nouns and verbs.",
+      "Explain three common derived forms (Form II, III, IV) and how they alter meaning with examples.",
+      "Analyze how weak letters affect conjugation in derived forms.",
+      "Explain the function of the verbal noun (masdar) and provide examples of its usage.",
+      "Discuss the patterns of quadriliteral verbs and their derivations.",
+      "Provide transformations of a triliteral root through various derived forms and explain semantic shifts.",
+      "Explain the morphological process for forming comparative and superlative adjectives (ism tafdeel).",
+      "Discuss the interplay between sarf and nahw when analyzing verb-subject agreement.",
+      "Provide five exercises to practice forming masdars from verbs.",
+      "Explain irregular verb conjugation patterns and give examples.",
+      "Discuss the morphological rules for passive constructions in Arabic.",
+      "Explain the role of vowel changes (i‘lal) in morphological changes and examples.",
+      "Design a classroom worksheet to identify forms II–X from a list of verbs.",
+      "Explain the usage of morphologically derived nouns in classical poetry.",
+      "Discuss how morphology aids in vocabulary acquisition for Quranic study.",
+      "Provide five examples of how meaning shifts between active and passive patterns across forms.",
+      "Explain common student errors in morphological pattern recognition and how to correct them.",
+      "Provide a short guide to using morphological dictionaries for research.",
+      "Explain the significance of sound verbs vs weak verbs in morphological theory.",
+      "Draft a short lesson plan to teach form III verbs with exercises."
+    ]},
+    { key: 'nahw', title: "Nahw (Syntax)", ar: "النحو", questions: [
+      "Explain the concept of i‘raab and its importance in understanding sentence roles.",
+      "Discuss the difference between جملة اسمية and جملة فعلية with examples.",
+      "Provide a step-by-step analysis of parsing (i‘raab) a short Quranic verse.",
+      "Explain the status of nouns after prepositions (hal, jar) and provide examples.",
+      "Discuss nominal case endings and their pragmatic use in Arabic prose.",
+      "Explain the function of the accusative in verbal sentences and provide examples.",
+      "Provide an analysis of conditional particles and their effect on sentence structure.",
+      "Discuss the syntax of relative clauses and their markers in Arabic.",
+      "Explain the rules for the vocative (نادِ) and its markers.",
+      "Provide exercises to practice parsing active vs passive verbal forms.",
+      "Discuss the role of particles (harf) in sentence emphasis and negation.",
+      "Explain how nominal predicates are formed after 'kana' and its sisters.",
+      "Provide five examples where the case ending changes the meaning of the sentence.",
+      "Explain subordination structures in Arabic with complex examples.",
+      "Discuss how writers use syntax for stylistic emphasis in rhetoric.",
+      "Provide a classroom activity to teach parsing of complex sentences.",
+      "Explain the rules for compound verbs and their syntactic agreement.",
+      "Discuss exceptions in i‘raab caused by certain particles.",
+      "Provide an exercise to convert active voice sentences into passive and parse both.",
+      "Draft a short assessment focusing on syntax for intermediate students."
+    ]},
+    { key: 'fiqh', title: "Fiqh", ar: "الفقه", questions: [
+      // reuse some with deeper twist compared to earlier
+      "Explain the principles of evidence (dalil) in deriving legal rulings and give examples.",
+      "Discuss the fiqh rulings on menstruation (hayd) and post-natal bleeding (nifas) with practical guidance.",
+      "Analyze the jurisprudential approach to modern insurance schemes and takafu (cooperative) models.",
+      "Explain how jurists treat innovations (bid‘ah) and discuss the criteria for identifying them.",
+      "Discuss the legal limits on witness testimony and corroboration in criminal vs civil cases.",
+      "Explain the concept of legal capacity (ahliyyah) and its implications for contracts.",
+      "Discuss prudential considerations in public policy from a fiqh perspective (maslahah mursalah).",
+      "Explain the rulings for qada (missed prayers) and compensations when possible.",
+      "Discuss the interface between international law and Islamic commercial law in cross-border transactions.",
+      "Describe the principles for distributing zakat on property and income from investments.",
+      "Discuss the jurisprudential approach to environmental damage and liability.",
+      "Explain the legal status of combined worship (jam‘) under travel conditions.",
+      "Discuss the role of discretionary punishments (ta‘zir) and their limitations.",
+      "Explain rules around endowments (waqf) and their administration in modern institutions.",
+      "Discuss how evidence and forensics are used in modern Shari‘ah courts (hypothetical).",
+      "Explain fiqh considerations in organ transplantation and life support decisions.",
+      "Draft guidance for students on how to seek juristic opinions responsibly.",
+      "Discuss the role of ijma‘ in modern times and its practical challenges.",
+      "Explain the limits and ethical issues around advertisement and false claims from an Islamic legal view.",
+      "Create a short classroom problem set on zakat calculations for graduates."
+    ]},
+  ],
+  idaadi: [
+    // Advanced class: many subjects — we include 12 subjects; each has 20 questions.
+    { key: 'tawheed', title: "Tawheed", ar: "التوحيد", questions: [
+      // 20 advanced Tawheed questions (examples)
+      "Discuss the main theological disputes in the classical era regarding God's attributes and the positions of major scholars.",
+      "Explain the concepts of tafwid and ta’wil in accepting ambiguous texts about Allah’s attributes, with references.",
+      "Analyze how creed (aqeedah) influenced political developments in early Islamic history.",
+      "Discuss the contributions of Imam Ahmad and Imam al-Ash‘ari to conceptions of divine attributes.",
+      "Explain the methodological difference between Kalam and traditionalist approaches in creed.",
+      "Discuss the place of rational proofs (burhan) in defending Tawheed against modern critiques.",
+      "Explain how philosophical arguments about God were received by Muslim theologians historically.",
+      "Discuss the interplay between Sufi devotional language and orthodox Tawheed formulations.",
+      "Explain how Tawheed forms the basis for Islamic ethics and legal reasoning.",
+      "Design a seminar for advanced students on the evolution of Tawheed literature.",
+      "Explain the concept of 'tanzih' and its role in maintaining divine transcendence.",
+      "Discuss modern apologetic efforts presenting Tawheed to secular audiences.",
+      "Compare the approaches of two medieval theologians on disputable issues in creed.",
+      "Explain how historical polemics were resolved through scholarly debate and consensus.",
+      "Discuss the legal and social consequences of public apostasy from a classical perspective.",
+      "Explain the relationship between divine unity and human responsibility in theology.",
+      "Provide a critical bibliography for students wishing to study advanced Tawheed texts.",
+      "Discuss the role of education in preserving correct creed among Muslim youth.",
+      "Analyze a primary creed text (short passage) and explain its argumentative structure.",
+      "Draft an exam question set for a final Tawheed paper covering terminology, history, and application."
+    ]},
+    { key: 'tajweed', title: "Tajweed", ar: "التجويد", questions: [
+      "Explain the rules of madd (lengthening) in detail and classify the different types with examples from the Qur’an.",
+      "Discuss the rules of izhar, idgham, iqlab and ikhfa with Quranic examples and how they affect recitation.",
+      "Explain the articulation points (makharij) of Arabic letters and how they are taught to improve recitation.",
+      "Describe the characteristics (sifat) of letters and practical exercises to correct mistakes.",
+      "Explain meem saakinah and noon saakinah rules with detailed examples from the Mushaf.",
+      "Discuss hamzatul-wasl vs hamzatul-qat‘ and how they are handled in recitation and writing.",
+      "Explain principles for pausing (waqf) and starting (ibtida') in recitation and their impact on meaning.",
+      "Describe different canonical ortho-phonetic schools (qira'at) and their main differences.",
+      "Discuss methods for integrating tajweed with fluency for non-native reciters.",
+      "Explain rules for assimilation (idgham shafawi & ghunnah) and practical drills.",
+      "Describe the pedagogical progression from basic pronunciation to advanced tajweed rules.",
+      "Explain common errors in tajweed among learners and strategies to overcome them.",
+      "Analyze a chosen verse and mark tajweed signs and expected recitation notes.",
+      "Explain the historical transmission of qira'at and its importance for preserving recitation.",
+      "Discuss the relation between tajweed and tafsir when recitation affects meaning.",
+      "Provide a graded list of exercises for mastering ghunnah across lesson plans.",
+      "Explain the role of ijazah in formal recitation licensing and its traditional process.",
+      "Discuss the influence of regional phonetics on tajweed teaching and mitigation strategies.",
+      "Create a checklist for examiners assessing tajweed proficiency during viva exams.",
+      "Draft a short syllabus for an intensive tajweed course for advanced students."
+    ]},
+    { key: 'matn', title: "Matn (Memorized Texts)", ar: "المتن", questions: [
+      "Explain the significance of memorized matn works (e.g., al-Aqidah al-Tahawiyyah) in classical curriculum.",
+      "Discuss how matn memorization supports advanced understanding in later studies.",
+      "Explain the methods for teaching matn with commentaries (sharh) to beginners.",
+      "Analyze a short matn passage and explain its linguistic and doctrinal points.",
+      "Describe the relationship between matn memorization and sanad transmission.",
+      "Discuss strategies to help students retain matn long-term (revision schedules).",
+      "Explain how to assess comprehension of a memorized matn beyond rote recitation.",
+      "Provide teaching notes for introducing a new matn to intermediate students.",
+      "Discuss the balance between memorization and understanding in classical pedagogy.",
+      "Explain the role of mnemonic devices historically used in memorization of matn.",
+      "Analyze a matn passage for grammatical complexity and explain key constructions.",
+      "Provide a plan for integrating matn study with hadith and fiqh classes.",
+      "Discuss how matn recitation traditions vary regionally and pedagogically.",
+      "Explain the criteria for selecting matn texts appropriate for different learner levels.",
+      "Draft an assessment rubric for evaluating mastery of a matn text.",
+      "Discuss how to teach students to extract practical rulings from matn passages.",
+      "Explain the significance of matn in exams and its role in scholarly formation.",
+      "Provide a weekly revision timetable for a semester-long matn program.",
+      "Discuss approaches to teaching matn commentary in small groups.",
+      "Draft a final exam question requiring synthesis across matn, fiqh and hadith topics."
+    ]},
+    { key: 'taarikh', title: "Taarikh (Islamic History)", ar: "التاريخ", questions: [
+      "Describe the main phases of Islamic civilization from the Prophet’s ﷺ era to the Abbasid period.",
+      "Discuss the role of translation movements (e.g., House of Wisdom) in Islamic intellectual history.",
+      "Explain major contributions of one medieval Islamic scholar to science or philosophy.",
+      "Analyze the causes and effects of the Muslim conquests in the early centuries.",
+      "Discuss the administrative systems developed in early Islamic states and their strengths.",
+      "Explain the role of trade routes in cultural and religious diffusion in the Islamic world.",
+      "Discuss a major turning point in Islamic political history and its scholarly interpretations.",
+      "Explain the role of Sufi orders in social and cultural life across different regions.",
+      "Discuss the relations between Islamic polities and non-Muslim states during a chosen period.",
+      "Analyze the causes for the decline of a particular Islamic dynasty and lessons.",
+      "Explain the contribution of Islamic scholarship to preservation and development of knowledge.",
+      "Discuss the role of maritime trade in the expansion of Islam to new regions.",
+      "Explain the cultural syncretism observed in Andalusia and its scholarly impact.",
+      "Provide a historiographic critique of a major modern work on Islamic history.",
+      "Discuss the Mongol invasions and their short and long-term effects on Islamic societies.",
+      "Explain the role of education institutions (madrasahs) in preserving Islamic learning.",
+      "Discuss patterns of urbanization in the Islamic world and their economic effects.",
+      "Explain how colonialism impacted Muslim societies and the response of reform movements.",
+      "Provide a lesson plan for teaching the history of science in medieval Islam.",
+      "Draft an exam question that asks students to compare political structures across two Islamic polities."
+    ]},
+    { key: 'mahfuuzah', title: "Mahfuuzah (Memorized Pieces)", ar: "المحفوظة", questions: [
+      "Explain the value of memorized poetry and prose in preserving linguistic excellence in Arabic.",
+      "Discuss strategies for integrating memorized pieces into daily practice for language students.",
+      "Analyze a memorized poetic extract: explain imagery and rhetorical devices.",
+      "Explain how memorized pieces can be used to teach morphology and syntax.",
+      "Provide a plan for evaluating student mastery of memorized passages.",
+      "Discuss the historical role of memorized literature in Islamic curricula.",
+      "Explain the benefits of small-group recitation for retention.",
+      "Design a weekly revision cycle for memorized material across a semester.",
+      "Provide five exercises that test both memorization and comprehension of a piece.",
+      "Discuss the interplay between memorized dhikr and matn in devotional life.",
+      "Explain how to adapt memorization techniques for non-native Arabic students.",
+      "Discuss mnemonic strategies drawn from classical scholars for memorization.",
+      "Provide a sample rubric for grading recital accuracy and expression.",
+      "Explain the role of audio recordings in modern memorization practice.",
+      "Draft a short classroom session for reviewing memorized pieces in pairs.",
+      "Discuss the integration of memorized pieces with tajweed practice.",
+      "Explain how to handle textual variants in memorized works.",
+      "Provide a revision map to prevent long-term forgetting of memorized material.",
+      "Discuss the ethical guidance for instructors when correcting recitation.",
+      "Draft a final assessment requiring recitation and explanation of memorized lines."
+    ]},
+    // additional subjects for idaadi may be added similarly...
+  ]
+};
+
+// Helper: titles map for display
+const CLASS_LABELS = {
+  awwal: "Awwal Ibtidaaiyyah — أول ابتدائي",
+  thaaniy: "Thaaniy Ibtidaaiyyah — ثاني ابتدائي",
+  thaalith: "Thaalith Ibtidaaiyyah — ثالث ابتدائي",
+  idaadi: "Awwal Idaadiyyah — أول إعدادي"
+};
+
+// app state
+let state = {
+  selectedClass: null,
+  selectedSubjectKey: null,
+  subjectQueue: [], // subjects (keys) to run sequentially for that class
+  currentIndex: 0,   // index in subjectQueue
+  timerInterval: null,
+  timeLeft: 3600     // seconds (1 hour)
+};
+
+// Utility: find subject object by class and key
+function getSubjectObj(cls, key){
+  const arr = SUBJECTS[cls] || [];
+  return arr.find(s => s.key === key);
+}
+
+// --- UI functions ---
+function selectClass(cls){
+  state.selectedClass = cls;
+  document.getElementById('selected-class').textContent = CLASS_LABELS[cls] || cls;
+  // build subject tiles
+  const grid = document.getElementById('subjects-grid');
+  grid.innerHTML = '';
+  const subjects = SUBJECTS[cls] || [];
+  subjects.forEach(s=>{
+    const tile = document.createElement('button');
+    tile.className = 'subject-tile p-5 card text-left';
+    tile.onclick = ()=> openIntroForSubject(s.key);
+    tile.innerHTML = `<div class="flex justify-between items-start"><div><div class="text-lg font-semibold">${s.title}</div><div class="small-muted mt-1 arabic">${s.ar}</div></div><div class="text-sm small-muted">20 Qs · 60 min</div></div>`;
+    grid.appendChild(tile);
+  });
+
+  document.getElementById('step-class').classList.add('hidden');
+  document.getElementById('step-subject').classList.remove('hidden');
+  document.getElementById('subjects-title').textContent = `2. Choose Subject — ${CLASS_LABELS[cls].split('—')[0].trim()}`;
+  // prepare queue = all subjects for class
+  state.subjectQueue = subjects.map(s => s.key);
+  state.currentIndex = 0;
+}
+
+function backToClass(){
+  document.getElementById('step-subject').classList.add('hidden');
+  document.getElementById('step-class').classList.remove('hidden');
+  state.selectedClass = null;
+}
+
+function openIntroForSubject(subjectKey){
+  // set selected subject and show intro
+  state.selectedSubjectKey = subjectKey;
+  const subj = getSubjectObj(state.selectedClass, subjectKey);
+  document.getElementById('intro-subject-line').innerHTML = `${subj.title} — <span class="arabic">${subj.ar}</span>`;
+  document.getElementById('step-subject').classList.add('hidden');
+  document.getElementById('step-intro').classList.remove('hidden');
+}
+
+function cancelIntro(){
+  document.getElementById('step-intro').classList.add('hidden');
+  document.getElementById('step-subject').classList.remove('hidden');
+  state.selectedSubjectKey = null;
+}
+
+// --- Exam lifecycle ---
+function startExam(){
+  // prepare exam UI
+  const subj = getSubjectObj(state.selectedClass, state.selectedSubjectKey);
+  if(!subj) return alert('Subject data not found');
+  document.getElementById('exam-subject-title').textContent = `${subj.title} (${state.selectedClass})`;
+  document.getElementById('exam-subject-ar').innerHTML = `<span class="arabic">${subj.ar}</span>`;
+  // build questions
+  const qlist = document.getElementById('questions-list');
+  qlist.innerHTML = '';
+  subj.questions.forEach((q, i)=>{
+    const saved = loadAnswer(state.selectedClass, subj.key, i);
+    const wrapper = document.createElement('div');
+    wrapper.className = 'p-4 border rounded-lg';
+    wrapper.innerHTML = `
+      <div class="flex justify-between items-start">
+        <div><strong>Question ${i+1}:</strong></div>
+        <div class="small-muted">Essay</div>
+      </div>
+      <div class="mt-2 text-gray-700">${escapeHtml(q)}</div>
+      <textarea id="ans-${i}" data-idx="${i}" oninput="autosaveAnswer(event)" class="mt-3 p-3 w-full border rounded" placeholder="Write your answer here...">${saved ?? ''}</textarea>
+    `;
+    qlist.appendChild(wrapper);
+  });
+
+  // show exam section
+  document.getElementById('step-intro').classList.add('hidden');
+  document.getElementById('step-exam').classList.remove('hidden');
+
+  // timer: check existing saved time for this exam
+  const savedTimeKey = storageKeyTime(state.selectedClass, state.selectedSubjectKey);
+  const savedTime = localStorage.getItem(savedTimeKey);
+  state.timeLeft = savedTime ? parseInt(savedTime,10) : 3600;
+  updateTimerDisplay();
+  if(state.timerInterval) clearInterval(state.timerInterval);
+  state.timerInterval = setInterval(()=> {
+    state.timeLeft--;
+    localStorage.setItem(savedTimeKey, String(state.timeLeft));
+    updateTimerDisplay();
+    if(state.timeLeft <= 0){
+      clearInterval(state.timerInterval);
+      alert("Time is up. Your answers will be submitted automatically.");
+      submitCurrentExam();
+    }
+  },1000);
+}
+
+// escape HTML for question display
+function escapeHtml(s){
+  return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
+}
+
+function updateTimerDisplay(){
+  const mm = Math.floor(state.timeLeft/60);
+  const ss = state.timeLeft % 60;
+  document.getElementById('countdown').textContent = String(mm).padStart(2,'0') + ':' + String(ss).padStart(2,'0');
+}
+
+// storage keys
+function storageKey(cls, subjKey){ return `himaayah_answers_${cls}_${subjKey}`; }
+function storageKeyTime(cls, subjKey){ return `himaayah_time_${cls}_${subjKey}`; }
+
+// save: autosave handler
+function autosaveAnswer(e){
+  const textarea = e.target;
+  const idx = textarea.dataset.idx;
+  const cls = state.selectedClass;
+  const subjKey = state.selectedSubjectKey;
+  let answers = JSON.parse(localStorage.getItem(storageKey(cls,subjKey)) || "{}");
+  answers[idx] = textarea.value;
+  localStorage.setItem(storageKey(cls,subjKey), JSON.stringify(answers));
+  // brief visual feedback (pulse)
+  textarea.style.boxShadow = "0 0 0 3px rgba(9,69,112,0.06)";
+  setTimeout(()=> textarea.style.boxShadow = "", 350);
+}
+
+// manual save all now
+function saveAnswersNow(){
+  const cls = state.selectedClass; const subjKey = state.selectedSubjectKey;
+  const subj = getSubjectObj(cls, subjKey);
+  if(!subj) return;
+  const answers = {};
+  for(let i=0;i<subj.questions.length;i++){
+    const val = document.getElementById(`ans-${i}`)?.value || "";
+    answers[i] = val;
+  }
+  localStorage.setItem(storageKey(cls,subjKey), JSON.stringify(answers));
+  alert('Draft saved locally.');
+}
+
+// load single answer
+function loadAnswer(cls, subjKey, idx){
+  const raw = localStorage.getItem(storageKey(cls,subjKey));
+  if(!raw) return null;
+  try { const obj = JSON.parse(raw); return obj[idx] ?? ''; } catch(e){ return null; }
+}
+
+// Submit current exam (save + mark completed + advance)
+function submitCurrentExam(){
+  // save current answers
+  saveAnswersNow();
+  // mark completed
+  const cls = state.selectedClass; const subjKey = state.selectedSubjectKey;
+  const compKey = `himaayah_done_${cls}`;
+  const done = JSON.parse(localStorage.getItem(compKey) || "[]");
+  if(!done.includes(subjKey)) done.push(subjKey);
+  localStorage.setItem(compKey, JSON.stringify(done));
+  // clear timer saved
+  localStorage.removeItem(storageKeyTime(cls,subjKey));
+  if(state.timerInterval) clearInterval(state.timerInterval);
+  // find next subject in queue that is not done
+  advanceToNextSubject();
+}
+
+// find and start next subject or show done screen
+function advanceToNextSubject(){
+  const cls = state.selectedClass;
+  const queue = (SUBJECTS[cls] || []).map(s=>s.key);
+  const done = JSON.parse(localStorage.getItem(`himaayah_done_${cls}`) || "[]");
+  // find next not done subject
+  let next = null;
+  for(const k of queue){
+    if(!done.includes(k)){ next = k; break; }
+  }
+  if(next){
+    // auto-load next subject intro then start
+    state.selectedSubjectKey = next;
+    const subj = getSubjectObj(cls, next);
+    document.getElementById('intro-subject-line').innerHTML = `${subj.title} — <span class="arabic">${subj.ar}</span>`;
+    document.getElementById('step-exam').classList.add('hidden');
+    document.getElementById('step-intro').classList.remove('hidden');
+    // auto-start after a short delay so user sees message; or click start
+    setTimeout(()=> startExam(), 1200);
+  } else {
+    // all done for this class
+    document.getElementById('step-exam').classList.add('hidden');
+    document.getElementById('step-done').classList.remove('hidden');
+  }
+}
+
+// Abandon exam (go back to subject list)
+function abandonExam(){
+  if(!confirm('Abandon this exam? Your current draft will be saved but incomplete.')) return;
+  if(state.timerInterval) clearInterval(state.timerInterval);
+  // go back to subject list
+  document.getElementById('step-exam').classList.add('hidden');
+  document.getElementById('step-subject').classList.remove('hidden');
+}
+
+// back to main dashboard
+function goToHome(){
+  location.reload();
+}
+
+// helper: save all drafts periodically
+setInterval(()=> {
+  if(state.selectedClass && state.selectedSubjectKey){
+    // gather and save textarea contents
+    const subj = getSubjectObj(state.selectedClass, state.selectedSubjectKey);
+    if(subj){
+      const answers = {};
+      for(let i=0;i<subj.questions.length;i++){
+        const el = document.getElementById(`ans-${i}`);
+        if(el) answers[i] = el.value;
+      }
+      if(Object.keys(answers).length) localStorage.setItem(storageKey(state.selectedClass, state.selectedSubjectKey), JSON.stringify(answers));
+    }
+  }
+}, 8000); // every 8s
+
+// Utility: when page loads, show class selection (already visible)
+(function init(){
+  // nothing to init
+})();
+
+</script>
+</body>
+</html>
