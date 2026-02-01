@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -14,7 +14,6 @@
     }
     html{scroll-behavior:smooth;}
 
-    /* Subtle editorial entrance */
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(14px); }
       to { opacity: 1; transform: translateY(0); }
@@ -29,23 +28,17 @@
     }
     .muted{ color: rgba(9,69,112,0.78); }
     .muted-2{ color: rgba(9,69,112,0.65); }
-
-    /* Brand-only focus styling */
-    .focus-brand:focus{
-      outline:none;
-      border-color: rgba(133,204,255,0.95) !important;
-      box-shadow: 0 0 0 4px rgba(133,204,255,0.18);
-    }
   </style>
 </head>
 
 <body class="bg-white min-h-screen flex flex-col">
 
-  <!-- HEADER (same nav structure across site) -->
+  <!-- HEADER -->
   <header class="bg-[var(--regal)] text-white fixed inset-x-0 top-0 z-50">
     <div class="mx-auto max-w-7xl px-4 sm:px-6">
-      <div class="flex h-16 items-center justify-between">
+      <div class="flex h-16 items-center justify-between gap-3">
 
+        <!-- Brand -->
         <a href="index.html" class="flex items-center gap-3 min-w-0">
           <object
             data="assets/images/himaayah-icon.svg"
@@ -55,22 +48,36 @@
             aria-label="Himaayah Icon"
           ></object>
 
-          <div class="min-w-0">
-            <div class="font-extrabold truncate text-lg sm:text-xl">Himaayah Institute</div>
-            <div class="hidden sm:block text-xs text-white/70">Arabic. Qur’an. Islamic Sciences.</div>
+          <div class="min-w-0 leading-tight">
+            <!-- Mobile short -->
+            <div class="font-extrabold truncate text-base sm:hidden">
+              Himaayah Institute
+            </div>
+
+            <!-- Tablet/Desktop full -->
+            <div class="hidden sm:block font-extrabold truncate text-lg">
+              Himaayah Institute of Arabic and Islamic Studies
+            </div>
+
+            <div class="hidden sm:block text-xs text-white/70">
+              Arabic. Qur’an. Islamic Sciences.
+            </div>
           </div>
         </a>
 
-        <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
-          <a href="index.html" class="hover:text-[var(--pastel)] transition">Home</a>
+        <!-- Desktop nav -->
+        <nav class="hidden md:flex items-center gap-6 text-sm font-medium whitespace-nowrap">
+          <a href="index.html" class="text-[var(--pastel)] underline underline-offset-4 font-semibold">Home</a>
           <a href="about.html" class="hover:text-[var(--pastel)] transition">About</a>
           <a href="curriculum.html" class="hover:text-[var(--pastel)] transition">Curriculum</a>
           <a href="login.html" class="hover:text-[var(--pastel)] transition">Login</a>
           <a href="payment-portal.html" class="hover:text-[var(--pastel)] transition">Register</a>
           <a href="blogpost.html" class="hover:text-[var(--pastel)] transition">Blog</a>
           <a href="contact.html" class="hover:text-[var(--pastel)] transition">Contact</a>
+          <a href="faq.html" class="hover:text-[var(--pastel)] transition">FAQ</a>
         </nav>
 
+        <!-- Mobile menu button -->
         <button
           id="menuBtn"
           class="md:hidden inline-flex items-center justify-center rounded-xl border border-white/20 px-3 py-2 text-sm hover:bg-white/10"
@@ -81,9 +88,10 @@
         </button>
       </div>
 
+      <!-- Mobile menu -->
       <div id="mobileMenu" class="md:hidden hidden pb-4">
         <nav class="grid gap-2 rounded-2xl border border-white/10 bg-white/5 p-3 text-sm">
-          <a href="index.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Home</a>
+          <a href="index.html" class="rounded-xl px-3 py-2 bg-white/10 text-[var(--pastel)] font-semibold">Home</a>
           <a href="about.html" class="rounded-xl px-3 py-2 hover:bg-white/10">About</a>
           <a href="curriculum.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Curriculum</a>
           <a href="login.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Login</a>
@@ -98,11 +106,10 @@
   <!-- PAGE -->
   <main class="flex-1 pt-24 sm:pt-28 pb-12 px-4">
 
-    <!-- Hero (editorial, not a blue wall) -->
+    <!-- Hero -->
     <section class="max-w-6xl mx-auto animate-fadeIn">
       <div class="text-center">
-        <p class="text-xs font-semibold tracking-widest uppercase"
-           style="color: rgba(9,69,112,0.65);">
+        <p class="text-xs font-semibold tracking-widest uppercase muted-2">
           Himaayah Institute of Arabic and Islamic Studies
         </p>
 
@@ -150,10 +157,9 @@
       <div class="h-px" style="background: rgba(9,69,112,0.14);"></div>
     </section>
 
-    <!-- Content grid: left = story, right = key points -->
+    <!-- Content grid -->
     <section class="max-w-6xl mx-auto mt-10 grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-      <!-- Left column: editorial body -->
       <article class="lg:col-span-8 animate-fadeIn">
         <div class="card p-6 sm:p-8">
           <h2 class="text-xl sm:text-2xl font-extrabold text-[var(--regal)]">The HIAIS Program</h2>
@@ -208,9 +214,7 @@
         </div>
       </article>
 
-      <!-- Right column: objectives, quick actions -->
       <aside class="lg:col-span-4 animate-fadeIn">
-
         <div class="card p-6 sm:p-7">
           <h3 class="text-lg font-extrabold text-[var(--regal)]">Objectives</h3>
 
@@ -257,17 +261,16 @@
         <div class="mt-6 card p-6 sm:p-7">
           <h3 class="text-lg font-extrabold text-[var(--regal)]">Quick Note</h3>
           <p class="mt-3 text-sm muted leading-relaxed">
-            If you want this page to feel even more “official”, the next upgrade is simple:
-            tighten the copy into shorter paragraphs and move the longer quotations into the prospectus.
+            If you are looking for a structured path to learn Qur’an, Arabic, and the core Islamic sciences with clarity and discipline,
+            you will feel at home here. Our program is built to take you from foundation to strength, step by step, without confusion or overwhelm.
           </p>
         </div>
-
       </aside>
     </section>
 
   </main>
 
-  <!-- Minimal Footer (no full background) -->
+  <!-- Minimal Footer -->
   <footer class="py-8 text-center">
     <p class="text-sm font-medium text-[#094570]">
       © 2026 Himaayah Institute of Arabic and Islamic Studies. All rights reserved.
@@ -275,7 +278,6 @@
   </footer>
 
   <script>
-    // Mobile menu toggle
     const menuBtn = document.getElementById('menuBtn');
     const mobileMenu = document.getElementById('mobileMenu');
     menuBtn?.addEventListener('click', () => {
