@@ -3,37 +3,52 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FAQ - Himaayah Institute</title>
+  <title>FAQ - Himaayah Institute of Arabic and Islamic Studies</title>
   <script src="https://cdn.tailwindcss.com"></script>
+
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            primary: '#1e40af', // Blue
-            lightBlue: '#eff6ff',
+            regal: '#094570',
+            pastel: '#85CCFF',
+            white: '#FFFFFF',
           },
         },
       },
     };
   </script>
 </head>
+
 <body class="bg-white text-gray-800">
+
   <!-- Navbar -->
-  <nav class="flex justify-between items-center px-8 py-4 border-b border-gray-200 bg-white sticky top-0 z-50">
-    <h1 class="text-2xl font-semibold text-primary">Himaayah Institute</h1>
-    <div class="space-x-6 text-gray-700 font-medium">
-      <a href="index.html" class="hover:text-primary">Home</a>
-      <a href="about.html" class="hover:text-primary">About</a>
-      <a href="curriculum.html" class="hover:text-primary">Curriculum</a>
-      <a href="contact.html" class="hover:text-primary">Contact</a>
-      <a href="faq.html" class="text-primary font-semibold">FAQ</a>
+  <nav class="flex justify-between items-center px-6 sm:px-8 py-4 border-b border-gray-200 bg-white sticky top-0 z-50">
+    <a href="index.html" class="flex items-center gap-3 min-w-0">
+      <img
+        src="assets/images/himaayah-icon.svg"
+        alt="Himaayah Logo"
+        class="h-10 w-10 shrink-0"
+      />
+      <h1 class="text-xl sm:text-2xl font-extrabold text-regal truncate">Himaayah Institute</h1>
+    </a>
+
+    <div class="hidden md:flex space-x-6 text-gray-700 font-medium">
+      <a href="index.html" class="hover:text-regal">Home</a>
+      <a href="about.html" class="hover:text-regal">About</a>
+      <a href="curriculum.html" class="hover:text-regal">Curriculum</a>
+      <a href="contact.html" class="hover:text-regal">Contact</a>
+      <a href="faq.html" class="text-regal font-semibold">FAQ</a>
     </div>
+
+    <!-- Optional: simple mobile link (keeps your page clean) -->
+    <a href="index.html" class="md:hidden text-regal font-semibold">Home</a>
   </nav>
 
   <!-- Hero Section -->
-  <section class="text-center py-16 bg-lightBlue">
-    <h2 class="text-4xl font-bold text-primary mb-2">Frequently Asked Questions</h2>
+  <section class="text-center py-16 bg-pastel/10">
+    <h2 class="text-4xl font-extrabold text-pastel mb-2">Frequently Asked Questions</h2>
     <p class="text-gray-600 text-lg">Find quick answers about registration, classes, and more.</p>
   </section>
 
@@ -43,7 +58,7 @@
 
       <!-- Question 1 -->
       <div class="border border-gray-200 rounded-2xl shadow-sm">
-        <button class="w-full flex justify-between items-center px-6 py-4 text-left font-medium text-lg text-gray-700 hover:text-primary focus:outline-none faq-toggle">
+        <button class="w-full flex justify-between items-center px-6 py-4 text-left font-medium text-lg text-gray-700 hover:text-regal focus:outline-none faq-toggle">
           <span>How can I register at Himaayah Institute?</span>
           <svg class="w-5 h-5 text-gray-500 transition-transform transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
@@ -56,7 +71,7 @@
 
       <!-- Question 2 -->
       <div class="border border-gray-200 rounded-2xl shadow-sm">
-        <button class="w-full flex justify-between items-center px-6 py-4 text-left font-medium text-lg text-gray-700 hover:text-primary focus:outline-none faq-toggle">
+        <button class="w-full flex justify-between items-center px-6 py-4 text-left font-medium text-lg text-gray-700 hover:text-regal focus:outline-none faq-toggle">
           <span>Are the classes held online or on-site?</span>
           <svg class="w-5 h-5 text-gray-500 transition-transform transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
@@ -69,7 +84,7 @@
 
       <!-- Question 3 -->
       <div class="border border-gray-200 rounded-2xl shadow-sm">
-        <button class="w-full flex justify-between items-center px-6 py-4 text-left font-medium text-lg text-gray-700 hover:text-primary focus:outline-none faq-toggle">
+        <button class="w-full flex justify-between items-center px-6 py-4 text-left font-medium text-lg text-gray-700 hover:text-regal focus:outline-none faq-toggle">
           <span>What subjects are taught in the Madrasah?</span>
           <svg class="w-5 h-5 text-gray-500 transition-transform transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
@@ -82,20 +97,23 @@
 
       <!-- Question 4 -->
       <div class="border border-gray-200 rounded-2xl shadow-sm">
-        <button class="w-full flex justify-between items-center px-6 py-4 text-left font-medium text-lg text-gray-700 hover:text-primary focus:outline-none faq-toggle">
+        <button class="w-full flex justify-between items-center px-6 py-4 text-left font-medium text-lg text-gray-700 hover:text-regal focus:outline-none faq-toggle">
           <span>Can I download the prospectus?</span>
           <svg class="w-5 h-5 text-gray-500 transition-transform transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
           </svg>
         </button>
         <div class="faq-content hidden px-6 pb-4 text-gray-600">
-          Yes! You can download our detailed prospectus <a href="https://drive.google.com/file/d/1xAFj6rffNpNnxnbW1UARdpdRJQrix2j3/view?usp=sharing" target="_blank" class="text-primary underline">here</a>.
+          Yes! You can download our detailed prospectus
+          <a href="https://drive.google.com/file/d/1xAFj6rffNpNnxnbW1UARdpdRJQrix2j3/view?usp=sharing" target="_blank" class="text-regal underline">
+            here
+          </a>.
         </div>
       </div>
 
       <!-- Question 5 -->
       <div class="border border-gray-200 rounded-2xl shadow-sm">
-        <button class="w-full flex justify-between items-center px-6 py-4 text-left font-medium text-lg text-gray-700 hover:text-primary focus:outline-none faq-toggle">
+        <button class="w-full flex justify-between items-center px-6 py-4 text-left font-medium text-lg text-gray-700 hover:text-regal focus:outline-none faq-toggle">
           <span>How are exams conducted?</span>
           <svg class="w-5 h-5 text-gray-500 transition-transform transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />

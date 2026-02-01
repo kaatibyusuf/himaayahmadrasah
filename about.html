@@ -1,119 +1,290 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Himaayah Institute of Arabic & Islamic Studies</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Himaayah Institute of Arabic and Islamic Studies</title>
   <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
-    .fade-in {
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeInUp 1s ease forwards;
+    :root{
+      --regal:#094570;
+      --pastel:#85CCFF;
+      --white:#FFFFFF;
     }
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    html{scroll-behavior:smooth;}
+
+    /* Subtle editorial entrance */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeIn { animation: fadeIn .7s ease-out; }
+
+    .card{
+      border:1px solid rgba(9,69,112,0.14);
+      border-radius:1.25rem;
+      background:var(--white);
+      box-shadow: 0 14px 30px rgba(9,69,112,0.10);
+    }
+    .muted{ color: rgba(9,69,112,0.78); }
+    .muted-2{ color: rgba(9,69,112,0.65); }
+
+    /* Brand-only focus styling */
+    .focus-brand:focus{
+      outline:none;
+      border-color: rgba(133,204,255,0.95) !important;
+      box-shadow: 0 0 0 4px rgba(133,204,255,0.18);
     }
   </style>
 </head>
-<body class="bg-white text-gray-800 font-serif">
 
-  <!-- Header -->
-  <header class="bg-[#094570] text-white shadow-md">
-    <div class="container mx-auto flex justify-between items-center py-4 px-6">
-      <div class="flex items-center space-x-3">
-        <img src="logo.png" alt="Himaayah Logo" class="h-12 w-auto">
-        <span class="text-xl font-bold">Himaayah Institute of Arabic and Islamic Studies</span>
+<body class="bg-white min-h-screen flex flex-col">
+
+  <!-- HEADER (same nav structure across site) -->
+  <header class="bg-[var(--regal)] text-white fixed inset-x-0 top-0 z-50">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+      <div class="flex h-16 items-center justify-between">
+
+        <a href="index.html" class="flex items-center gap-3 min-w-0">
+          <object
+            data="assets/images/himaayah-icon.svg"
+            type="image/svg+xml"
+            class="h-10 w-10 shrink-0"
+            style="color: var(--pastel);"
+            aria-label="Himaayah Icon"
+          ></object>
+
+          <div class="min-w-0">
+            <div class="font-extrabold truncate text-lg sm:text-xl">Himaayah Institute</div>
+            <div class="hidden sm:block text-xs text-white/70">Arabic. Qur’an. Islamic Sciences.</div>
+          </div>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+          <a href="index.html" class="hover:text-[var(--pastel)] transition">Home</a>
+          <a href="about.html" class="hover:text-[var(--pastel)] transition">About</a>
+          <a href="curriculum.html" class="hover:text-[var(--pastel)] transition">Curriculum</a>
+          <a href="login.html" class="hover:text-[var(--pastel)] transition">Login</a>
+          <a href="payment-portal.html" class="hover:text-[var(--pastel)] transition">Register</a>
+          <a href="blogpost.html" class="hover:text-[var(--pastel)] transition">Blog</a>
+          <a href="contact.html" class="hover:text-[var(--pastel)] transition">Contact</a>
+        </nav>
+
+        <button
+          id="menuBtn"
+          class="md:hidden inline-flex items-center justify-center rounded-xl border border-white/20 px-3 py-2 text-sm hover:bg-white/10"
+          aria-expanded="false"
+          aria-controls="mobileMenu"
+        >
+          Menu
+        </button>
       </div>
-      <nav class="hidden md:flex space-x-6 font-medium">
-        <a href="index.html" class="hover:text-[#85CCFF]">Home</a>
-        <a href="login.html" class="hover:text-[#85CCFF]">Login</a>
-        <a href="about.html" class="hover:text-[#85CCFF]">About</a>
-        <a href="blogpost.html" class="hover:text-[#85CCFF]">Blog</a>
-        <a href="curriculum.html" class="hover:text-[#85CCFF]">Curriculum</a>
-        <a href="contact.html" class="hover:text-[#85CCFF]">Contact</a>
-      </nav>
+
+      <div id="mobileMenu" class="md:hidden hidden pb-4">
+        <nav class="grid gap-2 rounded-2xl border border-white/10 bg-white/5 p-3 text-sm">
+          <a href="index.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Home</a>
+          <a href="about.html" class="rounded-xl px-3 py-2 hover:bg-white/10">About</a>
+          <a href="curriculum.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Curriculum</a>
+          <a href="login.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Login</a>
+          <a href="payment-portal.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Register</a>
+          <a href="blogpost.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Blog</a>
+          <a href="contact.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Contact</a>
+        </nav>
+      </div>
     </div>
   </header>
 
-  <!-- Hero -->
-  <section class="bg-[#094570] text-white py-20 px-6 text-center">
-    <div class="max-w-4xl mx-auto fade-in">
-      <h1 class="text-4xl md:text-5xl font-bold mb-4">Himaayah Institute of Arabic & Islamic Studies</h1>
-      <p class="text-lg leading-relaxed opacity-90">
-        Established to revive authentic, balanced Islamic learning — combining faith, intellect, and excellence, we nurture students rooted in the Qur’an, Sunnah, and the Arabic language.
-      </p>
+  <!-- PAGE -->
+  <main class="flex-1 pt-24 sm:pt-28 pb-12 px-4">
 
-      <a href="https://drive.google.com/uc?export=download&id=1xAFj6rffNpNnxnbW1UARdpdRJQrix2j3"
-         class="mt-8 inline-block bg-white text-[#094570] font-semibold py-3 px-6 rounded-lg shadow hover:bg-gray-100 transition">
-        Download Prospectus
-      </a>
-    </div>
-  </section>
+    <!-- Hero (editorial, not a blue wall) -->
+    <section class="max-w-6xl mx-auto animate-fadeIn">
+      <div class="text-center">
+        <p class="text-xs font-semibold tracking-widest uppercase"
+           style="color: rgba(9,69,112,0.65);">
+          Himaayah Institute of Arabic and Islamic Studies
+        </p>
 
-  <!-- Main Content -->
-  <section class="py-16 px-6 max-w-5xl mx-auto space-y-12 fade-in">
+        <h1 class="mt-3 text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--regal)] leading-tight">
+          Authentic learning. Clear structure. Quiet excellence.
+        </h1>
 
-    <!-- The HIAIS Program -->
-    <div>
-      <h2 class="text-3xl font-bold text-[#094570] mb-4">The HIAIS Program</h2>
-      <p class="leading-relaxed text-gray-700 mb-6">
-        Balanced Islamic knowledge is among the most essential necessities for every Muslim. It is the light by which hearts are guided and societies are elevated. Through authentic knowledge derived from the Qur’an and Sunnah, nations rise from ignorance to glory, from confusion to clarity, and from darkness to light.
-      </p>
-      <p class="leading-relaxed text-gray-700 mb-6">
-        The Qur’an emphasizes the status of people of knowledge:
-      </p>
-      <blockquote class="italic border-l-4 border-[#094570] pl-4 text-gray-700 mb-4">
-        {Allah bears witness that Laa ilaaha illa Huwa (none has the right to be worshipped but He), and the angels, and those having knowledge (also give this witness); (He is always) maintaining His creation in Justice.}  
-        <br><span class="text-sm text-gray-600">– Surat Aal-Imran: 18</span>
-      </blockquote>
-      <p class="text-gray-700 mb-6">
-        Ash-Shawkani (رحمه الله) explained that “those having knowledge” here refers to the scholars of the Qur’an and Sunnah.
-      </p>
-      <blockquote class="italic border-l-4 border-[#094570] pl-4 text-gray-700 mb-4">
-        {And say, ‘My Lord, increase me in knowledge.’}  
-        <br><span class="text-sm text-gray-600">– Surat Ta-Ha: 114</span>
-      </blockquote>
-      <p class="text-gray-700 mb-6">
-        And in the hadith: <em>“Whoever takes a path upon which to obtain knowledge, Allah makes the path to Paradise easy for him.”</em>  
-        <br><span class="text-sm text-gray-600">– Narrated by Muslim</span>
-      </p>
-      <p class="text-gray-700">
-        Al-Hafiz Ibn Hajar (رحمه الله) explained that “knowledge” here refers to knowledge of the Shari‘ah — that which guides one to fulfill what is obligatory upon them in belief, worship, and action.
-      </p>
-    </div>
+        <div class="mx-auto mt-5 h-1 w-14 rounded-full bg-[var(--pastel)]"></div>
 
-    <!-- Message from HIAIS -->
-    <div>
-      <h2 class="text-3xl font-bold text-[#094570] mb-4">Message from Us</h2>
-      <p class="text-gray-700 leading-relaxed mb-6">
-        Our aim is to present authentic, balanced Islamic knowledge based on the understanding of the best generations, and to make this knowledge accessible through effective, student-centered teaching.
-      </p>
-      <p class="text-gray-700 leading-relaxed mb-6">
-        We strive to excel in enhancing the learning experience for every student by combining sincerity, technology, and sound methodology. Our materials are crafted in contemporary language while maintaining high linguistic and Shari‘ah precision.
-      </p>
-    </div>
+        <p class="mx-auto mt-5 max-w-3xl text-sm sm:text-base muted">
+          Established to revive balanced Islamic learning and make it accessible through a disciplined curriculum.
+          Rooted in the Qur’an, Sunnah, and the Arabic language.
+        </p>
 
-    <!-- Objectives -->
-    <div>
-      <h2 class="text-3xl font-bold text-[#094570] mb-6">Objectives of HIAIS</h2>
-      <ul class="list-disc list-inside space-y-3 text-gray-700 leading-relaxed">
-        <li>To disseminate balanced Islamic knowledge to the widest possible audience.</li>
-        <li>To meet the needs of beginner and advanced students through a structured, progressive curriculum.</li>
-        <li>To teach and clarify the methodology of the best generations and convey it with clarity and evidence.</li>
-        <li>To ensure authentic Islamic knowledge in Aqeedah, Tafseer, Hadith, Fiqh, and Manners is accessible to all.</li>
-        <li>To promote distance learning with professionalism and innovation in both Arabic and Islamic Studies.</li>
-      </ul>
-    </div>
-  </section>
+        <div class="mt-7 flex flex-col sm:flex-row justify-center gap-3">
+          <a
+            href="payment-portal.html"
+            class="rounded-full px-7 py-3 font-semibold text-white text-center"
+            style="background: var(--regal);"
+          >
+            Register
+          </a>
 
-  <!-- Footer -->
-  <footer class="bg-[#094570] text-white py-10 text-center" id="contact">
-    <p class="text-sm opacity-90">© 2026 Himaayah Institute of Arabic & Islamic Studies. All rights reserved.</p>
+          <a
+            href="curriculum.html"
+            class="rounded-full px-7 py-3 font-semibold text-center border"
+            style="border-color: rgba(9,69,112,0.18); color: var(--regal);"
+          >
+            View Curriculum
+          </a>
+
+          <a
+            href="https://drive.google.com/uc?export=download&id=1xAFj6rffNpNnxnbW1UARdpdRJQrix2j3"
+            class="rounded-full px-7 py-3 font-semibold text-center"
+            style="background: rgba(133,204,255,0.18); color: var(--regal);"
+          >
+            Download Prospectus
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Divider -->
+    <section class="max-w-6xl mx-auto mt-10">
+      <div class="h-px" style="background: rgba(9,69,112,0.14);"></div>
+    </section>
+
+    <!-- Content grid: left = story, right = key points -->
+    <section class="max-w-6xl mx-auto mt-10 grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+      <!-- Left column: editorial body -->
+      <article class="lg:col-span-8 animate-fadeIn">
+        <div class="card p-6 sm:p-8">
+          <h2 class="text-xl sm:text-2xl font-extrabold text-[var(--regal)]">The HIAIS Program</h2>
+          <p class="mt-4 text-sm sm:text-base muted leading-relaxed">
+            Balanced Islamic knowledge is among the most essential necessities for every Muslim.
+            It guides hearts, strengthens worship, and brings clarity to life.
+          </p>
+
+          <div class="mt-6 rounded-2xl border p-5"
+               style="border-color: rgba(9,69,112,0.14); background: rgba(133,204,255,0.10);">
+            <p class="text-sm font-semibold text-[var(--regal)]">Qur’an on the people of knowledge</p>
+
+            <blockquote class="mt-3 text-sm muted leading-relaxed">
+              {Allah bears witness that Laa ilaaha illa Huwa (none has the right to be worshipped but He), and the angels,
+              and those having knowledge (also give this witness); (He is always) maintaining His creation in Justice.}
+              <div class="mt-2 text-xs muted-2">Surat Aal-Imran: 18</div>
+            </blockquote>
+
+            <blockquote class="mt-5 text-sm muted leading-relaxed">
+              {And say, ‘My Lord, increase me in knowledge.’}
+              <div class="mt-2 text-xs muted-2">Surat Ta-Ha: 114</div>
+            </blockquote>
+          </div>
+
+          <div class="mt-6">
+            <p class="text-sm sm:text-base muted leading-relaxed">
+              The Messenger of Allah ﷺ said:
+            </p>
+
+            <blockquote class="mt-3 border-l-4 pl-4 text-sm muted leading-relaxed"
+                        style="border-color: var(--pastel);">
+              “Whoever takes a path upon which to obtain knowledge, Allah makes the path to Paradise easy for him.”
+              <div class="mt-2 text-xs muted-2">Narrated by Muslim</div>
+            </blockquote>
+
+            <p class="mt-5 text-sm sm:text-base muted leading-relaxed">
+              Knowledge here is not decoration. It is Shari‘ah knowledge that corrects belief, worship, and action.
+            </p>
+          </div>
+        </div>
+
+        <div class="card p-6 sm:p-8 mt-6">
+          <h2 class="text-xl sm:text-2xl font-extrabold text-[var(--regal)]">Message from Us</h2>
+          <p class="mt-4 text-sm sm:text-base muted leading-relaxed">
+            Our aim is to present authentic Islamic knowledge based on the understanding of the best generations
+            and to make it accessible through effective, student-centered teaching.
+          </p>
+          <p class="mt-4 text-sm sm:text-base muted leading-relaxed">
+            We combine sincerity, sound methodology, and simple tools to deliver lessons clearly,
+            while keeping precision in language and Shari‘ah.
+          </p>
+        </div>
+      </article>
+
+      <!-- Right column: objectives, quick actions -->
+      <aside class="lg:col-span-4 animate-fadeIn">
+
+        <div class="card p-6 sm:p-7">
+          <h3 class="text-lg font-extrabold text-[var(--regal)]">Objectives</h3>
+
+          <ul class="mt-4 space-y-3 text-sm muted leading-relaxed">
+            <li class="flex gap-3">
+              <span class="mt-2 h-2 w-2 rounded-full bg-[var(--pastel)] shrink-0"></span>
+              Disseminate balanced Islamic knowledge to the widest audience.
+            </li>
+            <li class="flex gap-3">
+              <span class="mt-2 h-2 w-2 rounded-full bg-[var(--pastel)] shrink-0"></span>
+              Serve beginners and advanced students through a progressive curriculum.
+            </li>
+            <li class="flex gap-3">
+              <span class="mt-2 h-2 w-2 rounded-full bg-[var(--pastel)] shrink-0"></span>
+              Clarify the methodology of the best generations with evidence and clarity.
+            </li>
+            <li class="flex gap-3">
+              <span class="mt-2 h-2 w-2 rounded-full bg-[var(--pastel)] shrink-0"></span>
+              Make learning accessible in Aqeedah, Tafseer, Hadith, Fiqh, and manners.
+            </li>
+            <li class="flex gap-3">
+              <span class="mt-2 h-2 w-2 rounded-full bg-[var(--pastel)] shrink-0"></span>
+              Promote distance learning with professionalism in Arabic and Islamic Studies.
+            </li>
+          </ul>
+
+          <div class="mt-6 h-px" style="background: rgba(9,69,112,0.14);"></div>
+
+          <div class="mt-6 grid gap-3">
+            <a href="login.html"
+               class="rounded-full px-6 py-3 font-semibold text-white text-center"
+               style="background: var(--regal);">
+              Student Login
+            </a>
+
+            <a href="payment-portal.html"
+               class="rounded-full px-6 py-3 font-semibold text-center border"
+               style="border-color: rgba(9,69,112,0.18); color: var(--regal);">
+              Register Now
+            </a>
+          </div>
+        </div>
+
+        <div class="mt-6 card p-6 sm:p-7">
+          <h3 class="text-lg font-extrabold text-[var(--regal)]">Quick Note</h3>
+          <p class="mt-3 text-sm muted leading-relaxed">
+            If you want this page to feel even more “official”, the next upgrade is simple:
+            tighten the copy into shorter paragraphs and move the longer quotations into the prospectus.
+          </p>
+        </div>
+
+      </aside>
+    </section>
+
+  </main>
+
+  <!-- Minimal Footer (no full background) -->
+  <footer class="py-8 text-center">
+    <p class="text-sm font-medium text-[#094570]">
+      © 2026 Himaayah Institute of Arabic and Islamic Studies. All rights reserved.
+    </p>
   </footer>
+
+  <script>
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn?.addEventListener('click', () => {
+      const isOpen = !mobileMenu.classList.contains('hidden');
+      mobileMenu.classList.toggle('hidden');
+      menuBtn.setAttribute('aria-expanded', String(!isOpen));
+      menuBtn.textContent = isOpen ? 'Menu' : 'Close';
+    });
+  </script>
 
 </body>
 </html>

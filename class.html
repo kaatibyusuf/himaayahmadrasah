@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Classes | Himaayah Institute of Arabic and Islamic Studies</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root{
+      --regal:#094570;
+      --pastel:#85CCFF;
+      --white:#FFFFFF;
+    }
+    html{scroll-behavior:smooth;}
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeIn { animation: fadeIn .7s ease-out; }
+
+    .card{
+      border:1px solid rgba(9,69,112,0.14);
+      border-radius:1.25rem;
+      background:var(--white);
+      box-shadow: 0 14px 30px rgba(9,69,112,0.10);
+    }
+
+    .muted{ color: rgba(9,69,112,0.78); }
+    .muted-2{ color: rgba(9,69,112,0.65); }
+  </style>
+</head>
+
+<body class="bg-white min-h-screen flex flex-col">
+
+  <!-- HEADER (same nav structure) -->
+  <header class="bg-[var(--regal)] text-white fixed inset-x-0 top-0 z-50">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+      <div class="flex h-16 items-center justify-between">
+        <a href="index.html" class="flex items-center gap-3 min-w-0">
+          <object
+            data="assets/images/himaayah-icon.svg"
+            type="image/svg+xml"
+            class="h-10 w-10 shrink-0"
+            style="color: var(--pastel);"
+            aria-label="Himaayah Icon"
+          ></object>
+          <div class="min-w-0">
+            <div class="font-extrabold truncate text-lg sm:text-xl">Himaayah Institute</div>
+            <div class="hidden sm:block text-xs text-white/70">Student Portal</div>
+          </div>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+          <a href="index.html" class="hover:text-[var(--pastel)] transition">Home</a>
+          <a href="about.html" class="hover:text-[var(--pastel)] transition">About</a>
+          <a href="curriculum.html" class="hover:text-[var(--pastel)] transition">Curriculum</a>
+          <a href="class.html" class="text-[var(--pastel)] underline underline-offset-4 font-semibold">Classes</a>
+          <a href="blogpost.html" class="hover:text-[var(--pastel)] transition">Blog</a>
+          <a href="contact.html" class="hover:text-[var(--pastel)] transition">Contact</a>
+        </nav>
+
+        <button
+          id="menuBtn"
+          class="md:hidden inline-flex items-center justify-center rounded-xl border border-white/20 px-3 py-2 text-sm hover:bg-white/10"
+          aria-expanded="false"
+          aria-controls="mobileMenu"
+        >
+          Menu
+        </button>
+      </div>
+
+      <div id="mobileMenu" class="md:hidden hidden pb-4">
+        <nav class="grid gap-2 rounded-2xl border border-white/10 bg-white/5 p-3 text-sm">
+          <a href="index.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Home</a>
+          <a href="about.html" class="rounded-xl px-3 py-2 hover:bg-white/10">About</a>
+          <a href="curriculum.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Curriculum</a>
+          <a href="class.html" class="rounded-xl px-3 py-2 bg-white/10 text-[var(--pastel)] font-semibold">Classes</a>
+          <a href="blogpost.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Blog</a>
+          <a href="contact.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Contact</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- PAGE -->
+  <main class="flex-1 pt-24 sm:pt-28 pb-12 px-4">
+    <section class="max-w-6xl mx-auto animate-fadeIn">
+
+      <!-- Top bar: student identity + logout -->
+      <div class="card p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div class="min-w-0">
+          <h1 class="text-xl sm:text-2xl font-extrabold text-[var(--regal)]">Your Classes</h1>
+          <p class="mt-1 text-sm muted">
+            <span class="font-semibold text-[var(--regal)]" id="studentName">Student</span>
+            <span class="mx-2" style="color: rgba(9,69,112,0.40);">•</span>
+            <span class="break-all" id="studentEmail">email@example.com</span>
+          </p>
+          <p class="mt-1 text-xs muted-2">
+            Student ID: <span class="font-semibold" id="studentId">-</span>
+          </p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+          <a href="payment-portal.html"
+             class="w-full sm:w-auto text-center rounded-full px-6 py-3 font-semibold border"
+             style="border-color: rgba(9,69,112,0.18); color: var(--regal);">
+            Payment Portal
+          </a>
+          <button id="logoutBtn"
+                  class="w-full sm:w-auto rounded-full px-6 py-3 font-semibold text-white"
+                  style="background: var(--regal);">
+            Logout
+          </button>
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div class="mt-8">
+        <label class="block text-sm font-semibold text-[var(--regal)] mb-2" for="search">
+          Search your class
+        </label>
+        <input
+          id="search"
+          type="text"
+          placeholder="Type: Awwal, Ibtidaaiyyah, Qur’an, Tajweed, Tamheedi..."
+          class="w-full rounded-2xl px-5 py-4 border outline-none bg-white"
+          style="border-color: rgba(9,69,112,0.18);"
+        />
+        <p class="mt-2 text-xs muted-2">Filters instantly. No new colors, no noise.</p>
+      </div>
+
+      <!-- Sections -->
+      <div class="mt-10 space-y-10">
+
+        <!-- General Arabic/Islamic Studies Classes -->
+        <section>
+          <div class="flex items-end justify-between gap-4">
+            <div>
+              <h2 class="text-lg sm:text-xl font-extrabold text-[var(--regal)]">Madrasah Classes</h2>
+              <p class="mt-1 text-sm muted">Awwal to Raabi’ah Ibtidaaiyyah. Awwal and Thaaniy Idaadiyyah. Plus Tamheedi.</p>
+            </div>
+            <div class="hidden sm:block h-1 w-14 rounded-full bg-[var(--pastel)]"></div>
+          </div>
+
+          <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Tamheedi -->
+            <a class="class-card card p-5 hover:shadow-lg transition block"
+               href="#"
+               data-title="Tamheedi"
+               data-keywords="tamheedi foundation beginner">
+              <div class="text-sm font-extrabold text-[var(--regal)]">Tamheedi</div>
+              <div class="mt-2 text-sm muted">Foundation class for new entrants.</div>
+              <div class="mt-4 text-xs muted-2">Telegram: Placeholder link</div>
+            </a>
+
+            <!-- Ibtidaaiyyah -->
+            <a class="class-card card p-5 hover:shadow-lg transition block"
+               href="#"
+               data-title="Awwal Ibtidaaiyyah"
+               data-keywords="awwal ibtidaaiyyah primary">
+              <div class="text-sm font-extrabold text-[var(--regal)]">Awwal Ibtidaaiyyah</div>
+              <div class="mt-2 text-sm muted">Beginner primary level.</div>
+              <div class="mt-4 text-xs muted-2">Telegram: Placeholder link</div>
+            </a>
+
+            <a class="class-card card p-5 hover:shadow-lg transition block"
+               href="#"
+               data-title="Thaaniy Ibtidaaiyyah"
+               data-keywords="thaaniy ibtidaaiyyah primary">
+              <div class="text-sm font-extrabold text-[var(--regal)]">Thaaniy Ibtidaaiyyah</div>
+              <div class="mt-2 text-sm muted">Primary level continuation.</div>
+              <div class="mt-4 text-xs muted-2">Telegram: Placeholder link</div>
+            </a>
+
+            <a class="class-card card p-5 hover:shadow-lg transition block"
+               href="#"
+               data-title="Thaalith Ibtidaaiyyah"
+               data-keywords="thaalith ibtidaaiyyah primary">
+              <div class="text-sm font-extrabold text-[var(--regal)]">Thaalith Ibtidaaiyyah</div>
+              <div class="mt-2 text-sm muted">Primary level progress.</div>
+              <div class="mt-4 text-xs muted-2">Telegram: Placeholder link</div>
+            </a>
+
+            <a class="class-card card p-5 hover:shadow-lg transition block"
+               href="#"
+               data-title="Raabi’ah Ibtidaaiyyah"
+               data-keywords="raabiah raabi ah ibtidaaiyyah primary">
+              <div class="text-sm font-extrabold text-[var(--regal)]">Raabi’ah Ibtidaaiyyah</div>
+              <div class="mt-2 text-sm muted">Primary level mastery track.</div>
+              <div class="mt-4 text-xs muted-2">Telegram: Placeholder link</div>
+            </a>
+
+            <!-- Idaadiyyah -->
+            <a class="class-card card p-5 hover:shadow-lg transition block"
+               href="#"
+               data-title="Awwal Idaadiyyah"
+               data-keywords="awwal idaadiyyah junior secondary">
+              <div class="text-sm font-extrabold text-[var(--regal)]">Awwal Idaadiyyah</div>
+              <div class="mt-2 text-sm muted">Intermediate preparatory level.</div>
+              <div class="mt-4 text-xs muted-2">Telegram: Placeholder link</div>
+            </a>
+
+            <a class="class-card card p-5 hover:shadow-lg transition block"
+               href="#"
+               data-title="Thaaniy Idaadiyyah"
+               data-keywords="thaaniy idaadiyyah junior secondary">
+              <div class="text-sm font-extrabold text-[var(--regal)]">Thaaniy Idaadiyyah</div>
+              <div class="mt-2 text-sm muted">Advanced preparatory level.</div>
+              <div class="mt-4 text-xs muted-2">Telegram: Placeholder link</div>
+            </a>
+          </div>
+        </section>
+
+        <!-- Qur'an Segment -->
+        <section>
+          <div class="flex items-end justify-between gap-4">
+            <div>
+              <h2 class="text-lg sm:text-xl font-extrabold text-[var(--regal)]">Qur’an Classes</h2>
+              <p class="mt-1 text-sm muted">Recitation, revision, and guided memorization.</p>
+            </div>
+            <div class="hidden sm:block h-1 w-14 rounded-full bg-[var(--pastel)]"></div>
+          </div>
+
+          <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <a class="class-card card p-5 hover:shadow-lg transition block"
+               href="#"
+               data-title="Qur’an Class"
+               data-keywords="quran qur an hifdh memorization recitation">
+              <div class="text-sm font-extrabold text-[var(--regal)]">Qur’an Class</div>
+              <div class="mt-2 text-sm muted">Memorization and revision circle.</div>
+              <div class="mt-4 text-xs muted-2">Telegram: Placeholder link</div>
+            </a>
+          </div>
+        </section>
+
+        <!-- Tajweed Segment -->
+        <section>
+          <div class="flex items-end justify-between gap-4">
+            <div>
+              <h2 class="text-lg sm:text-xl font-extrabold text-[var(--regal)]">Tajweed Classes</h2>
+              <p class="mt-1 text-sm muted">Rules of recitation and practical correction.</p>
+            </div>
+            <div class="hidden sm:block h-1 w-14 rounded-full bg-[var(--pastel)]"></div>
+          </div>
+
+          <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <a class="class-card card p-5 hover:shadow-lg transition block"
+               href="#"
+               data-title="Tajweed Class"
+               data-keywords="tajweed tajwid makharij sifat recitation">
+              <div class="text-sm font-extrabold text-[var(--regal)]">Tajweed Class</div>
+              <div class="mt-2 text-sm muted">Makhaarij, sifaat, and applied practice.</div>
+              <div class="mt-4 text-xs muted-2">Telegram: Placeholder link</div>
+            </a>
+          </div>
+        </section>
+
+        <!-- Matn Segment -->
+        <section>
+          <div class="flex items-end justify-between gap-4">
+            <div>
+              <h2 class="text-lg sm:text-xl font-extrabold text-[var(--regal)]">Matn Memorization</h2>
+              <p class="mt-1 text-sm muted">Memorize foundational texts with steady revision.</p>
+            </div>
+            <div class="hidden sm:block h-1 w-14 rounded-full bg-[var(--pastel)]"></div>
+          </div>
+
+          <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <a class="class-card card p-5 hover:shadow-lg transition block"
+               href="#"
+               data-title="Matn Memorization Class"
+               data-keywords="matn memorization texts ajurumiyyah nawawi usool">
+              <div class="text-sm font-extrabold text-[var(--regal)]">Matn Class</div>
+              <div class="mt-2 text-sm muted">Core matn memorization and revision.</div>
+              <div class="mt-4 text-xs muted-2">Telegram: Placeholder link</div>
+            </a>
+          </div>
+        </section>
+
+        <!-- Empty state -->
+        <section id="emptyState" class="hidden">
+          <div class="card p-6 text-center">
+            <div class="text-lg font-extrabold text-[var(--regal)]">No matching classes</div>
+            <p class="mt-2 text-sm muted">Try different keywords. Example: “Idaadiyyah”, “Tajweed”, “Tamheedi”.</p>
+          </div>
+        </section>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Minimal footer -->
+  <footer class="py-8 text-center">
+    <p class="text-sm font-medium text-[#094570]">
+      © 2026 Himaayah Institute of Arabic and Islamic Studies. All rights reserved.
+    </p>
+    <p class="mt-1 text-xs" style="color: rgba(9,69,112,0.65);">
+      Student Portal
+    </p>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn?.addEventListener('click', () => {
+      const isOpen = !mobileMenu.classList.contains('hidden');
+      mobileMenu.classList.toggle('hidden');
+      menuBtn.setAttribute('aria-expanded', String(!isOpen));
+      menuBtn.textContent = isOpen ? 'Menu' : 'Close';
+    });
+
+    // Focus styling: brand-only
+    const searchEl = document.getElementById('search');
+    searchEl.addEventListener('focus', () => {
+      searchEl.style.borderColor = 'rgba(133,204,255,0.95)';
+      searchEl.style.boxShadow = '0 0 0 4px rgba(133,204,255,0.18)';
+    });
+    searchEl.addEventListener('blur', () => {
+      searchEl.style.borderColor = 'rgba(9,69,112,0.18)';
+      searchEl.style.boxShadow = 'none';
+    });
+
+    // Session guard + identity
+    function getSession(){
+      try { return JSON.parse(localStorage.getItem('himaayah_session') || '{}'); }
+      catch(e){ return {}; }
+    }
+
+    function getQueryParams(){
+      const params = new URLSearchParams(window.location.search);
+      return {
+        email: params.get('email') || '',
+        studentId: params.get('studentId') || ''
+      };
+    }
+
+    function initIdentity(){
+      const session = getSession();
+      const qp = getQueryParams();
+
+      // If no session, redirect to login
+      if(!session?.email || !session?.studentId){
+        // fallback: if query params exist, reconstruct session (minimal)
+        if(qp.email && qp.studentId){
+          const reconstructed = {
+            email: qp.email,
+            studentId: qp.studentId,
+            name: '',
+            loggedInAt: new Date().toISOString()
+          };
+          localStorage.setItem('himaayah_session', JSON.stringify(reconstructed));
+          return initIdentity();
+        }
+        window.location.href = 'login.html';
+        return;
+      }
+
+      // Name: best available
+      const name = (session.name || '').trim() || 'Student';
+      document.getElementById('studentName').textContent = name;
+      document.getElementById('studentEmail').textContent = session.email;
+      document.getElementById('studentId').textContent = session.studentId;
+    }
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('himaayah_session');
+      window.location.href = 'login.html';
+    });
+
+    // Instant filter
+    const cards = Array.from(document.querySelectorAll('.class-card'));
+    const emptyState = document.getElementById('emptyState');
+
+    function filterCards(query){
+      const q = (query || '').trim().toLowerCase();
+
+      let visibleCount = 0;
+      cards.forEach(card => {
+        const title = (card.dataset.title || '').toLowerCase();
+        const keywords = (card.dataset.keywords || '').toLowerCase();
+        const match = !q || title.includes(q) || keywords.includes(q);
+
+        card.style.display = match ? 'block' : 'none';
+        if(match) visibleCount++;
+      });
+
+      emptyState.classList.toggle('hidden', visibleCount !== 0);
+    }
+
+    searchEl.addEventListener('input', (e) => filterCards(e.target.value));
+
+    // Initialize
+    initIdentity();
+    filterCards('');
+  </script>
+
+</body>
+</html>

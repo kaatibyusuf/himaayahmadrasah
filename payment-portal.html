@@ -3,171 +3,355 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>HIAIS Payment Portal</title>
+  <title>Payment Portal | Himaayah Institute of Arabic and Islamic Studies</title>
 
-  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
     :root{
-      --regal: #094570;
-      --pastel: #85CCFF;
-      --white: #FFFFFF;
+      --regal:#094570;
+      --pastel:#85CCFF;
+      --white:#FFFFFF;
     }
-    body { font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background: linear-gradient(180deg,var(--pastel)10%, #f8fbff 60%); }
-    .brand-btn { background: var(--regal); color: var(--white); }
-    .brand-outline { border: 2px solid var(--regal); color: var(--regal); }
-    .card { background: var(--white); border-radius: 14px; box-shadow: 0 10px 30px rgba(9,69,112,0.08); }
-    .step { transition: all .35s ease; }
-    .step-hidden { display:none; opacity:0; transform: translateY(8px); }
-    .step-visible { display:block; opacity:1; transform: translateY(0); }
-    .accent { color: var(--regal); }
-    .accent-bg { background: linear-gradient(90deg, var(--regal), var(--pastel)); color: var(--white); }
+    html{scroll-behavior:smooth;}
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeIn { animation: fadeIn .7s ease-out; }
+
+    .card{
+      border:1px solid rgba(9,69,112,0.14);
+      border-radius:1.25rem;
+      background:var(--white);
+      box-shadow: 0 14px 30px rgba(9,69,112,0.10);
+    }
+
+    .muted{ color: rgba(9,69,112,0.78); }
+    .muted-2{ color: rgba(9,69,112,0.65); }
+
+    .step{ transition: all .25s ease; }
+    .step-hidden{ display:none; opacity:0; transform: translateY(8px); }
+    .step-visible{ display:block; opacity:1; transform: translateY(0); }
   </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-6">
 
-  <main class="w-full max-w-2xl card p-6">
-    <header class="flex items-center justify-between mb-6">
-      <div class="flex items-center gap-4">
-        <div class="w-12 h-12 rounded-md flex items-center justify-center" style="background:var(--regal);color:var(--white);font-weight:700">H</div>
-        <div>
-          <h1 class="text-xl font-bold accent">HIAIS Payment Portal</h1>
-          <p class="text-sm text-gray-600">Secure payments — Admission, Term, & Exam fees</p>
-        </div>
-      </div>
-      <div class="text-sm text-gray-600">3-step checkout • local save</div>
-    </header>
+<body class="bg-white min-h-screen flex flex-col">
 
-    <!-- Progress -->
-    <div class="flex items-center gap-3 mb-6">
-      <div id="prog1" class="flex-1 h-2 rounded bg-[#e6eef8] relative overflow-hidden">
-        <div class="h-2 bg-[var(--regal)] w-0" style="transition:width .35s" id="progBar1"></div>
+  <!-- HEADER -->
+  <header class="bg-[var(--regal)] text-white fixed inset-x-0 top-0 z-50">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+      <div class="flex h-16 items-center justify-between">
+        <a href="index.html" class="flex items-center gap-3 min-w-0">
+          <object
+            data="assets/images/himaayah-icon.svg"
+            type="image/svg+xml"
+            class="h-10 w-10 shrink-0"
+            style="color: var(--pastel);"
+            aria-label="Himaayah Icon"
+          ></object>
+          <div class="min-w-0">
+            <div class="font-extrabold truncate text-lg sm:text-xl">Himaayah Institute of Arabic and Islamic Studies</div>
+          </div>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+          <a href="index.html" class="hover:text-[var(--pastel)] transition">Home</a>
+          <a href="about.html" class="hover:text-[var(--pastel)] transition">About</a>
+          <a href="curriculum.html" class="hover:text-[var(--pastel)] transition">Curriculum</a>
+          <a href="login.html" class="hover:text-[var(--pastel)] transition">Login</a>
+          <a href="payment-portal.html" class="text-[var(--pastel)] underline underline-offset-4 font-semibold">Register</a>
+          <a href="blogpost.html" class="hover:text-[var(--pastel)] transition">Blog</a>
+          <a href="contact.html" class="hover:text-[var(--pastel)] transition">Contact</a>
+        </nav>
+
+        <button
+          id="menuBtn"
+          class="md:hidden inline-flex items-center justify-center rounded-xl border border-white/20 px-3 py-2 text-sm hover:bg-white/10"
+          aria-expanded="false"
+          aria-controls="mobileMenu"
+        >
+          Menu
+        </button>
       </div>
-      <div id="prog2" class="flex-1 h-2 rounded bg-[#e6eef8] relative overflow-hidden">
-        <div class="h-2 bg-[var(--regal)] w-0" style="transition:width .35s" id="progBar2"></div>
-      </div>
-      <div id="prog3" class="flex-1 h-2 rounded bg-[#e6eef8] relative overflow-hidden">
-        <div class="h-2 bg-[var(--regal)] w-0" style="transition:width .35s" id="progBar3"></div>
+
+      <div id="mobileMenu" class="md:hidden hidden pb-4">
+        <nav class="grid gap-2 rounded-2xl border border-white/10 bg-white/5 p-3 text-sm">
+          <a href="index.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Home</a>
+          <a href="about.html" class="rounded-xl px-3 py-2 hover:bg-white/10">About</a>
+          <a href="curriculum.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Curriculum</a>
+          <a href="login.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Login</a>
+          <a href="payment-portal.html" class="rounded-xl px-3 py-2 bg-white/10 text-[var(--pastel)] font-semibold">Register</a>
+          <a href="blogpost.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Blog</a>
+          <a href="contact.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Contact</a>
+        </nav>
       </div>
     </div>
+  </header>
 
-    <!-- Steps -->
-    <section id="step-1" class="step step-visible">
-      <h2 class="text-lg font-semibold accent mb-2">Step 1 — Choose payment purpose</h2>
-      <p class="text-sm text-gray-600 mb-4">Select what you're paying for.</p>
+  <main class="flex-1 pt-24 sm:pt-28 pb-12 px-4">
 
-      <label class="block mb-4">
-        <select id="purpose" class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[var(--regal)]">
-          <option value="">-- Select Purpose --</option>
-          <option value="Admission Fee">Admission / Registration Fee</option>
-          <option value="Term Fee">Term Fees</option>
-          <option value="Exam Fee">Exam Fees</option>
-        </select>
-      </label>
-
-      <div class="flex justify-between items-center gap-3">
-        <button id="s1Next" class="brand-btn px-5 py-2 rounded-lg">Next — Details</button>
-        <button id="saveDraft1" class="brand-outline px-4 py-2 rounded-lg">Save Draft</button>
-      </div>
+    <!-- Title -->
+    <section class="max-w-3xl mx-auto text-center animate-fadeIn">
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-[var(--regal)]">Payment Portal</h1>
+      <div class="mx-auto mt-4 h-1 w-14 rounded-full bg-[var(--pastel)]"></div>
+      <p class="mt-4 text-sm sm:text-base muted">
+        Payments are accepted via Bank Transfer or USSD only.
+      </p>
     </section>
 
-    <section id="step-2" class="step step-hidden">
-      <h2 class="text-lg font-semibold accent mb-2">Step 2 — Student details</h2>
-      <p class="text-sm text-gray-600 mb-4">We’ll save these locally until you're ready to pay.</p>
+    <section class="max-w-2xl mx-auto mt-10 animate-fadeIn">
+      <div class="card p-6 sm:p-8">
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <input id="name" type="text" placeholder="Full name" class="border rounded-lg p-3 focus:ring-2 focus:ring-[var(--regal)]" />
-        <input id="email" type="email" placeholder="Email address" class="border rounded-lg p-3 focus:ring-2 focus:ring-[var(--regal)]" />
-        <input id="phone" type="tel" placeholder="Phone number" class="border rounded-lg p-3 focus:ring-2 focus:ring-[var(--regal)]" />
-        <input id="studentId" type="text" placeholder="Student ID" class="border rounded-lg p-3 focus:ring-2 focus:ring-[var(--regal)]" />
-      </div>
-
-      <div class="flex justify-between items-center gap-3 mt-4">
-        <button id="s2Back" class="px-4 py-2 rounded-lg border">Back</button>
-        <div class="flex gap-2">
-          <button id="saveDraft2" class="brand-outline px-4 py-2 rounded-lg">Save Draft</button>
-          <button id="s2Next" class="brand-btn px-5 py-2 rounded-lg">Next — Pay</button>
+        <!-- Progress -->
+        <div class="flex items-center gap-3 mb-7">
+          <div class="flex-1 h-2 rounded-full" style="background: rgba(9,69,112,0.12);">
+            <div id="progBar1" class="h-2 rounded-full" style="background: var(--regal); width: 0%; transition: width .25s;"></div>
+          </div>
+          <div class="flex-1 h-2 rounded-full" style="background: rgba(9,69,112,0.12);">
+            <div id="progBar2" class="h-2 rounded-full" style="background: var(--regal); width: 0%; transition: width .25s;"></div>
+          </div>
+          <div class="flex-1 h-2 rounded-full" style="background: rgba(9,69,112,0.12);">
+            <div id="progBar3" class="h-2 rounded-full" style="background: var(--regal); width: 0%; transition: width .25s;"></div>
+          </div>
         </div>
-      </div>
-    </section>
 
-    <section id="step-3" class="step step-hidden">
-      <h2 class="text-lg font-semibold accent mb-2">Step 3 — Choose payment method</h2>
-      <p class="text-sm text-gray-600 mb-4">Pick any method. For Bank/USSD we'll show instructions; Paystack & Flutterwave are simulated here.</p>
+        <!-- STEP 1 -->
+        <section id="step-1" class="step step-visible">
+          <h2 class="text-lg font-extrabold text-[var(--regal)] mb-2">Step 1. Payment Purpose</h2>
+          <p class="text-sm muted mb-4">Choose what you are paying for.</p>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
-        <button class="method-btn border rounded-lg p-4 text-left flex items-center gap-3" data-method="Paystack">
-          <div class="w-10 h-10 rounded bg-[var(--regal)] flex items-center justify-center text-white">PS</div>
-          <div>
-            <div class="font-semibold">Paystack</div>
-            <div class="text-xs text-gray-500">Card & mobile payments (simulated)</div>
+          <select
+            id="purpose"
+            class="w-full rounded-xl px-4 py-3 border outline-none bg-white"
+            style="border-color: rgba(9,69,112,0.18);"
+          >
+            <option value="">Select Purpose</option>
+            <option value="Admission / Registration Fee">Admission / Registration Fee</option>
+            <option value="Term Fees">Term Fees</option>
+            <option value="Exam Fees">Exam Fees</option>
+          </select>
+
+          <div class="mt-5 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+            <button id="s1Next" class="w-full sm:w-auto rounded-full px-6 py-3 font-semibold text-white"
+              style="background: var(--regal);">
+              Next
+            </button>
+            <button id="saveDraft1" class="w-full sm:w-auto rounded-full px-6 py-3 font-semibold border"
+              style="border-color: rgba(9,69,112,0.18); color: var(--regal);">
+              Save Draft
+            </button>
           </div>
-        </button>
+        </section>
 
-        <button class="method-btn border rounded-lg p-4 text-left flex items-center gap-3" data-method="Flutterwave">
-          <div class="w-10 h-10 rounded bg-[var(--pastel)] flex items-center justify-center text-white">FW</div>
-          <div>
-            <div class="font-semibold">Flutterwave</div>
-            <div class="text-xs text-gray-500">Card & mobile payments (simulated)</div>
+        <!-- STEP 2 -->
+        <section id="step-2" class="step step-hidden">
+          <h2 class="text-lg font-extrabold text-[var(--regal)] mb-2">Step 2. Student Details</h2>
+          <p class="text-sm muted mb-4">
+            Your email will be your username. After payment, you will receive a temporary Student ID here on this page.
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <input id="name" type="text" placeholder="Full name"
+              class="rounded-xl px-4 py-3 border outline-none"
+              style="border-color: rgba(9,69,112,0.18);" />
+            <input id="email" type="email" placeholder="Email address (required)"
+              class="rounded-xl px-4 py-3 border outline-none"
+              style="border-color: rgba(9,69,112,0.18);" />
+            <input id="phone" type="tel" placeholder="Phone number (optional)"
+              class="rounded-xl px-4 py-3 border outline-none"
+              style="border-color: rgba(9,69,112,0.18);" />
+            <input id="note" type="text" placeholder="Payment note (optional). e.g., Awwal Ibtidaaiyyah"
+              class="rounded-xl px-4 py-3 border outline-none"
+              style="border-color: rgba(9,69,112,0.18);" />
           </div>
-        </button>
 
-        <button class="method-btn border rounded-lg p-4 text-left flex items-center gap-3" data-method="Bank Transfer">
-          <div class="w-10 h-10 rounded bg-gray-200 flex items-center justify-center text-[var(--regal)]">🏦</div>
-          <div>
-            <div class="font-semibold">Bank Transfer</div>
-            <div class="text-xs text-gray-500">Get bank details & reference</div>
+          <div class="mt-5 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+            <button id="s2Back" class="w-full sm:w-auto rounded-full px-6 py-3 font-semibold border"
+              style="border-color: rgba(9,69,112,0.18); color: var(--regal);">
+              Back
+            </button>
+
+            <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+              <button id="saveDraft2" class="w-full sm:w-auto rounded-full px-6 py-3 font-semibold border"
+                style="border-color: rgba(9,69,112,0.18); color: var(--regal);">
+                Save Draft
+              </button>
+              <button id="s2Next" class="w-full sm:w-auto rounded-full px-6 py-3 font-semibold text-white"
+                style="background: var(--regal);">
+                Next
+              </button>
+            </div>
           </div>
-        </button>
+        </section>
 
-        <button class="method-btn border rounded-lg p-4 text-left flex items-center gap-3" data-method="USSD">
-          <div class="w-10 h-10 rounded bg-gray-200 flex items-center justify-center text-[var(--regal)]">📱</div>
-          <div>
-            <div class="font-semibold">USSD</div>
-            <div class="text-xs text-gray-500">Pay via your bank’s USSD code</div>
+        <!-- STEP 3 -->
+        <section id="step-3" class="step step-hidden">
+          <h2 class="text-lg font-extrabold text-[var(--regal)] mb-2">Step 3. Pay and Confirm</h2>
+          <p class="text-sm muted mb-5">
+            Use Bank Transfer or USSD. Then tap “I have paid” to receive your temporary login details.
+          </p>
+
+          <!-- Payment details block -->
+          <div class="rounded-2xl border p-5"
+            style="border-color: rgba(9,69,112,0.14);">
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+              <div>
+                <div class="text-sm font-extrabold text-[var(--regal)]">Payment Account</div>
+                <div class="mt-2 text-sm muted">
+                  Account Number: <span class="font-semibold text-[var(--regal)]">9064540675</span><br/>
+                  Bank: <span class="font-semibold text-[var(--regal)]">OPay</span><br/>
+                  Account Name: <span class="font-semibold text-[var(--regal)]">Yusuf Abdulsamad Olohuntosin</span>
+                </div>
+              </div>
+
+              <button
+                id="copyAccount"
+                class="w-full sm:w-auto rounded-full px-5 py-2 font-semibold border"
+                style="border-color: rgba(9,69,112,0.18); color: var(--regal);"
+                type="button"
+              >
+                Copy Details
+              </button>
+            </div>
+
+            <div class="mt-4 text-xs muted-2">
+              Tip: Use your email or full name as the transfer narration if possible.
+            </div>
           </div>
-        </button>
-      </div>
 
-      <div id="payInstructions" class="hidden p-4 rounded border bg-[#fbfdff] text-sm text-gray-700"></div>
+          <!-- Optional: Proof reference -->
+          <div class="mt-4">
+            <label class="block text-sm font-semibold text-[var(--regal)] mb-1">Payment reference (optional)</label>
+            <input
+              id="payRef"
+              type="text"
+              placeholder="e.g., OPay receipt ref or USSD ref (optional)"
+              class="w-full rounded-xl px-4 py-3 border outline-none bg-white"
+              style="border-color: rgba(9,69,112,0.18);"
+            />
+            <p class="mt-2 text-xs muted-2">
+              This is not automatic verification. It helps your admin confirm faster.
+            </p>
+          </div>
 
-      <div class="flex justify-between items-center gap-3 mt-4">
-        <button id="s3Back" class="px-4 py-2 rounded-lg border">Back</button>
-        <div class="flex gap-2">
-          <button id="saveDraft3" class="brand-outline px-4 py-2 rounded-lg">Save Draft</button>
-          <button id="confirmPay" class="brand-btn px-5 py-2 rounded-lg">Confirm & Pay</button>
-        </div>
-      </div>
-    </section>
+          <div class="mt-5 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+            <button id="s3Back" class="w-full sm:w-auto rounded-full px-6 py-3 font-semibold border"
+              style="border-color: rgba(9,69,112,0.18); color: var(--regal);">
+              Back
+            </button>
 
-    <!-- Confirmation -->
-    <section id="confirmation" class="step step-hidden text-center p-4">
-      <div class="p-4 rounded-lg border bg-[#f0fff7]">
-        <h3 class="text-xl font-bold text-green-700 mb-2">Payment Recorded ✅</h3>
-        <p class="text-sm text-gray-600 mb-3">A local record has been saved and a receipt is available to download.</p>
-        <div class="flex justify-center gap-3">
-          <button id="downloadPdf" class="brand-btn px-4 py-2 rounded-lg">Download Receipt (PDF)</button>
-          <button id="viewRecord" class="border px-4 py-2 rounded-lg">View Local Record</button>
-        </div>
-      </div>
-    </section>
+            <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+              <button id="saveDraft3" class="w-full sm:w-auto rounded-full px-6 py-3 font-semibold border"
+                style="border-color: rgba(9,69,112,0.18); color: var(--regal);">
+                Save Draft
+              </button>
+              <button id="confirmPaid" class="w-full sm:w-auto rounded-full px-6 py-3 font-semibold text-white"
+                style="background: var(--regal);">
+                I have paid
+              </button>
+            </div>
+          </div>
+        </section>
 
-    <!-- Local record preview (hidden by default) -->
-    <section id="recordView" class="step step-hidden p-3 mt-4 border rounded">
-      <h4 class="font-semibold accent mb-2">Local Payment Record</h4>
-      <pre id="recordJSON" class="text-xs text-gray-700 bg-[#f8fafc] p-3 rounded overflow-auto"></pre>
-      <div class="flex justify-end mt-3">
-        <button id="closeRecord" class="px-3 py-2 rounded border">Close</button>
+        <!-- Confirmation -->
+        <section id="confirmation" class="step step-hidden text-center">
+          <div class="rounded-2xl border p-5"
+            style="border-color: rgba(9,69,112,0.14);">
+            <h3 class="text-xl font-extrabold text-[var(--regal)]">Payment Submitted</h3>
+            <p class="mt-2 text-sm muted">
+              JazaakAllahu khayran. Your temporary login details are below.
+            </p>
+
+            <div class="mt-5 rounded-2xl border p-5 text-left"
+              style="border-color: rgba(9,69,112,0.14);">
+              <div class="text-sm font-extrabold text-[var(--regal)]">Temporary Login Details</div>
+
+              <div class="mt-3 text-sm muted">
+                Username (Email):
+                <div class="mt-1 font-semibold text-[var(--regal)]" id="tempEmail">-</div>
+              </div>
+
+              <div class="mt-4 text-sm muted">
+                Student ID:
+                <div class="mt-1 font-semibold text-[var(--regal)]" id="tempStudentId">-</div>
+              </div>
+
+              <div class="mt-4 text-xs muted-2">
+                Keep these safe. Admin verification may follow if needed.
+              </div>
+
+              <div class="mt-5 flex flex-col sm:flex-row gap-3">
+                <a
+                  id="goLogin"
+                  href="login.html"
+                  class="w-full sm:w-auto text-center rounded-full px-6 py-3 font-semibold text-white"
+                  style="background: var(--regal);"
+                >
+                  Go to Login
+                </a>
+
+                <button
+                  id="copyLogin"
+                  type="button"
+                  class="w-full sm:w-auto rounded-full px-6 py-3 font-semibold border"
+                  style="border-color: rgba(9,69,112,0.18); color: var(--regal);"
+                >
+                  Copy Login Details
+                </button>
+              </div>
+            </div>
+
+            <div class="mt-5 flex flex-col sm:flex-row justify-center gap-3">
+              <button id="viewRecord" class="rounded-full px-6 py-3 font-semibold border"
+                style="border-color: rgba(9,69,112,0.18); color: var(--regal);">
+                View Local Record
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Local record preview -->
+        <section id="recordView" class="step step-hidden mt-5 rounded-2xl border p-4"
+          style="border-color: rgba(9,69,112,0.14);">
+          <h4 class="font-extrabold text-[var(--regal)] mb-2">Local Records (latest 10)</h4>
+          <pre id="recordJSON" class="text-xs rounded-2xl p-4 overflow-auto"
+            style="background: rgba(133,204,255,0.10); color: rgba(9,69,112,0.82);"></pre>
+          <div class="flex justify-end mt-3">
+            <button id="closeRecord" class="rounded-full px-5 py-2 font-semibold border"
+              style="border-color: rgba(9,69,112,0.18); color: var(--regal);">
+              Close
+            </button>
+          </div>
+        </section>
+
       </div>
     </section>
 
   </main>
 
-  <!-- jsPDF -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- Minimal Footer -->
+  <footer class="py-8 text-center">
+    <p class="text-sm font-medium text-[#094570]">
+      © 2026 Himaayah Institute of Arabic and Islamic Studies. All rights reserved.
+    </p>
+    <p class="mt-1 text-xs" style="color: rgba(9,69,112,0.65);">
+      Student Portal
+    </p>
+  </footer>
 
   <script>
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn?.addEventListener('click', () => {
+      const isOpen = !mobileMenu.classList.contains('hidden');
+      mobileMenu.classList.toggle('hidden');
+      menuBtn.setAttribute('aria-expanded', String(!isOpen));
+      menuBtn.textContent = isOpen ? 'Menu' : 'Close';
+    });
+
     // Elements
     const step1 = document.getElementById('step-1');
     const step2 = document.getElementById('step-2');
@@ -175,7 +359,6 @@
     const confirmation = document.getElementById('confirmation');
     const recordView = document.getElementById('recordView');
     const recordJSON = document.getElementById('recordJSON');
-    const payInstructions = document.getElementById('payInstructions');
 
     const progBar1 = document.getElementById('progBar1');
     const progBar2 = document.getElementById('progBar2');
@@ -185,35 +368,63 @@
     const nameEl = document.getElementById('name');
     const emailEl = document.getElementById('email');
     const phoneEl = document.getElementById('phone');
-    const studentIdEl = document.getElementById('studentId');
+    const noteEl = document.getElementById('note');
+    const payRefEl = document.getElementById('payRef');
 
-    // state
-    let draft = {}; // will hold current draft
-    let selectedMethod = null;
+    const tempEmailEl = document.getElementById('tempEmail');
+    const tempStudentIdEl = document.getElementById('tempStudentId');
 
-    // helpers
-    function show(el){
-      el.classList.remove('step-hidden'); el.classList.add('step-visible');
-    }
-    function hide(el){
-      el.classList.remove('step-visible'); el.classList.add('step-hidden');
-    }
+    let draft = {};
+
+    function show(el){ el.classList.remove('step-hidden'); el.classList.add('step-visible'); }
+    function hide(el){ el.classList.remove('step-visible'); el.classList.add('step-hidden'); }
     function setProgress(step){
       progBar1.style.width = step >= 1 ? '100%' : '0%';
       progBar2.style.width = step >= 2 ? '100%' : '0%';
       progBar3.style.width = step >= 3 ? '100%' : '0%';
     }
 
+    function safeLower(s){ return String(s || '').trim().toLowerCase(); }
+
+    // Student ID generator (unique enough for local use)
+    function generateStudentId(email){
+      // Format: HIAIS-YYMM-XXXX
+      const d = new Date();
+      const yy = String(d.getFullYear()).slice(-2);
+      const mm = String(d.getMonth()+1).padStart(2,'0');
+
+      // stable-ish seed from email + time
+      const seed = safeLower(email) + '|' + Date.now() + '|' + Math.random();
+      let hash = 0;
+      for (let i = 0; i < seed.length; i++) {
+        hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
+      }
+      const code = String(hash % 10000).padStart(4,'0');
+      return `HIAIS-${yy}${mm}-${code}`;
+    }
+
+    // Inputs focus styling (brand-only)
+    const inputs = document.querySelectorAll('input, select');
+    inputs.forEach(el => {
+      el.addEventListener('focus', () => {
+        el.style.borderColor = 'rgba(133,204,255,0.95)';
+        el.style.boxShadow = '0 0 0 4px rgba(133,204,255,0.18)';
+      });
+      el.addEventListener('blur', () => {
+        el.style.borderColor = 'rgba(9,69,112,0.18)';
+        el.style.boxShadow = 'none';
+      });
+    });
+
     // initial
     setProgress(1);
 
-    // navigation buttons
+    // Navigation
     document.getElementById('s1Next').addEventListener('click', () => {
       if(!purposeEl.value) return alert('Select a payment purpose.');
       draft.purpose = purposeEl.value;
       show(step2); hide(step1); hide(step3); hide(confirmation); hide(recordView);
       setProgress(2);
-      // try to load previous draft for student id
       loadDraftToForm();
     });
 
@@ -223,9 +434,15 @@
     });
 
     document.getElementById('s2Next').addEventListener('click', () => {
-      // validate details
-      if(!nameEl.value || !emailEl.value || !studentIdEl.value) return alert('Please complete name, email and student ID.');
-      draft.name = nameEl.value; draft.email = emailEl.value; draft.phone = phoneEl.value; draft.studentId = studentIdEl.value;
+      if(!nameEl.value.trim()) return alert('Enter your full name.');
+      if(!emailEl.value.trim()) return alert('Enter your email address.');
+      if(!emailEl.value.includes('@')) return alert('Enter a valid email address.');
+
+      draft.name = nameEl.value.trim();
+      draft.email = emailEl.value.trim();
+      draft.phone = phoneEl.value.trim();
+      draft.note = noteEl.value.trim();
+
       show(step3); hide(step1); hide(step2); hide(confirmation); hide(recordView);
       setProgress(3);
     });
@@ -235,7 +452,7 @@
       setProgress(2);
     });
 
-    // save draft buttons
+    // Save drafts
     document.getElementById('saveDraft1').addEventListener('click', () => {
       draft.purpose = purposeEl.value || draft.purpose;
       localStorage.setItem('himaayah_payment_draft', JSON.stringify(draft));
@@ -245,96 +462,92 @@
       draft.name = nameEl.value || draft.name;
       draft.email = emailEl.value || draft.email;
       draft.phone = phoneEl.value || draft.phone;
-      draft.studentId = studentIdEl.value || draft.studentId;
+      draft.note = noteEl.value || draft.note;
       localStorage.setItem('himaayah_payment_draft', JSON.stringify(draft));
       alert('Draft saved locally.');
     });
     document.getElementById('saveDraft3').addEventListener('click', () => {
-      if(!selectedMethod) return alert('Pick a payment method first.');
+      draft.payRef = payRefEl.value || draft.payRef;
       localStorage.setItem('himaayah_payment_draft', JSON.stringify(draft));
       alert('Draft saved locally.');
     });
 
-    // method buttons
-    document.querySelectorAll('.method-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        document.querySelectorAll('.method-btn').forEach(b => b.classList.remove('ring-2','ring-[var(--regal)]'));
-        btn.classList.add('ring-2','ring-[var(--regal)]');
-        selectedMethod = btn.dataset.method;
-        showMethodInstructions(selectedMethod);
-      });
+    // Copy account details
+    document.getElementById('copyAccount').addEventListener('click', async () => {
+      const text =
+`Account Number: 9064540675
+Bank: OPay
+Account Name: Yusuf Abdulsamad Olohuntosin`;
+      try {
+        await navigator.clipboard.writeText(text);
+        alert('Account details copied.');
+      } catch(e){
+        alert('Copy failed. Please copy manually.');
+      }
     });
 
-    function showMethodInstructions(method){
-      payInstructions.classList.remove('hidden');
-      payInstructions.innerHTML = '';
-      if(method === 'Paystack' || method === 'Flutterwave'){
-        payInstructions.innerHTML = `<strong>${method} (Simulated)</strong>
-          <p class="mt-2 text-sm text-gray-600">You will be redirected to ${method} to complete payment. (In this demo it's simulated.)</p>`;
-      } else if(method === 'Bank Transfer'){
-        payInstructions.innerHTML = `<strong>Bank Transfer Instructions</strong>
-          <p class="mt-2 text-sm text-gray-700">Account: Himaayah Madrasah<br>Bank: Example Bank<br>Account No: 0123456789<br>Reference: PAY-${Date.now().toString().slice(-6)}</p>`;
-      } else if(method === 'USSD'){
-        payInstructions.innerHTML = `<strong>USSD Instructions</strong>
-          <p class="mt-2 text-sm text-gray-700">Dial: *123*45*${Math.floor(Math.random()*9000)+1000}# and follow prompts. Use reference: USSD-${Date.now().toString().slice(-6)}</p>`;
-      }
-    }
+    // Confirm paid (self-declared)
+    document.getElementById('confirmPaid').addEventListener('click', () => {
+      draft.payRef = payRefEl.value.trim();
 
-    // confirm & pay (simulated)
-    document.getElementById('confirmPay').addEventListener('click', () => {
-      if(!selectedMethod) return alert('Select a payment method');
-      draft.method = selectedMethod;
-      draft.timestamp = new Date().toISOString();
-      // create a record key per student id
-      const key = 'himaayah_payment_' + draft.studentId;
-      const record = { id: 'pay_' + Math.random().toString(36).slice(2,9), purpose: draft.purpose, name: draft.name, email: draft.email, phone: draft.phone, studentId: draft.studentId, method: draft.method, date: new Date().toLocaleString(), status: 'SUCCESS' };
-      // save to localStorage under single key list
+      const studentId = generateStudentId(draft.email);
+
+      // Save a local record
+      const record = {
+        id: 'reg_' + Math.random().toString(36).slice(2,9),
+        purpose: draft.purpose,
+        name: draft.name,
+        email: draft.email,
+        phone: draft.phone || '',
+        note: draft.note || '',
+        payRef: draft.payRef || '',
+        paymentAccount: {
+          accountNumber: '9064540675',
+          bank: 'OPay',
+          accountName: 'Yusuf Abdulsamad Olohuntosin'
+        },
+        studentId,
+        status: 'SUBMITTED',
+        date: new Date().toLocaleString()
+      };
+
       const payments = JSON.parse(localStorage.getItem('himaayah_payments') || '[]');
       payments.push(record);
       localStorage.setItem('himaayah_payments', JSON.stringify(payments));
-      // also individual key
-      localStorage.setItem(key, JSON.stringify(record));
-      // set lastRecord for view
       localStorage.setItem('himaayah_last_payment', JSON.stringify(record));
 
-      // show confirmation
-      hide(step1); hide(step2); hide(step3);
+      // Show temp login details
+      tempEmailEl.textContent = record.email;
+      tempStudentIdEl.textContent = record.studentId;
+
+      hide(step1); hide(step2); hide(step3); hide(recordView);
       show(confirmation);
-      hide(recordView);
       setProgress(3);
     });
 
-    // download receipt
-    document.getElementById('downloadPdf').addEventListener('click', () => {
+    // Copy login details
+    document.getElementById('copyLogin').addEventListener('click', async () => {
       const rec = JSON.parse(localStorage.getItem('himaayah_last_payment') || '{}');
-      if(!rec.id) return alert('No payment found.');
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      doc.setFontSize(16);
-      doc.setTextColor(9,69,112);
-      doc.text('Himaayah Institute of Arabic & Islamic Studies', 14, 20);
-      doc.setFontSize(12);
-      doc.setTextColor(0,0,0);
-      doc.text('Payment Receipt', 14, 30);
-      doc.setFontSize(10);
-      doc.text(`Name: ${rec.name}`, 14, 42);
-      doc.text(`Student ID: ${rec.studentId}`, 14, 50);
-      doc.text(`Email: ${rec.email}`, 14, 58);
-      doc.text(`Phone: ${rec.phone || '-'}`, 14, 66);
-      doc.text(`Purpose: ${rec.purpose}`, 14, 74);
-      doc.text(`Method: ${rec.method}`, 14, 82);
-      doc.text(`Date: ${rec.date}`, 14, 90);
-      doc.text(`Status: ${rec.status}`, 14, 98);
-      doc.setFontSize(9);
-      doc.text('Powered by Himaayah', 14, 180);
-      doc.save(`Himaayah_Receipt_${rec.studentId}.pdf`);
+      if(!rec.studentId) return alert('No record found.');
+      const text =
+`Temporary Login Details
+Email: ${rec.email}
+Student ID: ${rec.studentId}`;
+      try{
+        await navigator.clipboard.writeText(text);
+        alert('Login details copied.');
+      } catch(e){
+        alert('Copy failed. Please copy manually.');
+      }
     });
 
-    // view record
+    // View record
     document.getElementById('viewRecord').addEventListener('click', () => {
       const payments = JSON.parse(localStorage.getItem('himaayah_payments') || '[]');
       recordJSON.textContent = JSON.stringify(payments.slice(-10).reverse(), null, 2);
-      show(recordView); hide(step1); hide(step2); hide(step3); hide(confirmation);
+
+      hide(step1); hide(step2); hide(step3); hide(confirmation);
+      show(recordView);
     });
 
     document.getElementById('closeRecord').addEventListener('click', () => {
@@ -342,7 +555,7 @@
       show(confirmation);
     });
 
-    // load draft into form if present
+    // Draft restore
     function loadDraftToForm(){
       const raw = localStorage.getItem('himaayah_payment_draft');
       if(!raw) return;
@@ -352,26 +565,17 @@
         if(d.name) nameEl.value = d.name;
         if(d.email) emailEl.value = d.email;
         if(d.phone) phoneEl.value = d.phone;
-        if(d.studentId) studentIdEl.value = d.studentId;
+        if(d.note) noteEl.value = d.note;
+        if(d.payRef) payRefEl.value = d.payRef;
       } catch(e){}
     }
 
-    // restore draft on page load if exists
     window.addEventListener('load', () => {
-      const d = localStorage.getItem('himaayah_payment_draft');
-      if(d) draft = JSON.parse(d);
+      const raw = localStorage.getItem('himaayah_payment_draft');
+      if(raw) { try { draft = JSON.parse(raw); } catch(e){} }
       loadDraftToForm();
     });
-
-    // quick keyboard accessibility: allow Enter on selected method if focused
-    document.addEventListener('keyup', (e) => {
-      if(e.key === 'Enter'){
-        // if on step3 and a method is selected, confirm
-        if(!document.getElementById('step-3').classList.contains('step-hidden') && selectedMethod){
-          document.getElementById('confirmPay').click();
-        }
-      }
-    });
   </script>
+
 </body>
 </html>

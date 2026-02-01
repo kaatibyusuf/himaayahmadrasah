@@ -5,63 +5,90 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Curriculum | Himaayah Institute of Arabic and Islamic Studies</title>
   <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
-    :root {
-      --regal: #094570;
-      --pastel: #85CCFF;
-      --accent: #FFD60A;
+    :root{
+      --regal:#094570;
+      --pastel:#85CCFF;
+      --white:#FFFFFF;
     }
-    body {
-      background: #f9fafb;
-      color: #1f2937;
-      font-family: 'Poppins', sans-serif;
+
+    html{scroll-behavior:smooth;}
+    body{
+      background: #FFFFFF; /* clean brand base */
+      color: #0b1220;
     }
-    .hero-bg {
-      background: linear-gradient(to right, var(--regal), var(--pastel));
+
+    /* Brand system */
+    .brand-ink{ color: var(--regal); }
+    .brand-accent{ color: var(--pastel); }
+    .brand-bg{ background: var(--regal); }
+    .brand-bg-soft{ background: #F7FBFF; } /* subtle, no gradient */
+    .brand-border{ border-color: rgba(9,69,112,0.14); }
+
+    /* Cards */
+    .card{
+      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
     }
-    .card {
-      transition: all 0.3s ease;
+    .card:hover{
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(9,69,112,0.10);
+      border-color: rgba(133,204,255,0.60);
     }
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-    }
+
+    /* Logo recolor note:
+       If himaayah-icon.svg is set to currentColor inside the SVG, this will tint it.
+       If it has hard-coded fills, you must edit the SVG fills to #094570 for this page.
+    */
+    .logo-tint{ color: var(--regal); }
   </style>
 </head>
+
 <body class="antialiased">
 
   <!-- Navbar -->
-  <header class="bg-white border-b sticky top-0 z-40">
+  <header class="bg-white border-b brand-border sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-      <a href="index.html" class="flex items-center gap-3">
-        <img src="logo.png" alt="Himaayah Logo" class="h-10 w-auto">
-        <span class="font-extrabold text-lg text-[var(--regal)]">Himaayah Madrasah</span>
+      <a href="index.html" class="flex items-center gap-3 min-w-0">
+        <!-- Use object so SVG can follow brand color where possible -->
+        <object
+          data="assets/images/himaayah-icon.svg"
+          type="image/svg+xml"
+          aria-label="Himaayah Icon"
+          class="h-10 w-10 shrink-0 logo-tint"
+        ></object>
+
+        <span class="font-extrabold text-lg brand-ink truncate">Himaayah Institute of Arabic and Islamic Studies</span>
       </a>
+
       <nav class="hidden md:flex items-center gap-6">
-        <a href="index.html" class="text-sm hover:text-[var(--pastel)]">Home</a>
-        <a href="about.html" class="text-sm hover:text-[var(--pastel)]">About</a>
+        <a href="index.html" class="text-sm brand-ink hover:text-[var(--pastel)] transition">Home</a>
+        <a href="about.html" class="text-sm brand-ink hover:text-[var(--pastel)] transition">About</a>
         <a href="curriculum.html" class="text-sm font-semibold text-[var(--pastel)]">Curriculum</a>
-        <a href="payment-portal.html" class="text-sm hover:text-[var(--pastel)]">Register</a>
-        <a href="contact.html" class="text-sm hover:text-[var(--pastel)]">Contact</a>
+        <a href="payment-portal.html" class="text-sm brand-ink hover:text-[var(--pastel)] transition">Register</a>
+        <a href="contact.html" class="text-sm brand-ink hover:text-[var(--pastel)] transition">Contact</a>
       </nav>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="hero-bg text-white py-16">
+  <!-- Hero Section (NO GRADIENT) -->
+  <section class="brand-bg text-white py-16">
     <div class="max-w-6xl mx-auto px-6 text-center">
       <h1 class="text-4xl md:text-5xl font-extrabold">Our Curriculum</h1>
-      <p class="mt-4 max-w-2xl mx-auto text-lg">
-        A comprehensive journey through Qur’an, Arabic, and Islamic Studies — from foundation to mastery.
+      <p class="mt-4 max-w-2xl mx-auto text-lg text-white/85">
+        A comprehensive journey through Qur’an, Arabic, and Islamic Studies, from foundation to mastery.
       </p>
+
+      <!-- Small brand accent line for identity -->
+      <div class="mx-auto mt-6 h-1 w-20 rounded-full bg-[var(--pastel)]"></div>
     </div>
   </section>
 
   <!-- Curriculum Overview -->
   <main class="max-w-7xl mx-auto px-6 py-16">
     <div class="text-center mb-12">
-      <h2 class="text-2xl font-bold text-[var(--regal)]">Departments & Subjects</h2>
-      <p class="mt-2 text-gray-600 max-w-2xl mx-auto">
+      <h2 class="text-2xl font-bold brand-ink">Departments and Subjects</h2>
+      <p class="mt-2 text-slate-600 max-w-2xl mx-auto">
         The Himaayah curriculum combines classical Islamic learning with modern structure to nurture faith, intellect, and discipline.
       </p>
     </div>
@@ -69,120 +96,183 @@
     <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 
       <!-- Tawheed -->
-      <div class="card bg-white rounded-xl p-6 shadow-md border">
-        <h3 class="text-xl font-bold text-[var(--regal)]">Tawheed (Monotheism)</h3>
-        <p class="mt-3 text-gray-700">Understanding the foundation of faith — belief in Allah’s Oneness, His Names, and Attributes. Based on the works of Ibn al-Qayyim and Shaykh Ibn Baz.</p>
-        <ul class="mt-4 text-sm text-gray-600 list-disc list-inside">
+      <div class="card bg-white rounded-2xl p-6 shadow-sm border brand-border">
+        <div class="flex items-start gap-3">
+          <span class="mt-1 inline-flex h-2.5 w-2.5 rounded-full bg-[var(--pastel)]"></span>
+          <h3 class="text-xl font-bold brand-ink">Tawheed (Monotheism)</h3>
+        </div>
+        <p class="mt-3 text-slate-700">
+          Understanding the foundation of faith, belief in Allah’s Oneness, His Names, and Attributes.
+        </p>
+        <ul class="mt-4 text-sm text-slate-600 list-disc list-inside">
           <li>Categories of Tawheed</li>
-          <li>Shirk & Its Dangers</li>
+          <li>Shirk and its dangers</li>
           <li>Conditions of Laa ilaa ha illallah</li>
         </ul>
       </div>
 
       <!-- Fiqh -->
-      <div class="card bg-white rounded-xl p-6 shadow-md border">
-        <h3 class="text-xl font-bold text-[var(--regal)]">Fiqh (Jurisprudence)</h3>
-        <p class="mt-3 text-gray-700">A step-by-step guide to understanding Islamic rulings through evidence — covering purification, prayer, fasting, zakah, and more.</p>
-        <ul class="mt-4 text-sm text-gray-600 list-disc list-inside">
-          <li>Fiqh of Worship</li>
-          <li>Fiqh of Transactions</li>
-          <li>Marriage & Family Laws</li>
+      <div class="card bg-white rounded-2xl p-6 shadow-sm border brand-border">
+        <div class="flex items-start gap-3">
+          <span class="mt-1 inline-flex h-2.5 w-2.5 rounded-full bg-[var(--pastel)]"></span>
+          <h3 class="text-xl font-bold brand-ink">Fiqh (Jurisprudence)</h3>
+        </div>
+        <p class="mt-3 text-slate-700">
+          A step-by-step guide to Islamic rulings through evidence, covering purification, prayer, fasting, zakah, and more.
+        </p>
+        <ul class="mt-4 text-sm text-slate-600 list-disc list-inside">
+          <li>Fiqh of worship</li>
+          <li>Fiqh of transactions</li>
+          <li>Marriage and family laws</li>
         </ul>
       </div>
 
       <!-- Hadeeth -->
-      <div class="card bg-white rounded-xl p-6 shadow-md border">
-        <h3 class="text-xl font-bold text-[var(--regal)]">Hadeeth</h3>
-        <p class="mt-3 text-gray-700">Study of the sayings and actions of the Prophet ﷺ with emphasis on understanding and application.</p>
-        <ul class="mt-4 text-sm text-gray-600 list-disc list-inside">
+      <div class="card bg-white rounded-2xl p-6 shadow-sm border brand-border">
+        <div class="flex items-start gap-3">
+          <span class="mt-1 inline-flex h-2.5 w-2.5 rounded-full bg-[var(--pastel)]"></span>
+          <h3 class="text-xl font-bold brand-ink">Hadeeth</h3>
+        </div>
+        <p class="mt-3 text-slate-700">
+          Study of the sayings and actions of the Prophet ﷺ with emphasis on understanding and application.
+        </p>
+        <ul class="mt-4 text-sm text-slate-600 list-disc list-inside">
           <li>40 Hadeeth of an-Nawawi</li>
           <li>Riyad as-Saliheen</li>
-          <li>Principles of Hadeeth Science</li>
+          <li>Principles of Hadeeth science</li>
         </ul>
       </div>
 
       <!-- Qur'an -->
-      <div class="card bg-white rounded-xl p-6 shadow-md border">
-        <h3 class="text-xl font-bold text-[var(--regal)]">Qur’an Studies</h3>
-        <p class="mt-3 text-gray-700">Focused memorization, recitation, and understanding of the Qur’an — guided by qualified teachers with ijāzah.</p>
-        <ul class="mt-4 text-sm text-gray-600 list-disc list-inside">
-          <li>Tajweed Mastery</li>
-          <li>Qur’an Memorization</li>
-          <li>Tafseer & Reflection</li>
+      <div class="card bg-white rounded-2xl p-6 shadow-sm border brand-border">
+        <div class="flex items-start gap-3">
+          <span class="mt-1 inline-flex h-2.5 w-2.5 rounded-full bg-[var(--pastel)]"></span>
+          <h3 class="text-xl font-bold brand-ink">Qur’an Studies</h3>
+        </div>
+        <p class="mt-3 text-slate-700">
+          Focused memorization, recitation, and understanding of the Qur’an guided by qualified teachers.
+        </p>
+        <ul class="mt-4 text-sm text-slate-600 list-disc list-inside">
+          <li>Tajweed mastery</li>
+          <li>Qur’an memorization</li>
+          <li>Tafseer and reflection</li>
         </ul>
       </div>
 
       <!-- Arabic -->
-      <div class="card bg-white rounded-xl p-6 shadow-md border">
-        <h3 class="text-xl font-bold text-[var(--regal)]">Arabic Language</h3>
-        <p class="mt-3 text-gray-700">Develop the language of the Qur’an — reading, writing, grammar, and conversation from beginner to advanced.</p>
-        <ul class="mt-4 text-sm text-gray-600 list-disc list-inside">
-          <li>Arabic Grammar (Nahw & Sarf)</li>
-          <li>Comprehension & Expression</li>
-          <li>Balaghah (Rhetoric)</li>
+      <div class="card bg-white rounded-2xl p-6 shadow-sm border brand-border">
+        <div class="flex items-start gap-3">
+          <span class="mt-1 inline-flex h-2.5 w-2.5 rounded-full bg-[var(--pastel)]"></span>
+          <h3 class="text-xl font-bold brand-ink">Arabic Language</h3>
+        </div>
+        <p class="mt-3 text-slate-700">
+          Develop the language of the Qur’an, reading, writing, grammar, and conversation from beginner to advanced.
+        </p>
+        <ul class="mt-4 text-sm text-slate-600 list-disc list-inside">
+          <li>Arabic grammar (Nahw and Sarf)</li>
+          <li>Comprehension and expression</li>
+          <li>Balaghah (rhetoric)</li>
         </ul>
       </div>
 
       <!-- Seerah -->
-      <div class="card bg-white rounded-xl p-6 shadow-md border">
-        <h3 class="text-xl font-bold text-[var(--regal)]">Seerah (Prophetic Biography)</h3>
-        <p class="mt-3 text-gray-700">Tracing the life of the Prophet ﷺ — his mission, challenges, and leadership lessons for every believer.</p>
-        <ul class="mt-4 text-sm text-gray-600 list-disc list-inside">
-          <li>Meccan & Madinan Periods</li>
-          <li>Key Battles & Lessons</li>
-          <li>Prophetic Manners & Leadership</li>
+      <div class="card bg-white rounded-2xl p-6 shadow-sm border brand-border">
+        <div class="flex items-start gap-3">
+          <span class="mt-1 inline-flex h-2.5 w-2.5 rounded-full bg-[var(--pastel)]"></span>
+          <h3 class="text-xl font-bold brand-ink">Seerah (Prophetic Biography)</h3>
+        </div>
+        <p class="mt-3 text-slate-700">
+          Tracing the life of the Prophet ﷺ, his mission, challenges, and leadership lessons for every believer.
+        </p>
+        <ul class="mt-4 text-sm text-slate-600 list-disc list-inside">
+          <li>Meccan and Madinan periods</li>
+          <li>Key battles and lessons</li>
+          <li>Prophetic manners and leadership</li>
         </ul>
       </div>
 
-      <!-- Adhkaar & Muhfuzat -->
-      <div class="card bg-white rounded-xl p-6 shadow-md border">
-        <h3 class="text-xl font-bold text-[var(--regal)]">Adhkaar & Muhfuzat</h3>
-        <p class="mt-3 text-gray-700">Daily spiritual training through authentic adhkaar, short surahs, and beneficial supplications.</p>
-        <ul class="mt-4 text-sm text-gray-600 list-disc list-inside">
-          <li>Morning & Evening Adhkaar</li>
-          <li>Selected Surahs for Memorization</li>
-          <li>Prophetic Du‘aas</li>
+      <!-- Adhkaar -->
+      <div class="card bg-white rounded-2xl p-6 shadow-sm border brand-border">
+        <div class="flex items-start gap-3">
+          <span class="mt-1 inline-flex h-2.5 w-2.5 rounded-full bg-[var(--pastel)]"></span>
+          <h3 class="text-xl font-bold brand-ink">Adhkaar</h3>
+        </div>
+        <p class="mt-3 text-slate-700">
+          Daily spiritual training through authentic adhkaar, short surahs, and beneficial supplications.
+        </p>
+        <ul class="mt-4 text-sm text-slate-600 list-disc list-inside">
+          <li>Morning and evening adhkaar</li>
+          <li>Selected adhkaar for memorization</li>
+          <li>Prophetic du‘aas</li>
         </ul>
       </div>
 
-      <!-- Character & Tarbiyah -->
-      <div class="card bg-white rounded-xl p-6 shadow-md border">
-        <h3 class="text-xl font-bold text-[var(--regal)]">Character & Tarbiyah</h3>
-        <p class="mt-3 text-gray-700">Building upright character, discipline, and sincerity through guided mentorship and self-development lessons.</p>
-        <ul class="mt-4 text-sm text-gray-600 list-disc list-inside">
-          <li>Purification of the Soul</li>
-          <li>Time Management & Adab</li>
-          <li>Serving Parents & Society</li>
+      <!-- Tarbiyah -->
+      <div class="card bg-white rounded-2xl p-6 shadow-sm border brand-border">
+        <div class="flex items-start gap-3">
+          <span class="mt-1 inline-flex h-2.5 w-2.5 rounded-full bg-[var(--pastel)]"></span>
+          <h3 class="text-xl font-bold brand-ink">Character and Tarbiyah</h3>
+        </div>
+        <p class="mt-3 text-slate-700">
+          Building upright character, discipline, and sincerity through guided mentorship and self-development lessons.
+        </p>
+        <ul class="mt-4 text-sm text-slate-600 list-disc list-inside">
+          <li>Purification of the soul</li>
+          <li>Time management and adab</li>
+          <li>Serving parents and society</li>
         </ul>
       </div>
 
       <!-- Advanced Arabic -->
-      <div class="card bg-white rounded-xl p-6 shadow-md border">
-        <h3 class="text-xl font-bold text-[var(--regal)]">Advanced Arabic (Nahw & Sarf)</h3>
-        <p class="mt-3 text-gray-700">Specialized for higher-level students mastering classical texts like Ajurumiyyah and Qatr an-Nada.</p>
-        <ul class="mt-4 text-sm text-gray-600 list-disc list-inside">
-          <li>Ajurumiyyah & Qatr an-Nada</li>
-          <li>Advanced Morphology</li>
-          <li>Arabic Composition & Syntax</li>
+      <div class="card bg-white rounded-2xl p-6 shadow-sm border brand-border">
+        <div class="flex items-start gap-3">
+          <span class="mt-1 inline-flex h-2.5 w-2.5 rounded-full bg-[var(--pastel)]"></span>
+          <h3 class="text-xl font-bold brand-ink">Advanced Arabic (Nahw and Sarf)</h3>
+        </div>
+        <p class="mt-3 text-slate-700">
+          Specialized for higher-level students mastering classical texts like Ajurumiyyah and Qatr an-Nada.
+        </p>
+        <ul class="mt-4 text-sm text-slate-600 list-disc list-inside">
+          <li>Ajurumiyyah and Qatr an-Nada</li>
+          <li>Advanced morphology</li>
+          <li>Arabic composition and syntax</li>
         </ul>
       </div>
 
     </div>
   </main>
 
-  <!-- Call to Action -->
-  <section class="bg-[var(--pastel)] py-12 text-center text-[var(--regal)]">
-    <h2 class="text-2xl font-bold">Ready to Begin?</h2>
-    <p class="mt-2 text-gray-700">Join hundreds of students learning Qur’an, Arabic, and Islam online.</p>
-    <a href="payment-portal.html" class="inline-block mt-6 bg-[var(--regal)] text-white px-8 py-3 rounded-lg hover:bg-[#0A3552] transition">Register Now</a>
-  </section>
+  <!-- Call to Action (UPDATED: plain, no pastel background) -->
+<section class="py-12 text-center bg-white">
+  <div class="mx-auto max-w-4xl px-6">
+    <h2 class="text-2xl font-bold text-[#094570]">Ready to Begin?</h2>
+    <p class="mt-2 text-slate-600">
+      Join hundreds of students learning Qur’an, Arabic, and Islam online.
+    </p>
+
+    <a
+      href="payment-portal.html"
+      class="inline-flex items-center justify-center mt-6 rounded-xl bg-[#094570] text-white px-8 py-3 font-semibold
+             hover:bg-[#083A5B] transition"
+    >
+      Register Now
+    </a>
+  </div>
+</section>
+
 
   <!-- Footer -->
-  <footer class="bg-[var(--regal)] text-white py-8 mt-12">
+  <footer class="bg-[var(--regal)] text-white py-8">
     <div class="max-w-7xl mx-auto px-6 text-center">
-      <p>Himaayah Madrasah • Email: <a href="mailto:mahadulhimaayah@gmail.com" class="underline">mahadulhimaayah@gmail.com</a></p>
-      <p class="mt-2 text-sm">© 2026 Himaayah Institute of Arabic & Islamic Studies. All rights reserved.</p>
+      <p class="text-white/85">
+        Himaayah Madrasah. Email:
+        <a href="mailto:mahadulhimaayah@gmail.com" class="underline decoration-white/40 hover:decoration-white transition">
+          mahadulhimaayah@gmail.com
+        </a>
+      </p>
+      <p class="mt-2 text-sm text-white/70">© 2026 Himaayah Institute of Arabic and Islamic Studies. All rights reserved.</p>
     </div>
   </footer>
+
 </body>
 </html>

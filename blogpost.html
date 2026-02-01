@@ -9,35 +9,102 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
 
   <style>
-    html { scroll-behavior: smooth; }
+    :root{
+      --regal:#094570;
+      --pastel:#85CCFF;
+      --white:#FFFFFF;
+    }
+    html{scroll-behavior:smooth;}
+
+    /* Brand-only palette discipline */
+    .brand-bg{background:var(--regal);}
+    .brand-ink{color:var(--regal);}
+    .brand-accent{color:var(--pastel);}
+
+    /* Editorial rhythm */
+    .reading-frame{max-width: 72ch;}
+    .prose p{margin: 1rem 0; color: rgba(9,69,112,0.85);}
+    .prose h2{margin-top: 2.25rem; margin-bottom: .75rem; font-weight: 800; color: var(--regal); font-size: 1.5rem; line-height: 1.25;}
+    .prose h3{margin-top: 1.75rem; margin-bottom: .5rem; font-weight: 800; color: var(--regal); font-size: 1.25rem; line-height: 1.3;}
+    .prose ul{margin: 1rem 0; padding-left: 1.25rem;}
+    .prose li{margin: .4rem 0; color: rgba(9,69,112,0.85);}
+    .prose a{color: var(--regal); text-decoration: underline; text-decoration-color: rgba(133,204,255,0.9); text-underline-offset: 4px;}
+
+    /* Quote component */
+    .quote{
+      border-left: 4px solid var(--pastel);
+      padding-left: 1rem;
+      color: rgba(9,69,112,0.92);
+      font-style: italic;
+    }
+
+    /* Tag pills */
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:.4rem;
+      border:1px solid rgba(9,69,112,0.16);
+      color: var(--regal);
+      border-radius: 9999px;
+      padding: .35rem .7rem;
+      font-size: .85rem;
+      background: var(--white);
+    }
+    .tag-dot{
+      width:.45rem;height:.45rem;border-radius:9999px;background:var(--pastel);
+      display:inline-block;
+    }
+
+    /* Hairline divider */
+    .hairline{height:1px;background:rgba(9,69,112,0.14);}
+
+    /* Subtle hover states without new colors */
+    .navlink:hover{color:var(--pastel);}
+    .card{
+      border:1px solid rgba(9,69,112,0.14);
+      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+    }
+    .card:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(9,69,112,0.10);
+      border-color: rgba(133,204,255,0.55);
+    }
+
+    /* SVG tinting works if SVG uses currentColor or has no hard-coded fills */
+    .logo-tint{color:var(--pastel);}
   </style>
 </head>
 
-<body class="bg-white text-gray-800 overflow-x-hidden">
+<body class="bg-white overflow-x-hidden">
 
   <!-- HEADER -->
-  <header class="bg-[#094570] text-white shadow-md fixed inset-x-0 top-0 z-50">
+  <header class="bg-[var(--regal)] text-white fixed inset-x-0 top-0 z-50">
     <div class="mx-auto max-w-7xl px-4 sm:px-6">
       <div class="flex h-16 items-center justify-between">
 
         <!-- Brand -->
-        <a href="index.html" class="flex items-center gap-3 min-w-0">
-          <!-- Optional logo. Remove if not needed -->
-          <!-- <img src="logo.png" alt="Himaayah Logo" class="h-10 w-10 shrink-0 object-contain" /> -->
+        <a href="index.html" class="flex items-center gap-3 min-w-0" aria-label="Himaayah Institute Home">
+          <object
+            data="assets/images/himaayah-icon.svg"
+            type="image/svg+xml"
+            aria-label="Himaayah Icon"
+            class="h-10 w-10 shrink-0 logo-tint"
+          ></object>
+
           <div class="min-w-0">
-            <div class="font-bold truncate text-lg sm:text-xl">Himaayah Institute</div>
+            <div class="font-extrabold truncate text-lg sm:text-xl">Himaayah Institute</div>
             <div class="hidden sm:block text-xs text-white/70">Arabic. Qur’an. Islamic Sciences.</div>
           </div>
         </a>
 
         <!-- Desktop nav -->
         <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
-          <a href="index.html" class="hover:text-[#85CCFF]">Home</a>
-          <a href="about.html" class="hover:text-[#85CCFF]">About</a>
-          <a href="curriculum.html" class="hover:text-[#85CCFF]">Curriculum</a>
-          <a href="payment-portal.html" class="hover:text-[#85CCFF]">Register</a>
-          <a href="blogpost.html" class="text-[#85CCFF] underline font-semibold">Blog</a>
-          <a href="contact.html" class="hover:text-[#85CCFF]">Contact</a>
+          <a href="index.html" class="navlink">Home</a>
+          <a href="about.html" class="navlink">About</a>
+          <a href="curriculum.html" class="navlink">Curriculum</a>
+          <a href="payment-portal.html" class="navlink">Register</a>
+          <a href="blogpost.html" class="text-[var(--pastel)] underline underline-offset-4 font-semibold">Blog</a>
+          <a href="contact.html" class="navlink">Contact</a>
         </nav>
 
         <!-- Mobile menu button -->
@@ -58,123 +125,216 @@
           <a href="about.html" class="rounded-xl px-3 py-2 hover:bg-white/10">About</a>
           <a href="curriculum.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Curriculum</a>
           <a href="payment-portal.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Register</a>
-          <a href="blogpost.html" class="rounded-xl px-3 py-2 bg-white/10 text-[#85CCFF] font-semibold">Blog</a>
+          <a href="blogpost.html" class="rounded-xl px-3 py-2 bg-white/10 text-[var(--pastel)] font-semibold">Blog</a>
           <a href="contact.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Contact</a>
         </nav>
       </div>
     </div>
   </header>
 
-  <!-- HERO SECTION -->
-  <section class="pt-24 sm:pt-28 pb-10 sm:pb-12 bg-[#85CCFF]/10 text-center" data-aos="fade-down">
-    <div class="mx-auto max-w-4xl px-4 sm:px-6">
-      <h1 class="text-2xl sm:text-4xl font-bold text-[#094570] mb-3 sm:mb-4 leading-tight">
-        The Journey of Seeking Knowledge
-      </h1>
-      <p class="text-gray-600 text-xs sm:text-sm">
-        Published on <strong>November 2025</strong> | by <span class="font-semibold">Himaayah Editorial Team</span>
-      </p>
-    </div>
-  </section>
+  <!-- PAGE -->
+  <div class="pt-24 sm:pt-28">
 
-  <!-- BLOG CONTENT -->
-  <main class="mx-auto max-w-4xl px-4 sm:px-6 py-10 sm:py-12 leading-relaxed text-base sm:text-lg" data-aos="fade-up">
-    <img
-      src="images/blog1.jpg"
-      alt="Seeking Knowledge"
-      class="rounded-2xl w-full mb-8 shadow-lg object-cover"
-    />
-
-    <p class="mb-6">
-      Knowledge (‘Ilm) is the light by which hearts are illuminated and paths are straightened. The Messenger of Allah ﷺ said:
-    </p>
-
-    <blockquote class="border-l-4 border-[#094570] pl-4 italic text-gray-700 mb-6">
-      “Whoever takes a path upon which to obtain knowledge, Allah makes the path to Paradise easy for him.”
-      <br />— Narrated by Muslim
-    </blockquote>
-
-    <p class="mb-6">
-      Every sincere student of knowledge begins with an intention: <em>to seek what is with Allah</em>, not worldly recognition or praise.
-      This sincerity transforms the act of learning into an act of worship.
-    </p>
-
-    <h2 class="text-xl sm:text-2xl font-bold text-[#094570] mt-10 mb-4">
-      Balancing Effort with Tawakkul
-    </h2>
-
-    <p class="mb-6">
-      While striving to study and memorize, the student must remain humble, constantly relying upon Allah for understanding and success.
-      Imam al-Shafi’i once said:
-    </p>
-
-    <blockquote class="border-l-4 border-[#094570] pl-4 italic text-gray-700 mb-6">
-      “Knowledge is a light, and the light of Allah is not given to the disobedient.”
-    </blockquote>
-
-    <p class="mb-6">
-      The best students are those who not only study hard but also purify their hearts. They seek knowledge that transforms, not merely information that decorates the tongue.
-    </p>
-
-    <h2 class="text-xl sm:text-2xl font-bold text-[#094570] mt-10 mb-4">
-      Practical Steps for the Student of Knowledge
-    </h2>
-
-    <ul class="list-disc pl-6 space-y-2 mb-8 text-gray-700">
-      <li>Begin every lesson with a renewed intention.</li>
-      <li>Write daily reflections after classes to internalize lessons.</li>
-      <li>Spend time with scholars and ask questions with humility.</li>
-      <li>Revise what you’ve learned regularly, repetition strengthens memory.</li>
-      <li>Share what you know. Teaching others revives your own understanding.</li>
-    </ul>
-
-    <p class="mb-6">
-      May Allah make us among those who seek knowledge for His sake, act upon it, and call others to it with wisdom and patience. Ameen.
-    </p>
-
-    <div class="mt-10 border-t border-gray-200 pt-6 text-sm text-gray-500">
-      <p>
-        Tagged under:
-        <span class="text-[#094570] font-medium">Knowledge</span>,
-        <span class="text-[#094570] font-medium">Tazkiyah</span>,
-        <span class="text-[#094570] font-medium">Islamic Studies</span>
-      </p>
-    </div>
-  </main>
-
-  <!-- RELATED POSTS -->
-  <section class="bg-[#85CCFF]/10 py-12 sm:py-16" data-aos="fade-up">
-    <div class="mx-auto max-w-6xl px-4 sm:px-6 text-center">
-      <h2 class="text-2xl sm:text-3xl font-bold text-[#094570] mb-8">Related Posts</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
-        <a href="blog-post2.html" class="block bg-white rounded-2xl shadow-md hover:shadow-xl transition p-6 text-left">
-          <h3 class="font-semibold text-[#094570] mb-2">Balancing Deen and Dunya</h3>
-          <p class="text-gray-600 text-sm">How to maintain focus between worldly and spiritual obligations.</p>
+    <!-- Breadcrumb / Back -->
+    <section class="mx-auto max-w-6xl px-4 sm:px-6" data-aos="fade-up" data-aos-duration="600">
+      <div class="flex items-center justify-between gap-4">
+        <a href="blog.html" class="inline-flex items-center gap-2 brand-ink font-semibold">
+          <span aria-hidden="true">←</span>
+          <span>Back to Blog</span>
         </a>
-        <a href="blog-post3.html" class="block bg-white rounded-2xl shadow-md hover:shadow-xl transition p-6 text-left">
-          <h3 class="font-semibold text-[#094570] mb-2">Learning Arabic, A Gateway to Qur’an</h3>
-          <p class="text-gray-600 text-sm">Arabic as a means to deepen your connection with the Qur’an.</p>
-        </a>
-        <a href="blog-post4.html" class="block bg-white rounded-2xl shadow-md hover:shadow-xl transition p-6 text-left">
-          <h3 class="font-semibold text-[#094570] mb-2">Consistency in Worship</h3>
-          <p class="text-gray-600 text-sm">How small consistent deeds build long-lasting faith and focus.</p>
-        </a>
+
+        <!-- Category pill -->
+        <span class="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm"
+              style="border-color: rgba(9,69,112,0.16); color: var(--regal);">
+          <span class="tag-dot" aria-hidden="true"></span>
+          Tazkiyah
+        </span>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- FOOTER -->
-  <footer class="bg-[#094570] text-white py-10">
-    <div class="mx-auto max-w-6xl px-4 sm:px-6 text-center">
-      <p>&copy; 2025 Himaayah Institute of Arabic & Islamic Studies. All rights reserved.</p>
-      <p class="mt-2 text-sm">Contact: himaayahmadrasah@gmail.com | +234 708 015 2258</p>
-    </div>
-  </footer>
+    <!-- Post Header -->
+    <section class="mx-auto max-w-6xl px-4 sm:px-6 mt-8" data-aos="fade-up" data-aos-duration="650">
+      <div class="reading-frame mx-auto text-center">
+        <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-[var(--regal)]">
+          The Journey of Seeking Knowledge
+        </h1>
+
+        <div class="mx-auto mt-5 h-1 w-20 rounded-full bg-[var(--pastel)]"></div>
+
+        <p class="mt-5 text-sm sm:text-base" style="color: rgba(9,69,112,0.72);">
+          <span class="font-semibold" style="color: rgba(9,69,112,0.92);">Himaayah Editorial Team</span>
+          <span aria-hidden="true"> • </span>
+          <time datetime="2025-11-01">November 2025</time>
+          <span aria-hidden="true"> • </span>
+          6 min read
+        </p>
+      </div>
+    </section>
+
+    <!-- Optional feature image (safe by default: remove if you prefer no images) -->
+    <section class="mx-auto max-w-6xl px-4 sm:px-6 mt-10" data-aos="fade-up" data-aos-duration="700">
+      <div class="reading-frame mx-auto">
+        <!-- If this image doesn't exist, delete this block to avoid broken image -->
+        <img
+          src="images/blog1.jpg"
+          alt="Seeking Knowledge"
+          class="w-full rounded-2xl border"
+          style="border-color: rgba(9,69,112,0.14);"
+        />
+      </div>
+    </section>
+
+    <!-- Article -->
+    <main class="mx-auto max-w-6xl px-4 sm:px-6 mt-10 pb-16">
+      <article class="reading-frame mx-auto prose" data-aos="fade-up" data-aos-duration="700">
+
+        <p>
+          Knowledge (‘Ilm) is the light by which hearts are illuminated and paths are straightened. The Messenger of Allah ﷺ said:
+        </p>
+
+        <blockquote class="quote">
+          “Whoever takes a path upon which to obtain knowledge, Allah makes the path to Paradise easy for him.”
+          <br />
+          <span style="font-style: normal; color: rgba(9,69,112,0.75);">Narrated by Muslim</span>
+        </blockquote>
+
+        <p>
+          Every sincere student of knowledge begins with an intention. To seek what is with Allah, not worldly recognition or praise.
+          This sincerity transforms the act of learning into an act of worship.
+        </p>
+
+        <h2>Balancing Effort with Tawakkul</h2>
+
+        <p>
+          While striving to study and memorize, the student must remain humble, constantly relying upon Allah for understanding and success.
+          Imam al-Shafi’i once said:
+        </p>
+
+        <blockquote class="quote">
+          “Knowledge is a light, and the light of Allah is not given to the disobedient.”
+        </blockquote>
+
+        <p>
+          The best students are those who not only study hard but also purify their hearts. They seek knowledge that transforms,
+          not merely information that decorates the tongue.
+        </p>
+
+        <h2>Practical Steps for the Student of Knowledge</h2>
+
+        <ul>
+          <li>Begin every lesson with a renewed intention.</li>
+          <li>Write daily reflections after classes to internalize lessons.</li>
+          <li>Spend time with scholars and ask questions with humility.</li>
+          <li>Revise what you’ve learned regularly. Repetition strengthens memory.</li>
+          <li>Share what you know. Teaching others revives your own understanding.</li>
+        </ul>
+
+        <p>
+          May Allah make us among those who seek knowledge for His sake, act upon it, and call others to it with wisdom and patience. Ameen.
+        </p>
+
+        <!-- End matter -->
+        <div class="mt-10">
+          <div class="hairline"></div>
+
+          <div class="mt-6 flex flex-wrap items-center gap-2">
+            <span class="tag"><span class="tag-dot"></span>Knowledge</span>
+            <span class="tag"><span class="tag-dot"></span>Tazkiyah</span>
+            <span class="tag"><span class="tag-dot"></span>Islamic Studies</span>
+          </div>
+
+          <!-- Author card -->
+          <div class="mt-10 rounded-2xl border p-6"
+               style="border-color: rgba(9,69,112,0.14);"
+               data-aos="fade-up" data-aos-duration="650">
+            <div class="flex items-start gap-4">
+              <div class="h-12 w-12 rounded-2xl flex items-center justify-center"
+                   style="background: rgba(133,204,255,0.22);">
+                <span class="font-extrabold" style="color: var(--regal);">H</span>
+              </div>
+              <div class="min-w-0">
+                <p class="font-extrabold text-[var(--regal)]">Himaayah Editorial Team</p>
+                <p style="color: rgba(9,69,112,0.78);" class="mt-1">
+                  Short reflections and structured articles grounded in Qur’an, Sunnah, and the discipline of learning.
+                </p>
+                <div class="mt-3">
+                  <a href="blog.html" class="font-semibold brand-ink">View more posts</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Next / Previous -->
+          <div class="mt-10 grid gap-4 sm:grid-cols-2" data-aos="fade-up" data-aos-duration="650">
+            <a href="blog-post0.html" class="card rounded-2xl p-5">
+              <p class="text-sm" style="color: rgba(9,69,112,0.72);">Previous</p>
+              <p class="mt-1 font-extrabold text-[var(--regal)]">Why Sincerity Comes Before Study</p>
+            </a>
+            <a href="blog-post2.html" class="card rounded-2xl p-5">
+              <p class="text-sm" style="color: rgba(9,69,112,0.72);">Next</p>
+              <p class="mt-1 font-extrabold text-[var(--regal)]">Balancing Deen and Dunya</p>
+            </a>
+          </div>
+
+        </div>
+      </article>
+    </main>
+
+    <!-- Related Posts -->
+    <section class="py-14" style="background: rgba(133,204,255,0.12);" data-aos="fade-up" data-aos-duration="700">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 text-center">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-[var(--regal)] mb-8">Related Posts</h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 text-left">
+          <a href="blog-post2.html" class="card bg-white rounded-2xl p-6">
+            <p class="text-xs font-semibold" style="color: rgba(9,69,112,0.70);">Guidance</p>
+            <h3 class="mt-2 font-extrabold text-[var(--regal)]">Balancing Deen and Dunya</h3>
+            <p class="mt-2 text-sm" style="color: rgba(9,69,112,0.78);">
+              How to maintain focus between worldly and spiritual obligations.
+            </p>
+            <p class="mt-4 text-sm font-semibold brand-ink">Read →</p>
+          </a>
+
+          <a href="blog-post3.html" class="card bg-white rounded-2xl p-6">
+            <p class="text-xs font-semibold" style="color: rgba(9,69,112,0.70);">Arabic</p>
+            <h3 class="mt-2 font-extrabold text-[var(--regal)]">Learning Arabic, A Gateway to Qur’an</h3>
+            <p class="mt-2 text-sm" style="color: rgba(9,69,112,0.78);">
+              Arabic as a means to deepen your connection with the Qur’an.
+            </p>
+            <p class="mt-4 text-sm font-semibold brand-ink">Read →</p>
+          </a>
+
+          <a href="blog-post4.html" class="card bg-white rounded-2xl p-6">
+            <p class="text-xs font-semibold" style="color: rgba(9,69,112,0.70);">Worship</p>
+            <h3 class="mt-2 font-extrabold text-[var(--regal)]">Consistency in Worship</h3>
+            <p class="mt-2 text-sm" style="color: rgba(9,69,112,0.78);">
+              How small consistent deeds build long-lasting faith and focus.
+            </p>
+            <p class="mt-4 text-sm font-semibold brand-ink">Read →</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-[var(--regal)] text-white py-10">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 text-center">
+        <p class="text-white/90">&copy; 2026 Himaayah Institute of Arabic & Islamic Studies. All rights reserved.</p>
+        <p class="mt-2 text-sm text-white/70">Contact: himaayahmadrasah@gmail.com | +234 708 015 2258</p>
+      </div>
+    </footer>
+
+  </div>
 
   <!-- JS -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
-    AOS.init({ duration: 900, once: true });
+    AOS.init({
+      duration: 650,
+      once: true,
+      easing: 'ease-out-cubic',
+      offset: 40
+    });
 
     // Mobile menu toggle
     const menuBtn = document.getElementById('menuBtn');

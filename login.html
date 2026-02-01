@@ -3,75 +3,270 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Student Login - Himaayah Institute of Arabic and Islamic Studies</title>
+  <title>Student Login | Himaayah Institute of Arabic and Islamic Studies</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#1e40af', // Deep Blue
-            secondary: '#eff6ff', // Light Blue
-          },
-        },
-      },
-    };
-  </script>
-</head>
-<body class="bg-secondary flex items-center justify-center min-h-screen">
 
-  <!-- Login Card -->
-  <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md border border-gray-100 animate-fadeIn">
-    <div class="text-center mb-6">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Blue_book_icon.svg" alt="Logo" class="mx-auto w-16 mb-3">
-      <h1 class="text-2xl font-bold text-primary">Himaayah Institute</h1>
-      <p class="text-gray-500 mt-1 text-sm">Student Login Portal</p>
-    </div>
-
-    <!-- Login Form -->
-    <form id="loginForm" action="class-select.html" method="GET" class="space-y-4">
-      <div>
-        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email or Username</label>
-        <input id="email" name="email" type="text" required
-          class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
-      </div>
-
-      <div>
-        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-        <input id="password" name="password" type="password" required
-          class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
-      </div>
-
-      <div class="flex justify-between items-center text-sm">
-        <label class="flex items-center space-x-2 text-gray-600">
-          <input type="checkbox" class="accent-primary">
-          <span>Remember me</span>
-        </label>
-        <a href="#" class="text-primary hover:underline">Forgot password?</a>
-      </div>
-
-      <button type="submit"
-        class="w-full bg-primary text-white py-2 rounded-lg hover:bg-blue-900 transition font-medium">
-        Login
-      </button>
-    </form>
-
-    <p class="text-center text-sm text-gray-600 mt-6">
-      Don’t have an account?
-      <a href="payment-portal.html" class="text-primary hover:underline">Register here</a>
-    </p>
-  </div>
-
-  <!-- Animation -->
   <style>
+    :root{
+      --regal:#094570;
+      --pastel:#85CCFF;
+      --white:#FFFFFF;
+    }
+
+    html{scroll-behavior:smooth;}
+
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(14px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    .animate-fadeIn {
-      animation: fadeIn 0.8s ease-out;
+    .animate-fadeIn { animation: fadeIn .7s ease-out; }
+
+    .card{
+      border:1px solid rgba(9,69,112,0.14);
+      border-radius:1.25rem;
+      background:var(--white);
+      box-shadow: 0 14px 30px rgba(9,69,112,0.10);
     }
+
+    .muted{ color: rgba(9,69,112,0.78); }
+    .muted-2{ color: rgba(9,69,112,0.65); }
   </style>
+</head>
+
+<body class="bg-white min-h-screen flex flex-col">
+
+  <!-- HEADER (same nav structure) -->
+  <header class="bg-[var(--regal)] text-white fixed inset-x-0 top-0 z-50">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+      <div class="flex h-16 items-center justify-between">
+        <a href="index.html" class="flex items-center gap-3 min-w-0">
+          <object
+            data="assets/images/himaayah-icon.svg"
+            type="image/svg+xml"
+            class="h-10 w-10 shrink-0"
+            style="color: var(--pastel);"
+            aria-label="Himaayah Icon"
+          ></object>
+          <div class="min-w-0">
+            <div class="font-extrabold truncate text-lg sm:text-xl">Himaayah Institute</div>
+            <div class="hidden sm:block text-xs text-white/70">Student Portal</div>
+          </div>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+          <a href="index.html" class="hover:text-[var(--pastel)] transition">Home</a>
+          <a href="about.html" class="hover:text-[var(--pastel)] transition">About</a>
+          <a href="curriculum.html" class="hover:text-[var(--pastel)] transition">Curriculum</a>
+          <a href="login.html" class="text-[var(--pastel)] underline underline-offset-4 font-semibold">Login</a>
+          <a href="payment-portal.html" class="hover:text-[var(--pastel)] transition">Register</a>
+          <a href="blogpost.html" class="hover:text-[var(--pastel)] transition">Blog</a>
+          <a href="contact.html" class="hover:text-[var(--pastel)] transition">Contact</a>
+        </nav>
+
+        <button
+          id="menuBtn"
+          class="md:hidden inline-flex items-center justify-center rounded-xl border border-white/20 px-3 py-2 text-sm hover:bg-white/10"
+          aria-expanded="false"
+          aria-controls="mobileMenu"
+        >
+          Menu
+        </button>
+      </div>
+
+      <div id="mobileMenu" class="md:hidden hidden pb-4">
+        <nav class="grid gap-2 rounded-2xl border border-white/10 bg-white/5 p-3 text-sm">
+          <a href="index.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Home</a>
+          <a href="about.html" class="rounded-xl px-3 py-2 hover:bg-white/10">About</a>
+          <a href="curriculum.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Curriculum</a>
+          <a href="login.html" class="rounded-xl px-3 py-2 bg-white/10 text-[var(--pastel)] font-semibold">Login</a>
+          <a href="payment-portal.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Register</a>
+          <a href="blogpost.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Blog</a>
+          <a href="contact.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Contact</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- PAGE -->
+  <main class="flex-1 pt-24 sm:pt-28 pb-12 px-4 flex items-start justify-center">
+
+    <section class="w-full max-w-md animate-fadeIn">
+      <div class="text-center">
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-[var(--regal)]">Student Login</h1>
+        <div class="mx-auto mt-4 h-1 w-14 rounded-full bg-[var(--pastel)]"></div>
+        <p class="mt-4 text-sm muted">
+          Use your Email and Student ID to access your classes.
+        </p>
+      </div>
+
+      <div class="card mt-8 p-6 sm:p-8">
+        <form id="loginForm" class="space-y-4" novalidate>
+
+          <div>
+            <label for="email" class="block text-sm font-semibold text-[var(--regal)] mb-1">Email</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              placeholder="you@example.com"
+              class="w-full rounded-xl px-4 py-3 border outline-none bg-white"
+              style="border-color: rgba(9,69,112,0.18);"
+              required
+            />
+          </div>
+
+          <div>
+            <label for="studentId" class="block text-sm font-semibold text-[var(--regal)] mb-1">Student ID</label>
+            <input
+              id="studentId"
+              name="studentId"
+              type="text"
+              placeholder="HIAIS-YYMM-XXXX"
+              class="w-full rounded-xl px-4 py-3 border outline-none bg-white"
+              style="border-color: rgba(9,69,112,0.18);"
+              required
+            />
+            <p class="mt-2 text-xs muted-2">
+              Your Student ID is issued after payment on the payment portal.
+            </p>
+          </div>
+
+          <div id="errorBox" class="hidden rounded-2xl border p-4 text-sm"
+               style="border-color: rgba(9,69,112,0.14); color: rgba(9,69,112,0.82); background: rgba(133,204,255,0.10);">
+          </div>
+
+          <button
+            type="submit"
+            class="w-full rounded-full px-6 py-3 font-semibold text-white"
+            style="background: var(--regal);"
+          >
+            Login
+          </button>
+
+          <div class="text-center text-sm muted">
+            No Student ID yet?
+            <a href="payment-portal.html" class="font-semibold" style="color: var(--regal); text-decoration: underline; text-underline-offset: 4px;">
+              Pay and get login details
+            </a>
+          </div>
+        </form>
+      </div>
+
+      <!-- Minimal Footer (no full background) -->
+      <div class="mt-10 text-center">
+        <p class="text-sm font-medium text-[#094570]">
+          © 2026 Himaayah Institute of Arabic and Islamic Studies. All rights reserved.
+        </p>
+        <p class="mt-1 text-xs" style="color: rgba(9,69,112,0.65);">
+          Student Portal
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn?.addEventListener('click', () => {
+      const isOpen = !mobileMenu.classList.contains('hidden');
+      mobileMenu.classList.toggle('hidden');
+      menuBtn.setAttribute('aria-expanded', String(!isOpen));
+      menuBtn.textContent = isOpen ? 'Menu' : 'Close';
+    });
+
+    // Brand-only focus styling
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(el => {
+      el.addEventListener('focus', () => {
+        el.style.borderColor = 'rgba(133,204,255,0.95)';
+        el.style.boxShadow = '0 0 0 4px rgba(133,204,255,0.18)';
+      });
+      el.addEventListener('blur', () => {
+        el.style.borderColor = 'rgba(9,69,112,0.18)';
+        el.style.boxShadow = 'none';
+      });
+    });
+
+    // Prefill from last payment if present (nice UX)
+    window.addEventListener('load', () => {
+      try {
+        const last = JSON.parse(localStorage.getItem('himaayah_last_payment') || '{}');
+        if (last?.email && !document.getElementById('email').value) {
+          document.getElementById('email').value = last.email;
+        }
+        if (last?.studentId && !document.getElementById('studentId').value) {
+          document.getElementById('studentId').value = last.studentId;
+        }
+      } catch (e) {}
+    });
+
+    // Basic local validation against saved local record
+    function findMatch(email, studentId){
+      const list = JSON.parse(localStorage.getItem('himaayah_payments') || '[]');
+      const e = (email || '').trim().toLowerCase();
+      const s = (studentId || '').trim().toUpperCase();
+      return list.find(r =>
+        (String(r.email || '').trim().toLowerCase() === e) &&
+        (String(r.studentId || '').trim().toUpperCase() === s)
+      );
+    }
+
+    const form = document.getElementById('loginForm');
+    const errorBox = document.getElementById('errorBox');
+
+    form.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+
+      const email = document.getElementById('email').value.trim();
+      const studentId = document.getElementById('studentId').value.trim();
+
+      errorBox.classList.add('hidden');
+      errorBox.textContent = '';
+
+      if(!email || !email.includes('@')){
+        errorBox.textContent = 'Enter a valid email address.';
+        errorBox.classList.remove('hidden');
+        return;
+      }
+      if(!studentId){
+        errorBox.textContent = 'Enter your Student ID.';
+        errorBox.classList.remove('hidden');
+        return;
+      }
+
+      // Important reality:
+      // This is a static website. So we can only verify against localStorage records on THIS device.
+      const match = findMatch(email, studentId);
+
+      if(!match){
+        errorBox.innerHTML = `
+          <div class="font-semibold" style="color: var(--regal);">Login not found on this device.</div>
+          <div class="mt-2">
+            If you paid on a different phone or browser, this page cannot see that record.
+            Use the same device, or keep your Student ID and contact admin for confirmation.
+          </div>
+        `;
+        errorBox.classList.remove('hidden');
+        return;
+      }
+
+      // Save "session" locally and route to class.html
+      const session = {
+        email: match.email,
+        studentId: match.studentId,
+        name: match.name || '',
+        loggedInAt: new Date().toISOString()
+      };
+      localStorage.setItem('himaayah_session', JSON.stringify(session));
+
+      // Route to class.html (with optional query params)
+      const qs = new URLSearchParams({ email: match.email, studentId: match.studentId }).toString();
+      window.location.href = `class.html?${qs}`;
+    });
+  </script>
 
 </body>
 </html>
