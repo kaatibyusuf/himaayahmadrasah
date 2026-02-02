@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HIAIS</title>
+  <title>HIAIS | Himaayah Institute of Arabic and Islamic Studies</title>
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
@@ -12,39 +12,35 @@
       --pastel:#85CCFF;
       --white:#FFFFFF;
     }
-
     html{scroll-behavior:smooth;}
-
-    /* Brand discipline */
-    .brand-bg{background:var(--regal);}
-    .brand-ink{color:var(--regal);}
-    .brand-accent{color:var(--pastel);}
-    .brand-border{border-color:rgba(255,255,255,0.18);}
-    .brand-border-ink{border-color:rgba(9,69,112,0.14);}
-
-    /* Layout */
     .reading-frame{max-width:72ch;}
 
-    /* Subtle motion. Keeps the "alive" feel, but no noise */
+    /* Subtle editorial motion */
     .fade-in{
       opacity:0;
-      transform:translateY(14px);
-      transition:opacity .7s ease, transform .7s ease;
+      transform:translateY(12px);
+      transition:opacity .65s ease, transform .65s ease;
     }
-    .fade-in.visible{
-      opacity:1;
-      transform:translateY(0);
+    .fade-in.visible{opacity:1;transform:translateY(0);}
+
+    /* Header polish (still brand-only) */
+    .site-header{
+      background: rgba(9,69,112,1);
+      transition: background-color .18s ease, box-shadow .18s ease, backdrop-filter .18s ease;
+    }
+    .site-header.is-scrolled{
+      background: rgba(9,69,112,0.92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 10px 28px rgba(9,69,112,0.18);
     }
 
-    /* Components */
-    .hairline{height:1px;background:rgba(255,255,255,0.16);}
-    .hairline-ink{height:1px;background:rgba(9,69,112,0.14);}
-
+    /* Cards */
     .card{
       border:1px solid rgba(9,69,112,0.14);
       border-radius: 1.25rem;
       background: var(--white);
-      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
     }
     .card:hover{
       transform: translateY(-2px);
@@ -52,7 +48,8 @@
       border-color: rgba(133,204,255,0.55);
     }
 
-    .tag{
+    /* Pills */
+    .pill{
       display:inline-flex;
       align-items:center;
       gap:.45rem;
@@ -64,22 +61,19 @@
       background: transparent;
       white-space: nowrap;
     }
-    .tag-dot{
-      width:.45rem;height:.45rem;border-radius:9999px;background:var(--pastel);
-      display:inline-block;
-    }
+    .pill-dot{width:.45rem;height:.45rem;border-radius:9999px;background:var(--pastel);display:inline-block;}
 
-    /* SVG tinting works if SVG uses currentColor or has no hard-coded fills */
+    /* SVG tinting works if SVG uses currentColor */
     .logo-tint{color:var(--pastel);}
   </style>
 </head>
 
 <body class="bg-white overflow-x-hidden">
 
-  <!-- HEADER: Same structure across site -->
-  <header class="bg-[var(--regal)] text-white fixed inset-x-0 top-0 z-50">
+  <!-- HEADER: same structure across site -->
+  <header id="siteHeader" class="site-header text-white fixed inset-x-0 top-0 z-50">
     <div class="mx-auto max-w-7xl px-4 sm:px-6">
-      <div class="flex h-16 items-center justify-between">
+      <div class="flex h-16 items-center justify-between gap-3">
 
         <!-- Brand -->
         <a href="index.html" class="flex items-center gap-3 min-w-0" aria-label="Himaayah Institute Home">
@@ -90,13 +84,16 @@
             class="h-10 w-10 shrink-0 logo-tint"
           ></object>
 
-          <div class="min-w-0">
-            <div class="font-extrabold truncate text-lg sm:text-xl">Himaayah Institute of Arabic and Islamic Studies</div>
+          <div class="min-w-0 leading-tight">
+            <div class="font-extrabold truncate text-base sm:hidden">Himaayah Institute</div>
+            <div class="hidden sm:block font-extrabold truncate text-lg">
+              Himaayah Institute of Arabic and Islamic Studies
+            </div>
           </div>
         </a>
 
         <!-- Desktop nav -->
-        <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+        <nav class="hidden md:flex items-center gap-6 text-sm font-medium whitespace-nowrap">
           <a href="index.html" class="text-[var(--pastel)] underline underline-offset-4 font-semibold">Home</a>
           <a href="about.html" class="hover:text-[var(--pastel)] transition">About</a>
           <a href="curriculum.html" class="hover:text-[var(--pastel)] transition">Curriculum</a>
@@ -128,123 +125,171 @@
           <a href="payment-portal.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Register</a>
           <a href="blogpost.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Blog</a>
           <a href="contact.html" class="rounded-xl px-3 py-2 hover:bg-white/10">Contact</a>
+          <a href="faq.html" class="rounded-xl px-3 py-2 hover:bg-white/10">FAQ</a>
         </nav>
       </div>
     </div>
   </header>
 
-  <!-- PAGE -->
-  <div class="pt-24 sm:pt-28">
+  <main class="pt-24 sm:pt-28">
 
-    <!-- HERO: editorial, no gradient, no shapes -->
+    <!-- HERO: registration + credibility -->
     <section class="bg-[var(--regal)] text-white">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 py-14 sm:py-18">
-        <div class="reading-frame mx-auto text-center fade-in">
-          <div class="flex flex-wrap justify-center gap-2 mb-6">
-            <span class="tag"><span class="tag-dot"></span>Online Madrasah</span>
-            <span class="tag"><span class="tag-dot"></span>Structured Curriculum</span>
-            <span class="tag"><span class="tag-dot"></span>Authentic Learning</span>
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 py-14 sm:py-16">
+        <div class="grid gap-10 lg:grid-cols-12 lg:items-center">
+
+          <!-- Left: message -->
+          <div class="lg:col-span-7 fade-in">
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="pill"><span class="pill-dot"></span>Online Madrasah</span>
+              <span class="pill"><span class="pill-dot"></span>Level-Based Structure</span>
+              <span class="pill"><span class="pill-dot"></span>Telegram Classes</span>
+            </div>
+
+            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
+              Learn Arabic, Qur’an, and the core Islamic sciences.
+            </h1>
+
+            <div class="mt-6 h-1 w-20 rounded-full bg-[var(--pastel)]"></div>
+
+            <p class="mt-6 text-base sm:text-lg text-white/85 reading-frame">
+              Clear levels. Consistent learning rhythm. Materials that support you. A program designed to remove confusion and build real foundations.
+            </p>
+
+            <div class="mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <a
+                href="payment-portal.html"
+                class="inline-flex justify-center rounded-full bg-[var(--pastel)] px-6 py-3 font-semibold text-[var(--regal)] hover:bg-white transition"
+              >
+                Register Now
+              </a>
+
+              <a
+                href="curriculum.html"
+                class="inline-flex justify-center rounded-full border px-6 py-3 font-semibold text-white hover:text-[var(--regal)] hover:bg-[var(--pastel)] transition"
+                style="border-color: rgba(255,255,255,0.28);"
+              >
+                View Curriculum
+              </a>
+            </div>
+
+            <p class="mt-4 text-xs sm:text-sm text-white/70">
+              After payment, you receive temporary login details, then access your class channels.
+            </p>
           </div>
 
-          <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">
-            Himaayah Institute of Arabic and Islamic Studies
-          </h1>
+          <!-- Right: proof box (credibility without noise) -->
+          <aside class="lg:col-span-5 fade-in">
+            <div class="rounded-2xl border p-6 sm:p-7"
+                 style="border-color: rgba(255,255,255,0.18); background: rgba(255,255,255,0.04);">
+              <p class="text-sm text-white/70">What you get</p>
+              <h2 class="mt-2 text-xl font-extrabold">A program that feels organized</h2>
 
-          <div class="mx-auto mt-6 h-1 w-20 rounded-full bg-[var(--pastel)]"></div>
+              <ul class="mt-5 space-y-3 text-sm text-white/85">
+                <li class="flex gap-3">
+                  <span class="mt-2 h-2 w-2 rounded-full bg-[var(--pastel)] shrink-0"></span>
+                  Class access by level: Tamheedi, Ibtidaaiyyah, Idaadiyyah.
+                </li>
+                <li class="flex gap-3">
+                  <span class="mt-2 h-2 w-2 rounded-full bg-[var(--pastel)] shrink-0"></span>
+                  Dedicated segments: Qur’an, Tajweed, Matn memorization.
+                </li>
+                <li class="flex gap-3">
+                  <span class="mt-2 h-2 w-2 rounded-full bg-[var(--pastel)] shrink-0"></span>
+                  Notes, reminders, and structured guidance.
+                </li>
+              </ul>
 
-          <p class="mt-6 text-base sm:text-lg text-white/85">
-            A calm, structured learning path that strengthens your Arabic, deepens your understanding of Qur’an, and builds sound Islamic foundations.
-          </p>
+              <div class="mt-6 h-px" style="background: rgba(255,255,255,0.16);"></div>
 
-          <div class="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4">
-            <a
-              href="payment-portal.html"
-              class="inline-flex justify-center rounded-full bg-[var(--pastel)] px-6 py-3 font-semibold text-[var(--regal)] hover:bg-white transition"
-            >
-              Register Now
-            </a>
+              <div class="mt-6 grid gap-3 sm:grid-cols-2">
+                <a href="login.html"
+                   class="inline-flex justify-center rounded-full px-5 py-2.5 font-semibold text-[var(--regal)] bg-white hover:bg-[var(--pastel)] transition">
+                  Student Login
+                </a>
+                <a href="contact.html"
+                   class="inline-flex justify-center rounded-full px-5 py-2.5 font-semibold text-white border hover:text-[var(--regal)] hover:bg-[var(--pastel)] transition"
+                   style="border-color: rgba(255,255,255,0.28);">
+                  Ask a Question
+                </a>
+              </div>
+            </div>
+          </aside>
 
-            <a
-              href="curriculum.html"
-              class="inline-flex justify-center rounded-full border px-6 py-3 font-semibold text-white hover:text-[var(--regal)] hover:bg-[var(--pastel)] transition"
-              style="border-color: rgba(255,255,255,0.28);"
-            >
-              View Curriculum
-            </a>
-          </div>
-
-          <p class="mt-4 text-xs sm:text-sm text-white/70">
-            Registration is quick. You will be guided to the right level after sign-up.
-          </p>
-        </div>
-
-        <div class="mt-12 sm:mt-14">
-          <div class="hairline"></div>
-        </div>
-
-        <!-- Hero highlights -->
-        <div class="mt-10 grid gap-4 sm:grid-cols-3 fade-in">
-          <div class="rounded-2xl border p-5"
-               style="border-color: rgba(255,255,255,0.16);">
-            <p class="text-sm text-white/70">Curriculum</p>
-            <p class="mt-1 font-extrabold">Arabic, Qur’an, Fiqh, Seerah, Hadeeth</p>
-          </div>
-          <div class="rounded-2xl border p-5"
-               style="border-color: rgba(255,255,255,0.16);">
-            <p class="text-sm text-white/70">Structure</p>
-            <p class="mt-1 font-extrabold">Clear levels. Weekly learning rhythm</p>
-          </div>
-          <div class="rounded-2xl border p-5"
-               style="border-color: rgba(255,255,255,0.16);">
-            <p class="text-sm text-white/70">Resources</p>
-            <p class="mt-1 font-extrabold">Notes, recordings, and digital library</p>
-          </div>
         </div>
       </div>
     </section>
 
-    <!-- ABOUT (tight, editorial) -->
+    <!-- SECTION: Why Himaayah (credibility) -->
     <section class="bg-white">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 py-14 sm:py-16">
         <div class="reading-frame mx-auto text-center fade-in">
-          <h2 class="text-2xl sm:text-3xl font-extrabold text-[var(--regal)]">About Himaayah</h2>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-[var(--regal)]">Why Himaayah</h2>
           <div class="mx-auto mt-4 h-1 w-14 rounded-full bg-[var(--pastel)]"></div>
           <p class="mt-6 text-base sm:text-lg" style="color: rgba(9,69,112,0.82);">
-            Himaayah Institute is built for students who want clarity and consistency.
-            We teach with structure, adab, and authentic grounding, so knowledge becomes practice, not just information.
+            This is for students who want a calm learning environment, clear structure, and steady progress.
+            The goal is knowledge that improves belief, worship, character, and language.
           </p>
+        </div>
 
-          <div class="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3">
-            <a href="about.html"
-               class="inline-flex justify-center rounded-full border px-6 py-3 font-semibold text-[var(--regal)] hover:bg-[var(--regal)] hover:text-white transition"
-               style="border-color: rgba(9,69,112,0.18);">
-              Learn More
-            </a>
-            <a href="contact.html"
-               class="inline-flex justify-center rounded-full bg-[var(--regal)] px-6 py-3 font-semibold text-white hover:text-[var(--regal)] hover:bg-[var(--pastel)] transition">
-              Contact Us
-            </a>
+        <div class="mt-10 grid gap-6 md:grid-cols-3 fade-in">
+          <div class="card p-7">
+            <p class="text-sm font-semibold" style="color: rgba(9,69,112,0.70);">Structure</p>
+            <h3 class="mt-2 text-xl font-extrabold text-[var(--regal)]">Levels and clarity</h3>
+            <p class="mt-3" style="color: rgba(9,69,112,0.82);">
+              You are not guessing where to start. You are placed and guided.
+            </p>
+          </div>
+
+          <div class="card p-7">
+            <p class="text-sm font-semibold" style="color: rgba(9,69,112,0.70);">Consistency</p>
+            <h3 class="mt-2 text-xl font-extrabold text-[var(--regal)]">A steady rhythm</h3>
+            <p class="mt-3" style="color: rgba(9,69,112,0.82);">
+              Learning that’s regular and realistic, not random bursts that die out.
+            </p>
+          </div>
+
+          <div class="card p-7">
+            <p class="text-sm font-semibold" style="color: rgba(9,69,112,0.70);">Access</p>
+            <h3 class="mt-2 text-xl font-extrabold text-[var(--regal)]">Telegram channels</h3>
+            <p class="mt-3" style="color: rgba(9,69,112,0.82);">
+              Each class has its channel. Lessons and announcements stay organized.
+            </p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- PROGRAMS (clean cards, no gray noise) -->
+    <!-- SECTION: Programs -->
     <section class="bg-white">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 pb-14 sm:pb-16">
         <div class="text-center fade-in">
           <h2 class="text-2xl sm:text-3xl font-extrabold text-[var(--regal)]">Core Programs</h2>
           <p class="mt-3 reading-frame mx-auto" style="color: rgba(9,69,112,0.78);">
-            Two entry points. One direction. Strong foundations, steady progress.
+            A clear curriculum. A clean delivery. A student-first system.
           </p>
         </div>
 
         <div class="mt-10 grid gap-6 md:grid-cols-2 fade-in">
           <div class="card p-7 sm:p-8">
             <p class="text-sm font-semibold" style="color: rgba(9,69,112,0.70);">Madrasah Program</p>
-            <h3 class="mt-2 text-xl sm:text-2xl font-extrabold text-[var(--regal)]">Structured Learning</h3>
+            <h3 class="mt-2 text-xl sm:text-2xl font-extrabold text-[var(--regal)]">Arabic and Islamic Studies</h3>
             <p class="mt-3" style="color: rgba(9,69,112,0.82);">
-              A level-based program from foundations to advanced learning, covering Qur’an, Arabic, Fiqh, Seerah, and more.
+              A structured path covering Qur’an, Arabic, Fiqh, Seerah, Hadeeth, and Tarbiyah.
+            </p>
+            <div class="mt-6">
+              <a href="curriculum.html" class="font-semibold text-[var(--regal)] underline underline-offset-4"
+                 style="text-decoration-color: rgba(133,204,255,0.95);">
+                View Curriculum →
+              </a>
+            </div>
+          </div>
+
+          <div class="card p-7 sm:p-8">
+            <p class="text-sm font-semibold" style="color: rgba(9,69,112,0.70);">Student Access</p>
+            <h3 class="mt-2 text-xl sm:text-2xl font-extrabold text-[var(--regal)]">Portal and class channels</h3>
+            <p class="mt-3" style="color: rgba(9,69,112,0.82);">
+              Pay, receive login details, then access your class channels from the student portal.
             </p>
             <div class="mt-6">
               <a href="payment-portal.html" class="font-semibold text-[var(--regal)] underline underline-offset-4"
@@ -253,25 +298,11 @@
               </a>
             </div>
           </div>
-
-          <div class="card p-7 sm:p-8">
-            <p class="text-sm font-semibold" style="color: rgba(9,69,112,0.70);">Digital Library</p>
-            <h3 class="mt-2 text-xl sm:text-2xl font-extrabold text-[var(--regal)]">Resources That Support You</h3>
-            <p class="mt-3" style="color: rgba(9,69,112,0.82);">
-              Lecture notes, useful recordings, and materials that strengthen your learning experience beyond class time.
-            </p>
-            <div class="mt-6">
-              <a href="https://t.me/mahadulhimaayah" class="font-semibold text-[var(--regal)] underline underline-offset-4"
-                 style="text-decoration-color: rgba(133,204,255,0.95);">
-                Explore →
-              </a>
-            </div>
-          </div>
         </div>
       </div>
     </section>
 
-    <!-- BLOG TEASER (editorial, minimal) -->
+    <!-- BLOG TEASER -->
     <section style="background: rgba(133,204,255,0.12);">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 py-14 sm:py-16">
         <div class="reading-frame mx-auto text-center fade-in">
@@ -284,53 +315,27 @@
             Visit Blog
           </a>
         </div>
-
-        <div class="mt-10 grid gap-6 md:grid-cols-3 fade-in">
-          <a href="blogpost.html" class="card p-6">
-            <p class="text-xs font-semibold" style="color: rgba(9,69,112,0.70);">Tazkiyah</p>
-            <p class="mt-2 font-extrabold text-[var(--regal)]">The Journey of Seeking Knowledge</p>
-            <p class="mt-2 text-sm" style="color: rgba(9,69,112,0.78);">
-              How sincerity, discipline, and humility shape the student.
-            </p>
-          </a>
-
-          <a href="blog-post2.html" class="card p-6">
-            <p class="text-xs font-semibold" style="color: rgba(9,69,112,0.70);">Guidance</p>
-            <p class="mt-2 font-extrabold text-[var(--regal)]">Balancing Deen and Dunya</p>
-            <p class="mt-2 text-sm" style="color: rgba(9,69,112,0.78);">
-              Staying focused while carrying responsibilities.
-            </p>
-          </a>
-
-          <a href="blog-post3.html" class="card p-6">
-            <p class="text-xs font-semibold" style="color: rgba(9,69,112,0.70);">Arabic</p>
-            <p class="mt-2 font-extrabold text-[var(--regal)]">Arabic as a Gateway to Qur’an</p>
-            <p class="mt-2 text-sm" style="color: rgba(9,69,112,0.78);">
-              Why language unlocks meaning and depth.
-            </p>
-          </a>
-        </div>
       </div>
     </section>
 
-    <!-- CTA STRIP (simple, decisive) -->
+    <!-- CTA -->
     <section class="bg-white">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 py-14 sm:py-16">
         <div class="card p-7 sm:p-10 fade-in">
           <div class="reading-frame mx-auto text-center">
             <h2 class="text-2xl sm:text-3xl font-extrabold text-[var(--regal)]">Ready to Begin?</h2>
             <p class="mt-4" style="color: rgba(9,69,112,0.82);">
-              Start your journey with structure. Register and we will guide you to the right level.
+              Register, receive your login details, then access your class channels.
             </p>
             <div class="mt-7 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3">
               <a href="payment-portal.html"
                  class="inline-flex justify-center rounded-full bg-[var(--regal)] px-8 py-3 font-semibold text-white hover:text-[var(--regal)] hover:bg-[var(--pastel)] transition">
                 Register Now
               </a>
-              <a href="curriculum.html"
+              <a href="faq.html"
                  class="inline-flex justify-center rounded-full border px-8 py-3 font-semibold text-[var(--regal)] hover:bg-[var(--regal)] hover:text-white transition"
                  style="border-color: rgba(9,69,112,0.18);">
-                View Curriculum
+                Read FAQ
               </a>
             </div>
           </div>
@@ -338,51 +343,14 @@
       </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer id="contact" class="bg-[var(--regal)] text-white py-12">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 grid gap-8 md:grid-cols-3">
-        <div>
-          <h3 class="text-lg sm:text-xl font-extrabold mb-4">Himaayah Institute</h3>
-          <p class="text-white/70">
-            A global digital madrasah dedicated to spreading authentic Islamic knowledge and nurturing balanced students of tomorrow.
-          </p>
-        </div>
-
-        <div>
-          <h3 class="text-lg sm:text-xl font-extrabold mb-4">Quick Links</h3>
-          <ul class="space-y-2 text-white/70">
-            <li><a href="about.html" class="hover:text-[var(--pastel)] transition">About</a></li>
-            <li><a href="curriculum.html" class="hover:text-[var(--pastel)] transition">Curriculum</a></li>
-            <li><a href="payment-portal.html" class="hover:text-[var(--pastel)] transition">Register</a></li>
-            <li><a href="blogpost.html" class="hover:text-[var(--pastel)] transition">Blog</a></li>
-            <li><a href="contact.html" class="hover:text-[var(--pastel)] transition">Contact</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 class="text-lg sm:text-xl font-extrabold mb-4">Contact</h3>
-          <p class="text-white/70">Call / SMS: +234 813 611 5948</p>
-          <p class="text-white/70 mt-2">
-            WhatsApp Channel:
-            <a href="https://www.whatsapp.com/channel/0029Vb5yFdJ2f3ENd4V1r42n" class="text-[var(--pastel)] hover:underline">
-              Join here
-            </a>
-          </p>
-          <p class="text-white/70 mt-2">
-            Telegram:
-            <a href="https://t.me/mahadulhimaayah" class="text-[var(--pastel)] hover:underline">
-              Join here
-            </a>
-          </p>
-        </div>
-      </div>
-
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 text-center text-white/50 mt-10 border-t border-white/10 pt-6">
+    <!-- Minimal footer (no blue wall) -->
+    <footer class="py-10 text-center">
+      <p class="text-sm font-medium text-[#094570]">
         © 2026 Himaayah Institute of Arabic and Islamic Studies. All rights reserved.
-      </div>
+      </p>
     </footer>
 
-  </div>
+  </main>
 
   <script>
     // Mobile menu toggle
@@ -396,14 +364,22 @@
       menuBtn.textContent = isOpen ? 'Menu' : 'Close';
     });
 
-    // Subtle scroll-in animation (no noise)
+    // Header blur/shadow on scroll
+    const siteHeader = document.getElementById('siteHeader');
+    function updateHeader() {
+      if (!siteHeader) return;
+      siteHeader.classList.toggle('is-scrolled', window.scrollY > 8);
+    }
+    window.addEventListener('scroll', updateHeader, { passive: true });
+    window.addEventListener('load', updateHeader);
+
+    // Subtle scroll-in animation
     const fadeEls = document.querySelectorAll('.fade-in');
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) entry.target.classList.add('visible');
       });
     }, { threshold: 0.12 });
-
     fadeEls.forEach(el => observer.observe(el));
   </script>
 

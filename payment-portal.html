@@ -149,7 +149,7 @@
         <section id="step-2" class="step step-hidden">
           <h2 class="text-lg font-extrabold text-[var(--regal)] mb-2">Step 2. Student Details</h2>
           <p class="text-sm muted mb-4">
-            Your email will be your username. After payment, you will receive a temporary Student ID here on this page.
+            Your email will be your username. Student ID will be issued after payment confirmation.
           </p>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -162,7 +162,7 @@
             <input id="phone" type="tel" placeholder="Phone number (optional)"
               class="rounded-xl px-4 py-3 border outline-none"
               style="border-color: rgba(9,69,112,0.18);" />
-            <input id="note" type="text" placeholder="Payment note (optional). e.g., Awwal Ibtidaaiyyah"
+            <input id="note" type="text" placeholder="Class/Level (optional). e.g., Awwal Ibtidaaiyyah"
               class="rounded-xl px-4 py-3 border outline-none"
               style="border-color: rgba(9,69,112,0.18);" />
           </div>
@@ -188,9 +188,9 @@
 
         <!-- STEP 3 -->
         <section id="step-3" class="step step-hidden">
-          <h2 class="text-lg font-extrabold text-[var(--regal)] mb-2">Step 3. Pay and Confirm</h2>
+          <h2 class="text-lg font-extrabold text-[var(--regal)] mb-2">Step 3. Pay and Submit</h2>
           <p class="text-sm muted mb-5">
-            Use Bank Transfer or USSD. Then tap “I have paid” to receive your temporary login details.
+            Use Bank Transfer or USSD. Then tap “I have paid” to submit your payment claim for confirmation.
           </p>
 
           <!-- Payment details block -->
@@ -259,46 +259,67 @@
         <section id="confirmation" class="step step-hidden text-center">
           <div class="rounded-2xl border p-5"
             style="border-color: rgba(9,69,112,0.14);">
-            <h3 class="text-xl font-extrabold text-[var(--regal)]">Payment Submitted</h3>
-            <p class="mt-2 text-sm muted">
-              JazaakAllahu khayran. Your temporary login details are below.
+            <h3 class="text-xl font-extrabold text-[var(--regal)]">Submission Received</h3>
+            <p id="confirmMsg" class="mt-2 text-sm muted">
+              JazaakAllahu khayran. Your payment claim has been received. Your Student ID will be issued after confirmation.
             </p>
 
             <div class="mt-5 rounded-2xl border p-5 text-left"
               style="border-color: rgba(9,69,112,0.14);">
-              <div class="text-sm font-extrabold text-[var(--regal)]">Temporary Login Details</div>
+              <div class="text-sm font-extrabold text-[var(--regal)]">Submission Details</div>
 
               <div class="mt-3 text-sm muted">
-                Username (Email):
-                <div class="mt-1 font-semibold text-[var(--regal)]" id="tempEmail">-</div>
+                Name:
+                <div class="mt-1 font-semibold text-[var(--regal)]" id="confName">-</div>
               </div>
 
               <div class="mt-4 text-sm muted">
-                Student ID:
-                <div class="mt-1 font-semibold text-[var(--regal)]" id="tempStudentId">-</div>
+                Email:
+                <div class="mt-1 font-semibold text-[var(--regal)]" id="confEmail">-</div>
               </div>
 
-              <div class="mt-4 text-xs muted-2">
-                Keep these safe. Admin verification may follow if needed.
+              <div class="mt-4 text-sm muted">
+                Purpose:
+                <div class="mt-1 font-semibold text-[var(--regal)]" id="confPurpose">-</div>
+              </div>
+
+              <div class="mt-4 text-sm muted">
+                Payment reference:
+                <div class="mt-1 font-semibold text-[var(--regal)]" id="confPayRef">-</div>
+              </div>
+
+              <div class="mt-5 text-xs muted-2">
+                Next: If you already paid, send proof on WhatsApp for faster confirmation.
               </div>
 
               <div class="mt-5 flex flex-col sm:flex-row gap-3">
                 <a
-                  id="goLogin"
-                  href="login.html"
+                  id="whatsappProof"
+                  href="#"
+                  target="_blank"
+                  rel="noopener"
                   class="w-full sm:w-auto text-center rounded-full px-6 py-3 font-semibold text-white"
                   style="background: var(--regal);"
+                >
+                  Send payment proof on WhatsApp
+                </a>
+
+                <a
+                  id="goLogin"
+                  href="login.html"
+                  class="w-full sm:w-auto text-center rounded-full px-6 py-3 font-semibold border"
+                  style="border-color: rgba(9,69,112,0.18); color: var(--regal);"
                 >
                   Go to Login
                 </a>
 
                 <button
-                  id="copyLogin"
+                  id="copyDetails"
                   type="button"
                   class="w-full sm:w-auto rounded-full px-6 py-3 font-semibold border"
                   style="border-color: rgba(9,69,112,0.18); color: var(--regal);"
                 >
-                  Copy Login Details
+                  Copy details
                 </button>
               </div>
             </div>
@@ -342,7 +363,27 @@
   </footer>
 
   <script>
-    // Mobile menu toggle
+    // =============================
+    // CONFIG
+    // =============================
+    // Admin WhatsApp number (international format, no +). Replace if needed.
+    const ADMIN_WHATSAPP_NUMBER = "2347080152258";
+
+    // Optional: If you later connect a Google Form, paste endpoint + entry IDs here.
+    // Leave as null to skip sending.
+    const GOOGLE_FORM_ENDPOINT = null; // e.g. "https://docs.google.com/forms/d/e/FORM_ID/formResponse"
+    const ENTRY = {
+      purpose: "entry.1111111111",
+      name: "entry.2222222222",
+      email: "entry.3333333333",
+      phone: "entry.4444444444",
+      note: "entry.5555555555",
+      payRef: "entry.6666666666"
+    };
+
+    // =============================
+    // NAV (mobile)
+    // =============================
     const menuBtn = document.getElementById('menuBtn');
     const mobileMenu = document.getElementById('mobileMenu');
     menuBtn?.addEventListener('click', () => {
@@ -352,7 +393,9 @@
       menuBtn.textContent = isOpen ? 'Menu' : 'Close';
     });
 
-    // Elements
+    // =============================
+    // STEP FLOW
+    // =============================
     const step1 = document.getElementById('step-1');
     const step2 = document.getElementById('step-2');
     const step3 = document.getElementById('step-3');
@@ -371,8 +414,12 @@
     const noteEl = document.getElementById('note');
     const payRefEl = document.getElementById('payRef');
 
-    const tempEmailEl = document.getElementById('tempEmail');
-    const tempStudentIdEl = document.getElementById('tempStudentId');
+    const confirmMsgEl = document.getElementById('confirmMsg');
+    const confNameEl = document.getElementById('confName');
+    const confEmailEl = document.getElementById('confEmail');
+    const confPurposeEl = document.getElementById('confPurpose');
+    const confPayRefEl = document.getElementById('confPayRef');
+    const whatsappProofEl = document.getElementById('whatsappProof');
 
     let draft = {};
 
@@ -384,26 +431,10 @@
       progBar3.style.width = step >= 3 ? '100%' : '0%';
     }
 
-    function safeLower(s){ return String(s || '').trim().toLowerCase(); }
+    function safeTrim(s){ return String(s || '').trim(); }
+    function safeLower(s){ return safeTrim(s).toLowerCase(); }
 
-    // Student ID generator (unique enough for local use)
-    function generateStudentId(email){
-      // Format: HIAIS-YYMM-XXXX
-      const d = new Date();
-      const yy = String(d.getFullYear()).slice(-2);
-      const mm = String(d.getMonth()+1).padStart(2,'0');
-
-      // stable-ish seed from email + time
-      const seed = safeLower(email) + '|' + Date.now() + '|' + Math.random();
-      let hash = 0;
-      for (let i = 0; i < seed.length; i++) {
-        hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
-      }
-      const code = String(hash % 10000).padStart(4,'0');
-      return `HIAIS-${yy}${mm}-${code}`;
-    }
-
-    // Inputs focus styling (brand-only)
+    // Brand-only focus styling
     const inputs = document.querySelectorAll('input, select');
     inputs.forEach(el => {
       el.addEventListener('focus', () => {
@@ -416,10 +447,8 @@
       });
     });
 
-    // initial
     setProgress(1);
 
-    // Navigation
     document.getElementById('s1Next').addEventListener('click', () => {
       if(!purposeEl.value) return alert('Select a payment purpose.');
       draft.purpose = purposeEl.value;
@@ -434,14 +463,14 @@
     });
 
     document.getElementById('s2Next').addEventListener('click', () => {
-      if(!nameEl.value.trim()) return alert('Enter your full name.');
-      if(!emailEl.value.trim()) return alert('Enter your email address.');
-      if(!emailEl.value.includes('@')) return alert('Enter a valid email address.');
+      if(!safeTrim(nameEl.value)) return alert('Enter your full name.');
+      if(!safeTrim(emailEl.value)) return alert('Enter your email address.');
+      if(!safeTrim(emailEl.value).includes('@')) return alert('Enter a valid email address.');
 
-      draft.name = nameEl.value.trim();
-      draft.email = emailEl.value.trim();
-      draft.phone = phoneEl.value.trim();
-      draft.note = noteEl.value.trim();
+      draft.name = safeTrim(nameEl.value);
+      draft.email = safeTrim(emailEl.value);
+      draft.phone = safeTrim(phoneEl.value);
+      draft.note = safeTrim(noteEl.value);
 
       show(step3); hide(step1); hide(step2); hide(confirmation); hide(recordView);
       setProgress(3);
@@ -486,56 +515,98 @@ Account Name: Yusuf Abdulsamad Olohuntosin`;
       }
     });
 
-    // Confirm paid (self-declared)
-    document.getElementById('confirmPaid').addEventListener('click', () => {
-      draft.payRef = payRefEl.value.trim();
+    // Confirm paid (truthful: submits claim, does NOT issue student ID instantly)
+    document.getElementById('confirmPaid').addEventListener('click', async () => {
+      draft.payRef = safeTrim(payRefEl.value);
 
-      const studentId = generateStudentId(draft.email);
-
-      // Save a local record
-      const record = {
-        id: 'reg_' + Math.random().toString(36).slice(2,9),
-        purpose: draft.purpose,
+      const claim = {
+        id: 'claim_' + Math.random().toString(36).slice(2,9),
+        purpose: draft.purpose || safeTrim(purposeEl.value),
         name: draft.name,
         email: draft.email,
-        phone: draft.phone || '',
-        note: draft.note || '',
-        payRef: draft.payRef || '',
-        paymentAccount: {
-          accountNumber: '9064540675',
-          bank: 'OPay',
-          accountName: 'Yusuf Abdulsamad Olohuntosin'
-        },
-        studentId,
-        status: 'SUBMITTED',
+        phone: draft.phone || "",
+        note: draft.note || "",
+        payRef: draft.payRef || "",
+        status: "PENDING_CONFIRMATION",
         date: new Date().toLocaleString()
       };
 
+      // Save local record
       const payments = JSON.parse(localStorage.getItem('himaayah_payments') || '[]');
-      payments.push(record);
+      payments.push(claim);
       localStorage.setItem('himaayah_payments', JSON.stringify(payments));
-      localStorage.setItem('himaayah_last_payment', JSON.stringify(record));
+      localStorage.setItem('himaayah_last_payment', JSON.stringify(claim));
+      localStorage.setItem('himaayah_pending_claim', JSON.stringify(claim));
 
-      // Show temp login details
-      tempEmailEl.textContent = record.email;
-      tempStudentIdEl.textContent = record.studentId;
+      // Optional: send to Google Form (if configured)
+      let sent = false;
+      if (GOOGLE_FORM_ENDPOINT) {
+        try{
+          const formData = new FormData();
+          formData.append(ENTRY.purpose, claim.purpose);
+          formData.append(ENTRY.name, claim.name);
+          formData.append(ENTRY.email, claim.email);
+          formData.append(ENTRY.phone, claim.phone);
+          formData.append(ENTRY.note, claim.note);
+          formData.append(ENTRY.payRef, claim.payRef);
+          await fetch(GOOGLE_FORM_ENDPOINT, { method: "POST", mode: "no-cors", body: formData });
+          sent = true;
+        } catch(e){
+          sent = false;
+        }
+      }
 
+      // Populate confirmation UI
+      confNameEl.textContent = claim.name || "-";
+      confEmailEl.textContent = claim.email || "-";
+      confPurposeEl.textContent = claim.purpose || "-";
+      confPayRefEl.textContent = claim.payRef ? claim.payRef : "Not provided";
+
+      confirmMsgEl.textContent = sent
+        ? "JazaakAllahu khayran. Your submission has been received. Your Student ID will be issued after payment confirmation."
+        : "JazaakAllahu khayran. Your submission has been saved on this device. If network is poor, please send proof on WhatsApp for faster confirmation.";
+
+      // Build WhatsApp proof link
+      const message =
+`Assalaamu'alaykum admin.
+
+I have paid for HIAIS.
+
+Name: ${claim.name || "-"}
+Email: ${claim.email || "-"}
+Purpose: ${claim.purpose || "-"}
+Payment Ref: ${claim.payRef || "Not provided"}
+
+Kindly confirm and issue my Student ID. JazaakAllahu khayran.`;
+
+      const waUrl = buildWhatsAppLink(ADMIN_WHATSAPP_NUMBER, message);
+      whatsappProofEl.href = waUrl;
+
+      // Move to confirmation step
       hide(step1); hide(step2); hide(step3); hide(recordView);
       show(confirmation);
       setProgress(3);
     });
 
-    // Copy login details
-    document.getElementById('copyLogin').addEventListener('click', async () => {
+    function buildWhatsAppLink(phoneNumber, text){
+      const encoded = encodeURIComponent(text);
+      // wa.me is reliable across devices
+      return `https://wa.me/${phoneNumber}?text=${encoded}`;
+    }
+
+    // Copy details
+    document.getElementById('copyDetails').addEventListener('click', async () => {
       const rec = JSON.parse(localStorage.getItem('himaayah_last_payment') || '{}');
-      if(!rec.studentId) return alert('No record found.');
+      if(!rec.id) return alert('No record found.');
       const text =
-`Temporary Login Details
-Email: ${rec.email}
-Student ID: ${rec.studentId}`;
+`HIAIS Payment Claim
+Name: ${rec.name || "-"}
+Email: ${rec.email || "-"}
+Purpose: ${rec.purpose || "-"}
+Payment Ref: ${rec.payRef || "Not provided"}`;
       try{
         await navigator.clipboard.writeText(text);
-        alert('Login details copied.');
+        alert('Details copied.');
       } catch(e){
         alert('Copy failed. Please copy manually.');
       }
